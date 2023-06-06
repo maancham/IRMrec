@@ -10,21 +10,23 @@
         <div class="card-body">
           <h3 class="card-title">Welcome to the Movie Recommendation System!</h3>
           <p class="card-text">Our system is designed to help you find the perfect movie to watch, based on your preferences and ratings.</p>
+          <hr>
+
           {% if quiz_done %}
-            <!-- handle the done part -->
+            {% if remaining_judge_actions != 0 %}
+              <p class="card-text">Once you've completed the quiz, please give judge the following movies:</p>
+              <a href="{% url 'movie_judge' %}" class="btn btn-primary btn-lg btn-block">Judge movies</a>
+            {% else %}
+              <p class="card-text">You are done with the recommendation judgement phase! Only the final ranking left:</p>
+              <a href="{% url 'final_ranking' %}" class="btn btn-primary btn-lg btn-block">Choose Your Top Picks</a>
+            {% endif %}
           {% else %}
-            <p class="card-text">Before we get started, please complete our movie quiz to help us understand your preferences:</p>
+            <p class="card-text">Before we get started, please complete this quiz to make sure you know how to work with the system:</p>
             <a href="https://google.com" target="_blank" class="btn btn-primary btn-lg btn-block">Take the quiz</a>
           {% endif %}
           
-          <hr>
-          {% if remaining_judge_actions != 0 %}
-            <p class="card-text">Once you've completed the quiz, please give feedback for the following movies:</p>
-            <a href="{% url 'movie_judge' %}" class="btn btn-secondary btn-lg btn-block">Judge movies</a>
-          {% else %}
-            <p class="card-text">You are done with the recommendation judgement phase! Only the final ranking left:</p>
-            <a href="{% url 'final_ranking' %}" class="btn btn-secondary btn-lg btn-block">Choose Your Top Picks</a>
-          {% endif %}
+          
+          
 
         </div>
       </div>

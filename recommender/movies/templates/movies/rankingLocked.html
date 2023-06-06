@@ -1,0 +1,25 @@
+{% extends 'movies/base.html' %}
+
+
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+            <h3 class="card-title" style="color: #be4242">Final Ranking Unavailable!</h3>
+            <p class="card-text">You still have remaining movies to judge before proceeding to final ranking:</p>
+            <a href="{% url 'movie_judge' %}" class="btn btn-primary btn-lg btn-block"
+            style="margin-right: 5%;">
+                Judge movies
+            </a>
+            <a href="{% url 'movie_list' %}" class="btn btn-primary btn-lg btn-block">View judged movies</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

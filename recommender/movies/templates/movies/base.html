@@ -35,7 +35,8 @@
                     {{ user.username }}
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="{% url 'movie_judge' %}">Judge More Movies</a></li>
+                    <li><a class="dropdown-item" href="{% url 'home' %}">Homepage</a></li>
+                    <li><a class="dropdown-item" href="{% url 'movie_judge' %}">Judge Movies</a></li>
                     <li><a class="dropdown-item" href="{% url 'movie_list' %}">Review Judged Movies</a></li>
                     <li><a class="dropdown-item"href="{% url 'final_ranking' %}">Final Ranking</a></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
