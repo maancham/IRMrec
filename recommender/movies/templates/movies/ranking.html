@@ -1,0 +1,253 @@
+{% extends 'movies/base.html' %}
+
+{% load static %}
+{% load movies_extra %}
+
+{% block stylesheet %}
+<style>
+
+    table {
+        width: 100%;
+    }
+    table, th, td {
+        border: 1px solid #ccc;
+    }
+    tr {
+        border: 1px solid black;
+    }
+
+    td img.movie-image {
+        display: block;
+        margin: 0 auto;
+        max-height: 200px;
+        width: auto;
+    }
+
+    .btn-primary {
+        background-color: #337ab7;
+        color: #fff;
+    }
+
+    .details-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .trashcan {
+        background-color: transparent;
+        border: none;
+        font-size: 1.2rem;
+        color: #dc3545;
+    }
+
+    .col-md-3 {
+        position: fixed;
+        top: 100px;
+        right: 30px;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .header-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="header-container">
+            <h1>Rank Your Movies</h1>
+        </div>
+        <br>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th class="text-center">Title</th>
+                        <th class="text-center">Year</th>
+                        <th class="text-center">In Top Three?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movie in top_movies %}
+                        <tr>
+                            {% if movie.img_path and movie.img_path != 'nan' %}
+                                <td><img class="movie-image" src="{{ movie.img_path }}" alt="{{ movie.title }}" height="120"></td>
+                            {% else %}
+                                <td><img class="movie-image" src="{% static 'movies/default.jpg' %}" alt="default" height="120"></td>
+                            {% endif %}
+                            <td class="text-center">{{ movie.title }}</td>
+                            <td class="text-center">{{ movie.year }}</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-primary" data-rank="1" data-movie="{{ movie.movieId }}">1</button>
+                                <button type="button" class="btn btn-primary" data-rank="2" data-movie="{{ movie.movieId }}">2</button>
+                                <button type="button" class="btn btn-primary" data-rank="3" data-movie="{{ movie.movieId }}">3</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot style="border-top: 2px solid black;">
+                    <tr>
+                        <td colspan="4"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <form method="POST" id="input-form" class="col-md-3">
+        {% csrf_token %}
+        <div>
+            <div class="header-container">
+                <h1>Watch Queue</h1>
+            </div>
+            <br>
+            <div class="card mb-3">
+                <div class="card-header">Rank 1</div>
+                <div class="card-body">
+                    <div class="details-container">
+                        <p class="card-text" id="top1-details" name="rank1">-</p>
+                        <input type="hidden" name="rank1" id="rank1-input" value="">
+                        <button type="button" class="btn trashcan" data-rank="1">🗑️</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">Rank 2</div>
+                <div class="card-body">
+                    <div class="details-container">
+                        <p class="card-text" id="top2-details" name="rank2">-</p>
+                        <input type="hidden" name="rank2" id="rank2-input" value="">
+                        <button type="button" class="btn trashcan" data-rank="2">🗑️</button>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">Rank 3</div>
+                <div class="card-body">
+                    <div class="details-container">
+                        <p class="card-text" id="top3-details" name="rank3">-</p>
+                        <input type="hidden" name="rank3" id="rank3-input" value="">
+                        <button type="button" class="btn trashcan" data-rank="3">🗑️</button>
+                    </div>
+                    
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="submit-button">Submit Queue</button>
+        </div>
+    </form>
+
+</div>
+
+
+<script>
+    var topMovies = {
+        1: null,
+        2: null,
+        3: null
+    };
+    var buttons = document.querySelectorAll('tbody button[data-rank]');
+    var watchQueue = document.querySelector('.col-md-3');
+    var top1Card = watchQueue.querySelector('.card:nth-of-type(1)');
+    var top2Card = watchQueue.querySelector('.card:nth-of-type(2)');
+    var top3Card = watchQueue.querySelector('.card:nth-of-type(3)');
+
+    const submitButton = document.getElementById("submit-button");
+
+    
+    buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Get the rank and movie ID from the clicked button's data attributes
+            var rank = this.getAttribute('data-rank');
+            var movieId = this.getAttribute('data-movie');
+            
+
+            if (!topMovies[rank] || topMovies[rank] == movieId) {
+                topMovies[rank] = movieId;
+            }
+            else {
+                if (rank == 3) {
+                    topMovies[3] = movieId;
+                }
+                else if (rank == 2) {
+                    topMovies[3] = topMovies[2];
+                    topMovies[2] = movieId;
+                }
+                else {
+                    topMovies[3] = topMovies[2];
+                    topMovies[2] = topMovies[1];
+                    topMovies[1] = movieId;
+                }
+            }
+
+            for (var rank in topMovies) {
+                var movieId = topMovies[rank];
+                var cardDetails = watchQueue.querySelector('#top' + rank + '-details');
+                var rankInput = watchQueue.querySelector('#rank' + rank + '-input');
+                if (movieId) {
+                    var movie = document.querySelector('button[data-movie="' + movieId + '"]').parentNode.parentNode;
+                    cardDetails.textContent = movie.querySelector('.text-center:nth-of-type(2)').textContent + ' - ' + movie.querySelector('.text-center:nth-of-type(3)').textContent;
+                    rankInput.value = movieId;
+                }
+                else {
+                    cardDetails.textContent = '-';
+                    rankInput.value = '';
+                }
+            }
+        });
+    });
+
+
+    var trashcans = document.querySelectorAll('.trashcan');
+    trashcans.forEach(function(trashcan) {
+        trashcan.addEventListener('click', function() {
+                var rank = this.getAttribute('data-rank');
+                topMovies[rank] = null;
+                watchQueue.querySelector('#top' + rank + '-details').textContent = '-';
+            });
+    });
+
+
+    function checkTopMoviesSelected() {
+        for (var rank in topMovies) {
+            if (!topMovies[rank]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    submitButton.addEventListener("click", function() {
+
+        if (!checkTopMoviesSelected()) {
+            alert("Please select a movie for all ranks before submitting!");
+        }
+        else if (new Set(Object.values(topMovies)).size !== 3) {
+            alert('Please choose three different movies!');
+        } 
+        else {
+            document.querySelector('form').submit();
+        }
+        
+    });
+
+
+
+</script>
+
+
+{% endblock %}

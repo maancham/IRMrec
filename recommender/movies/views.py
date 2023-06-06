@@ -1,0 +1,215 @@
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .models import Movie, Participant, Interaction
+from django.contrib.auth import logout
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.db import models
+
+
+"""
+TODO:
+items.html: Full stars problem after clicking
+check for movies with adult content and remove from from training and django dataset
+if the user is finished with judging movies, they should be presented with st else in the homepage, add more buttons to the homepage make it dynamic
+also handle the dropdown menu, users should not be able to switch in the middle of the task
+handle the guidelines for each page?
+handle  /view/APageThatDoesntExist?
+"""
+
+
+# Create your views here.
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    return render(request, 'movies/login.html')
+
+
+
+@login_required
+def home(request):
+    participant = Participant.objects.get(user=request.user)
+    return render(request, 'movies/home.html', {'remaining_judge_actions': participant.remaining_judge_actions,
+                                                'quiz_done' : participant.taken_initial_quiz})
+
+
+
+@login_required
+def movie_list(request):
+    ## what if the movie list is empty?
+    participant = Participant.objects.get(user=request.user)
+    user_movies = participant.movies.all().order_by('title')
+
+    judged_movies = []
+
+    interactions = {}
+    for movie in user_movies:
+        try:
+            interaction = Interaction.objects.get(movie=movie, participant=participant)
+            interactions[movie.movieId] = interaction
+            judged_movies.append(movie)
+        except Interaction.DoesNotExist:
+            interactions[movie.movieId] = None
+
+
+
+    sort_by = request.GET.get('sort_by', None)
+    INTEREST_LEVELS = [
+        'Very Interested',
+        'Interested',
+        'Not Interested',
+        'Disappointed',
+        'Awful/Horrible',
+    ]
+
+    if sort_by == 'reaction':
+        judged_movies.sort(key=lambda movie: INTEREST_LEVELS.index(interactions[movie.movieId].likely_to_watch))
+
+            
+    elif sort_by == 'rating':
+        judged_movies = sorted(judged_movies, key=lambda m: interactions[m.movieId].rating if interactions[m.movieId] 
+                         and interactions[m.movieId].rating else -9999, reverse=True)
+    
+
+    paginator = Paginator(judged_movies, 10)
+    page = request.GET.get('page')
+    try:
+        movies = paginator.page(page)
+    except PageNotAnInteger:
+        movies = paginator.page(1)
+    except EmptyPage:
+        movies = paginator.page(paginator.num_pages)
+
+    return render(request, 'movies/items.html', {'movies': movies, 'interactions': interactions, 'remaining_judge_actions': participant.remaining_judge_actions})
+
+
+
+
+@login_required
+def movie_detail(request, movie_id):
+    movie = get_object_or_404(Movie, pk=movie_id)
+    participant = Participant.objects.get(user=request.user)
+    try:
+        interaction = Interaction.objects.get(participant=participant, movie=movie)
+        ex_seen_status = interaction.seen_status
+        ex_rating = interaction.rating
+        ex_likely_to_watch = interaction.likely_to_watch
+        interaction_exists = True
+    except:
+        ex_seen_status = None
+        ex_rating = None
+        ex_likely_to_watch = None
+        interaction_exists = False
+
+
+    if request.method == 'POST':
+        seen_status = request.POST.get('seen_status')
+        rating = request.POST.get('rating')
+        likely_to_watch = request.POST.get('likely_to_watch')
+        
+        try:
+            interaction = Interaction.objects.get(participant=participant, movie=movie)
+            interaction.seen_status = seen_status
+            if rating:
+                interaction.rating = rating
+            interaction.likely_to_watch = likely_to_watch
+            interaction.save()
+        except Interaction.DoesNotExist:
+            interaction = Interaction.objects.create(participant=participant, movie=movie, seen_status=seen_status, rating=rating, likely_to_watch=likely_to_watch)
+        
+        if (interaction_exists == False):
+            participant.remaining_judge_actions -= 1
+            participant.save()
+
+        return redirect('movie_judge')
+    
+    context = {
+            'movie': movie,
+            'ex_seen_status': ex_seen_status,
+            'ex_rating': ex_rating,
+            'ex_likely_to_watch': ex_likely_to_watch,
+            'interaction_exists': interaction_exists,
+    }
+    return render(request, 'movies/item.html', context)
+
+
+
+
+
+@login_required
+def judge(request):
+    participant = Participant.objects.get(user=request.user)
+    unjudged_movie = None
+
+    remaining = participant.remaining_judge_actions
+
+    if (remaining == 0):
+        return redirect('final_ranking')
+    else:
+        # get the first unjudged movie
+        for movie in participant.movies.all():
+            try:
+                interaction = Interaction.objects.get(movie=movie, participant=participant)
+            except Interaction.DoesNotExist:
+                unjudged_movie = movie
+                break
+        return redirect('movie_detail', movie_id=unjudged_movie.movieId)
+    
+        
+
+
+@login_required
+def final_ranking(request):
+    participant = Participant.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        ranks = []
+        ranks.append(request.POST.get('rank1'))
+        ranks.append(request.POST.get('rank2'))
+        ranks.append(request.POST.get('rank3'))
+
+        for idx, movie_id in enumerate(ranks):
+            try:
+                movie = get_object_or_404(Movie, pk=movie_id)
+                interaction = Interaction.objects.get(participant=participant, movie=movie)
+                interaction.rank = idx + 1
+                interaction.save()
+            except:
+                print("saving action fucked!")
+        
+        return redirect('home')
+       
+
+    top_interactions = Interaction.objects.filter(participant=participant, likely_to_watch='Very Interested')
+
+    if(len(top_interactions) == 0):
+        top_interactions = Interaction.objects.filter(participant=participant, likely_to_watch='Interested')
+
+        if(len(top_interactions) == 0):
+            top_interactions = Interaction.objects.filter(participant=participant, likely_to_watch='Not Interested')
+
+    # Get all movies for the top interactions
+    top_movies = Movie.objects.filter(interaction__in=top_interactions).distinct()
+
+    context = {'top_movies': top_movies}
+
+    return render(request, 'movies/ranking.html', context)
+
+
+
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')

@@ -1,0 +1,64 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html style="overflow-x: hidden;">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}IRMrec{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'movies/bootstrap.min.css' %}">
+    {% block stylesheet %}{% endblock %}
+    
+  </head>
+  <body>
+    {% block body %}
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <!-- Brand -->
+          <a class="navbar-brand" href="{% url 'home' %}">IRMrec</a>
+      
+          <!-- Toggler -->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <!-- Menu -->
+          <div class="collapse navbar-collapse" id="mainMenu">
+            <!-- <ul class="navbar-nav mr-auto">
+              Add more links here
+            </ul> -->
+      
+            <ul class="navbar-nav ms-auto">
+              {% if user.is_authenticated %}
+                <li class="nav-item dropdown" style="padding-right: 10px">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ user.username }}
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="{% url 'movie_judge' %}">Judge More Movies</a></li>
+                    <li><a class="dropdown-item" href="{% url 'movie_list' %}">Review Judged Movies</a></li>
+                    <li><a class="dropdown-item"href="{% url 'final_ranking' %}">Final Ranking</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                  </ul>
+                </li>
+              {% endif %}
+            </ul>
+
+          </div>
+        </div>
+      </nav>
+    
+
+      <div class="container">
+        <ol class="breadcrumb my-4">
+          {% block breadcrumb %}
+          {% endblock %}
+        </ol>
+        {% block content %}
+        {% endblock %}
+      </div>
+    {% endblock body %}  <!-- AND HERE -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+  </body>
+</html>

@@ -1,0 +1,44 @@
+from django.template import Library
+
+register = Library()
+
+
+#-------------- items.html filters --------------#
+@register.filter
+def get_item(dictionary, key):
+    return dictionary[key]
+
+@register.filter
+def get_rating(dictionary, key):
+    rating = dictionary.get(key, None).rating if key in dictionary else 'N/A'
+    if rating == None: 
+        return 'N/A'
+    else:
+        return rating
+    # return dictionary.get(key, None).rating if key in dictionary else None
+
+@register.filter
+def get_likely(dictionary, key):
+    return dictionary.get(key, None).likely_to_watch if key in dictionary else None
+
+@register.filter
+def get_seen(dictionary, key):
+    return dictionary.get(key, None).seen_status if key in dictionary else None
+
+
+#-------------- item.html filters --------------#
+@register.filter
+def get_map(movie):
+    map_rating = movie.map
+    if map_rating == 'nan': 
+        return 'N/A' 
+    else:
+        return map_rating
+
+@register.filter
+def get_language(movie):
+    langs = movie.languages
+    if langs != 'nan':
+        return langs
+    else:
+        return 'N/A'

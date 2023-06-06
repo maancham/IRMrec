@@ -1,0 +1,161 @@
+{% extends 'movies/base.html' %}
+
+{% load static %}
+{% load movies_extra %}
+
+
+{% block stylesheet %}
+<style>
+    table {
+        width: 100%;
+    }
+    table, th, td {
+        border: 1px solid #ccc;
+    }
+    tr {
+        border: 1px solid black;
+    }
+    .movie-box {
+        display: inline-block;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    .movie-box:hover {
+        background-color: #e9e9e9;
+    }
+
+    td img.movie-image {
+        display: block;
+        margin: 0 auto;
+        max-height: 200px;
+        width: auto;
+    }
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+    <div style="display:flex; justify-content:space-around; width: 100%;">
+        <h2 style="margin-left: 0;"> Judged List </h2>
+
+        {% if remaining_judge_actions == 0 %}
+        <h3> <a href="#">Done! Go to Final Ranking</a></h3>
+        {% else %}
+            <h3> <a href="{% url 'movie_judge' %}">{{ remaining_judge_actions }} Movies Left to Judge, Click to Resume</a></h3>
+        {% endif %}
+
+        <form method="GET" action="{% url 'movie_list' %}">
+          <label for="sort_by">Sort Movies By:</label>
+          <select name="sort_by" id="sort_by">
+            <option value=""> </option>
+            <option value="reaction" {% if sort_by == 'reaction' %}{% endif %}>Reaction Group</option> 
+            <option value="rating" {% if sort_by == 'rating' %}{% endif %}>Rating</option>     
+          </select>
+        </form>
+    </div>
+
+    <br>
+    
+    {% if movies %}
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th class="text-center">Title</th>
+            <th class="text-center">Year</th>
+            <th class="text-center">Your Rating</th>
+            <th class="text-center">Reccomendation Reaction</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for movie in movies %}
+            <tr>
+                {% if movie.img_path and movie.img_path != 'nan' %}
+                    <td><img class="movie-image" src="{{ movie.img_path }}" alt="{{ movie.title }}" height="100"></td>
+                {% else %}
+                    <td><img class="movie-image" src="{% static 'movies/default.jpg' %}" alt="default" height="100"></td>
+                {% endif %}
+                <td class="text-center">
+                    <a href="{% url 'movie_detail' movie_id=movie.movieId %}">
+                        <div class="movie-box" title="Click to view movie details">{{ movie.title }}</div>
+                    </a>
+                </td>
+                <td class="text-center">{{ movie.year }}</td>
+                <td class="text-center">
+                    {% if interactions|length > 0 and interactions|get_item:movie.movieId %}
+                        {{ interactions|get_rating:movie.movieId }}
+                    {% else %}
+                        
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if interactions|length > 0 and interactions|get_item:movie.movieId %}
+                        {{ interactions|get_likely:movie.movieId }}
+                    {% else %}
+                        
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No movies found.</p>
+    {% endif %}
+
+    <hr>
+
+    {% if movies.has_other_pages %}
+        <nav aria-label="Topics pagination" class="mb-4">
+            <ul class="pagination">
+            {% if movies.has_previous %}
+                <li class="page-item">
+                <a class="page-link" href="?page={{ movies.previous_page_number }}">Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+                </li>
+            {% endif %}
+
+            {% for page_num in movies.paginator.page_range %}
+                {% if movies.number == page_num %}
+                <li class="page-item active">
+                    <span class="page-link">
+                    {{ page_num }}
+                    <span class="sr-only">(current)</span>
+                    </span>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if movies.has_next %}
+                <li class="page-item">
+                <a class="page-link" href="?page={{ movies.next_page_number }}">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                <span class="page-link">Next</span>
+                </li>
+            {% endif %}
+            </ul>
+        </nav>
+  {% endif %}
+
+
+  <script>
+    document.getElementById('sort_by').addEventListener('change', function() {
+      // submit the form
+      this.form.submit();
+    });
+  </script>
+
+{% endblock %}
