@@ -12,13 +12,9 @@ from django.db import models
 
 """
 TODO:
-items.html: Full stars problem after clicking
 check for movies with adult content and remove from from training and django dataset
-also handle the dropdown menu, users should not be able to switch in the middle of the task
-handle the guidelines for each page?
 check movies without picture (items and item)
 ////
-Final ranking is only enabled when user "remaining" is 0
 when they submit final ranking, they just have to be redirected to empty page with survey and stuff.
 change the slogan of the homepage
 ------------------------------
@@ -124,7 +120,7 @@ def movie_detail(request, movie_id):
     try:
         interaction = Interaction.objects.get(participant=participant, movie=movie)
         ex_seen_status = interaction.seen_status
-        ex_rating = interaction.rating
+        ex_rating = "N/A" if interaction.rating == None else interaction.rating
         ex_likely_to_watch = interaction.likely_to_watch
         interaction_exists = True
     except:
@@ -141,8 +137,7 @@ def movie_detail(request, movie_id):
         try:
             interaction = Interaction.objects.get(participant=participant, movie=movie)
             interaction.seen_status = seen_status
-            if rating:
-                interaction.rating = rating
+            interaction.rating = rating
             interaction.likely_to_watch = likely_to_watch
             interaction.save()
         except Interaction.DoesNotExist:

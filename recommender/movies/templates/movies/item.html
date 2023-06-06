@@ -229,7 +229,7 @@
     <form method="POST" id="input-form" {% if interaction_exists %}style="display:none;"{% endif %}>
         {% csrf_token %}
 
-        <div class="form-group">
+        <div class="form-group" id="seen-rating-fields">
             <label><strong>Have you seen this movie?</strong></label>
             <div class="radio-container">
                 <input type="radio" id="never-heard" name="seen_status" value="Never">
@@ -301,6 +301,7 @@
 
     <script>
 
+        const seenRatingField = document.getElementById('seen-rating-fields');
         const SeenBoxes = document.querySelectorAll('input[name="seen_status"]');  
         const likelyfeedbackField = document.getElementById('likely-feedback-field');
         const ratingStars = document.querySelectorAll('input[name="rating"]');
@@ -345,6 +346,7 @@
                 const seenAndRated = document.getElementById('seen-and-rated');
                 seenAndRated.checked = true;
                 likelyfeedbackField.style.display = "block";
+                seenRatingField.style.display = 'none';
             });
             
         });
@@ -352,6 +354,7 @@
         SeenBoxes.forEach(box => {
             box.addEventListener('click', function() {
                 likelyfeedbackField.style.display = "block";
+                seenRatingField.style.display = 'none';
             });
         });
 
