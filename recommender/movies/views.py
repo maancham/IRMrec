@@ -12,11 +12,9 @@ from django.db import models
 
 """
 TODO:
-check for movies with adult content and remove from from training and django dataset
-check movies without picture (items and item)
+check for movies with adult content and remove them from training and django dataset
 ////
 when they submit final ranking, they just have to be redirected to empty page with survey and stuff.
-change the slogan of the homepage
 ------------------------------
 test 404 pages in production
 """
@@ -46,7 +44,7 @@ def home(request):
             "remaining_judge_actions": participant.remaining_judge_actions,
             # TODO: CHANGE THIS BACK TO NORMAL:
             # "quiz_done": participant.taken_initial_quiz,
-            "quiz_done": False,
+            "quiz_done": True,
         },
     )
 

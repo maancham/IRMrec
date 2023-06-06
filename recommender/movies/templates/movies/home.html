@@ -8,13 +8,13 @@
     <div class="col-lg-8">
       <div class="card">
         <div class="card-body">
-          <h3 class="card-title">Welcome to the Movie Recommendation System!</h3>
+          <h3 class="card-title">Welcome to the Information Retrieval Movie Recommendation!</h3>
           <p class="card-text">Our system is designed to help you find the perfect movie to watch, based on your preferences and ratings.</p>
           <hr>
 
           {% if quiz_done %}
             {% if remaining_judge_actions != 0 %}
-              <p class="card-text">Once you've completed the quiz, please give judge the following movies:</p>
+              <p class="card-text">Looks like you already handled the quiz, so please judge the following movies:</p>
               <a href="{% url 'movie_judge' %}" class="btn btn-primary btn-lg btn-block">Judge movies</a>
             {% else %}
               <p class="card-text">You are done with the recommendation judgement phase! Only the final ranking left:</p>
