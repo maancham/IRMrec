@@ -12,20 +12,21 @@ from .views import home, login_view
 #     Must include the link to the first unrated movie
 #     No unlogged dudes should be able to view it.
 #     """
+
 #     def setUp(self):
 #         User.objects.create_user(username="akbar", password="random_pass")
 #         self.client.login(username="akbar", password="random_pass")
-#         self.response = self.client.get(reverse('home'))
+#         self.response = self.client.get(reverse("home"))
 
 #     def test_home_view_status_code(self):
 #         self.assertEquals(self.response.status_code, 200)
 
 #     def test_home_url_resolves_home_view(self):
-#         view = resolve('/home/')
+#         view = resolve("/home/")
 #         self.assertEquals(view.func, home)
 
 #     def test_home_template_contains_title(self):
-#         self.assertContains(self.response, 'IRMrec')
+#         self.assertContains(self.response, "IRMrec")
 
 
 # class LoginTest(TestCase):

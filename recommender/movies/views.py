@@ -51,7 +51,6 @@ def home(request):
 
 @login_required
 def movie_list(request):
-    ## what if the movie list is empty?
     participant = Participant.objects.get(user=request.user)
     user_movies = participant.movies.all().order_by("title")
 
