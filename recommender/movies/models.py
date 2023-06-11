@@ -27,12 +27,12 @@ class Movie(models.Model):
     year = models.IntegerField(default=1970)
 
     # Genres
-    genres = models.CharField(max_length=200, null=True)
+    genres = models.TextField(null=True)
 
     runtime = models.IntegerField(null=True, blank=True)
-    cast = models.CharField(max_length=300, null=True)
-    directors = models.CharField(max_length=200, null=True)
-    languages = models.CharField(max_length=200, null=True)
+    cast = models.TextField(null=True)
+    directors = models.TextField(null=True)
+    languages = models.TextField(null=True)
     map = models.CharField(max_length=15, null=True)
 
     def __str__(self):
