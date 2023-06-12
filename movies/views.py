@@ -12,7 +12,6 @@ from django.db import models
 
 """
 TODO:
-when they submit final ranking, they just have to be redirected to empty page with survey and stuff.
 ------------------------------
 test 404 pages in production
 """
@@ -209,7 +208,7 @@ def final_ranking(request):
             except:
                 print("ranking save not successful!")
 
-        return redirect("home")
+        return render(request, "movies/rankingDone.html")
 
     top_interactions = Interaction.objects.filter(
         participant=participant, likely_to_watch="Very Interested"
