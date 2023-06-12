@@ -23,7 +23,7 @@ To set up IRMrec locally, follow these steps:
    $ cd recommender/ 
    $ python manage.py migrate
 
-5. You will need two files (inside the /recommender directory) to populate the database, I have excluded them from the repository due to privacy reasons. The first file is called `movies.csv` which is as follows:
+5. You will need two files to populate the database, I have excluded them from the repository due to privacy reasons. The first file is called `movies.csv` which is as follows:
 
     | Column     | Description                                                            |
     |------------|------------------------------------------------------------------------|
