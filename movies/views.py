@@ -12,11 +12,7 @@ from django.db import models
 
 """
 TODO:
-check for movies with adult content and remove them from training and django dataset
-////
 when they submit final ranking, they just have to be redirected to empty page with survey and stuff.
-when login cred is bad, show a simple message...
-map can now be None instead of empty string, check instances, also, runtime is always None from now if empty
 ------------------------------
 test 404 pages in production
 """
@@ -32,7 +28,10 @@ def login_view(request):
             login(request, user)
             return redirect("home")
         else:
-            messages.error(request, "Invalid username or password.")
+            messages.error(
+                request,
+                "Invalid username or password, please contact h2chaman@uwaterloo.ca for assistance",
+            )
     return render(request, "movies/login.html")
 
 

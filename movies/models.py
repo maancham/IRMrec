@@ -29,7 +29,7 @@ class Movie(models.Model):
     # Genres
     genres = models.TextField(null=True)
 
-    runtime = models.IntegerField(null=True, blank=True)
+    runtime = models.IntegerField(null=True, blank=True, default=0)
     cast = models.TextField(null=True)
     directors = models.TextField(null=True)
     languages = models.TextField(null=True)

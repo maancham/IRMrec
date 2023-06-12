@@ -34,7 +34,7 @@ class Command(BaseCommand):
                 continue
 
             if isnan(runtime):
-                runtime = None
+                runtime = 0
 
             # Populate Movie object for each row
             movie = Movie(
@@ -58,4 +58,6 @@ class Command(BaseCommand):
             print(f"Movie: {movieId}, {title} saved...")
 
 
-# python manage.py load_movies --path movies.csv
+"""
+python manage.py load_movies --path movies.csv
+"""
