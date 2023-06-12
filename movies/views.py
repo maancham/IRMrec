@@ -37,22 +37,28 @@ def login_view(request):
 @login_required
 def home(request):
     participant = Participant.objects.get(user=request.user)
-    return render(
-        request,
-        "movies/home.html",
-        {
-            "remaining_judge_actions": participant.remaining_judge_actions,
-            # TODO: CHANGE THIS BACK TO NORMAL:
-            # "quiz_done": participant.taken_initial_quiz,
-            "quiz_done": True,
-        },
-    )
+    if participant.fully_done:
+        return render(request, "movies/rankingDone.html")
+    else:
+        return render(
+            request,
+            "movies/home.html",
+            {
+                "remaining_judge_actions": participant.remaining_judge_actions,
+                # TODO: CHANGE THIS BACK TO NORMAL:
+                # "quiz_done": participant.taken_initial_quiz,
+                "quiz_done": True,
+            },
+        )
 
 
 @login_required
 def movie_list(request):
     participant = Participant.objects.get(user=request.user)
     user_movies = participant.movies.all().order_by("title")
+
+    if participant.fully_done:
+        return render(request, "movies/rankingDone.html")
 
     judged_movies = []
 
@@ -114,6 +120,8 @@ def movie_list(request):
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
     participant = Participant.objects.get(user=request.user)
+    if participant.fully_done:
+        return render(request, "movies/rankingDone.html")
     try:
         interaction = Interaction.objects.get(participant=participant, movie=movie)
         ex_seen_status = interaction.seen_status
@@ -191,6 +199,9 @@ def final_ranking(request):
     if remaining != 0:
         return render(request, "movies/rankingLocked.html")
 
+    if participant.fully_done:
+        return render(request, "movies/rankingDone.html")
+
     if request.method == "POST":
         ranks = []
         ranks.append(request.POST.get("rank1"))
@@ -208,6 +219,8 @@ def final_ranking(request):
             except:
                 print("ranking save not successful!")
 
+        participant.fully_done = True
+        participant.save()
         return render(request, "movies/rankingDone.html")
 
     top_interactions = Interaction.objects.filter(

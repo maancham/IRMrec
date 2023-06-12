@@ -50,6 +50,7 @@ class Participant(models.Model):
 
     taken_initial_quiz = models.BooleanField(default=False)
     remaining_judge_actions = models.IntegerField(default=0)
+    fully_done = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.user.username
