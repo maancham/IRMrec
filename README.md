@@ -20,7 +20,6 @@ To set up IRMrec locally, follow these steps:
    
 4. Then simply apply the migrations:
    ```bash
-   $ cd recommender/ 
    $ python manage.py migrate
 
 5. You will need two files to populate the database, I have excluded them from the repository due to privacy reasons. The first file is called `movies.csv` which is as follows:
