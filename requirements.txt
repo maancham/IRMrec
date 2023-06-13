@@ -5,9 +5,11 @@ Django==4.2.2
 django-environ==0.10.0
 django-widget-tweaks==1.4.12
 fontawesomefree==6.4.0
+gunicorn==20.1.0
 numpy==1.24.3
 pandas==2.0.2
 psycopg2==2.9.6
+psycopg2-binary==2.9.6
 python-dateutil==2.8.2
 python-decouple==3.8
 python-dotenv==1.0.0

@@ -28,11 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ["SECRET_KEY"]
 DB_NAME = os.environ["DB_NAME"]
 DB_PASS = os.environ["DB_PASS"]
+RENDER_EXTERNAL_DB_URL = os.environ["RENDER_EXTERNAL_DB_URL"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -89,16 +90,24 @@ WSGI_APPLICATION = "recommender.wsgi.application"
 #         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": DB_NAME,
-        "USER": "houmch",
-        "PASSWORD": DB_PASS,
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
-}
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": DB_NAME,
+#         "USER": "houmch",
+#         "PASSWORD": DB_PASS,
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
+
+
+### Render PostgreSQL database live:
+import dj_database_url
+
+DATABASES = {"default": dj_database_url.parse(RENDER_EXTERNAL_DB_URL)}
 
 
 # Password validation
