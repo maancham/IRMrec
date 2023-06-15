@@ -77,7 +77,7 @@
                 {% if movie.img_path and movie.img_path != 'nan' %}
                     <td><img class="movie-image" src="{{ movie.img_path }}" alt="{{ movie.title }}" height="100"></td>
                 {% else %}
-                    <td><img class="movie-image" src="https://drive.google.com/uc?export=download&id=1fQNGX3JGt5lboZVTZUW-sizk628fHd2f" alt="default" height="100"></td>
+                    <td><img class="movie-image" src="https://raw.githubusercontent.com/maancham/IRMrec/main/movies/static/movies/default.jpg" alt="default" height="100"></td>
                 {% endif %}
                 <td class="text-center">
                     <a href="{% url 'movie_detail' movie_id=movie.movieId %}">

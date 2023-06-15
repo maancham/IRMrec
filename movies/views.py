@@ -233,11 +233,22 @@ def final_ranking(request):
             likely_to_watch__in=["Very Interested", "Interested"],
         )
 
-        if len(top_interactions) < 3:
-            top_interactions = Interaction.objects.filter(
-                participant=participant,
-                likely_to_watch__in=["Very Interested", "Interested", "Not Interested"],
-            )
+    if len(top_interactions) < 3:
+        top_interactions = Interaction.objects.filter(
+            participant=participant,
+            likely_to_watch__in=["Very Interested", "Interested", "Not Interested"],
+        )
+
+    if len(top_interactions) < 3:
+        top_interactions = Interaction.objects.filter(
+            participant=participant,
+            likely_to_watch__in=[
+                "Very Interested",
+                "Interested",
+                "Not Interested",
+                "Disappointed",
+            ],
+        )
 
     # Get all movies for the top interactions
     top_movies = Movie.objects.filter(interaction__in=top_interactions).distinct()
