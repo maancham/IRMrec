@@ -5,15 +5,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Movie, Participant, Interaction
 from django.contrib.auth import logout
-from django.urls import reverse
-from django.http import HttpResponseRedirect
-from django.db import models
 
 
 """
 TODO:
 ------------------------------
-test 404 pages in production
 """
 
 

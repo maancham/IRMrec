@@ -10,11 +10,11 @@
         /* flex-direction: row; */
         align-items: center;
         border: 1px solid black;
-        margin-top: -10px;
+        margin-top: -25px;
     }
     
     .movie-img img{
-        max-width: 55%;
+        max-width: 53%;
         max-height: 30%;
         width: auto;
         margin-right: 10px;
@@ -22,8 +22,10 @@
     
     .movie-details {
         flex: 1;
-        max-width: 60ch;
+        max-width: 85ch;
         overflow-wrap: break-word;
+        text-align: justify;
+        margin-left: -5%;
     }
 
     .movie-info {
@@ -243,9 +245,9 @@
                 <input type="radio" id="just-heard" name="seen_status" value="Heared">
                 <label for="just-heard">Heard About It</label>
             </div>
-            <div style="border: 1px solid #ccc; border-radius: 5px; padding: 2%; display: inline-block; width: 50%;">
+            <div style="border: 1px solid #ccc; border-radius: 5px; padding: 1%; display: inline-block; width: 50%;">
                 <div style="display: flex; flex-direction: row;">
-                    <label style="flex: 2; margin: 2%;">Have Seen It, Rating:</label>
+                    <label style="flex: 2; margin-top: 2%;">Have Seen It, Rating:</label>
                     <div style="flex: 3;">
                         <fieldset class="rating" id="rating-field">
                             <input type="radio" id="seen-and-rated" name="seen_status" value="Seen" style="display:none">
@@ -261,7 +263,7 @@
                             <input type="radio" id="starhalf" name="rating" value= 0.5 /><label class="half" for="starhalf" title="Awful - 0.5"></label>
                         </fieldset>
                     </div>
-                    <div style="flex: 2; margin: 2%;">
+                    <div style="flex: 2; margin-top: 2%;">
                         <div id="rating-preview" style="border: 1px solid #ccc; border-radius: 5px; text-align: center;">-</div>
                     </div>
                 </div>

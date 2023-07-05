@@ -30,8 +30,8 @@ class Command(BaseCommand):
             languages = row["languages"]
             map = row.get("map")
 
-            if not movieId.isdigit():
-                continue
+            # if not movieId.isdigit():
+            #     continue
 
             if isnan(runtime):
                 runtime = 0

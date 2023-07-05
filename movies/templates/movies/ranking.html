@@ -237,7 +237,7 @@
             alert("Please select a movie for all ranks before submitting!");
         }
         else if (new Set(Object.values(topMovies)).size !== 3) {
-            alert('Please choose three different movies!');
+            alert('Please choose three different movies! You can click on the trashcan icons inside each ranking box to clear that slot.');
         } 
         else {
             document.querySelector('form').submit();
