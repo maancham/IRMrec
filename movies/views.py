@@ -128,32 +128,37 @@ def movie_list(request):
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
     participant = Participant.objects.get(user=request.user)
+
     if participant.fully_done:
         return render(request, "movies/rankingDone.html")
-    try:
-        interaction = Interaction.objects.get(participant=participant, movie=movie)
-        ex_seen_status = interaction.seen_status
-        ex_rating = "N/A" if interaction.rating == None else interaction.rating
-        ex_likely_to_watch = interaction.likely_to_watch
-        interaction_exists = True
-    except:
-        ex_seen_status = None
-        ex_rating = None
-        ex_likely_to_watch = None
-        interaction_exists = False
+
+    # try:
+    #     interaction = Interaction.objects.get(participant=participant, movie=movie)
+    #     ex_seen_status = interaction.seen_status
+    #     ex_rating = "N/A" if interaction.rating == None else interaction.rating
+    #     ex_likely_to_watch = interaction.likely_to_watch
+    #     interaction_exists = True
+    # except:
+    #     ex_seen_status = None
+    #     ex_rating = None
+    #     ex_likely_to_watch = None
+    #     interaction_exists = False
+
+    interaction = Interaction.objects.filter(
+        participant=participant, movie=movie
+    ).first()
 
     if request.method == "POST":
         seen_status = request.POST.get("seen_status")
         rating = request.POST.get("rating")
         likely_to_watch = request.POST.get("likely_to_watch")
 
-        try:
-            interaction = Interaction.objects.get(participant=participant, movie=movie)
+        if interaction:
             interaction.seen_status = seen_status
             interaction.rating = rating
             interaction.likely_to_watch = likely_to_watch
             interaction.save()
-        except Interaction.DoesNotExist:
+        else:
             interaction = Interaction.objects.create(
                 participant=participant,
                 movie=movie,
@@ -161,8 +166,6 @@ def movie_detail(request, movie_id):
                 rating=rating,
                 likely_to_watch=likely_to_watch,
             )
-
-        if interaction_exists == False:
             participant.remaining_judge_actions -= 1
             participant.save()
 
@@ -170,11 +173,47 @@ def movie_detail(request, movie_id):
 
     context = {
         "movie": movie,
-        "ex_seen_status": ex_seen_status,
-        "ex_rating": ex_rating,
-        "ex_likely_to_watch": ex_likely_to_watch,
-        "interaction_exists": interaction_exists,
+        "ex_seen_status": interaction.seen_status if interaction else None,
+        "ex_rating": "N/A"
+        if not interaction or not interaction.rating
+        else interaction.rating,
+        "ex_likely_to_watch": interaction.likely_to_watch if interaction else None,
+        "interaction_exists": interaction is not None,
     }
+
+    # if request.method == "POST":
+    #     seen_status = request.POST.get("seen_status")
+    #     rating = request.POST.get("rating")
+    #     likely_to_watch = request.POST.get("likely_to_watch")
+
+    #     try:
+    #         interaction = Interaction.objects.get(participant=participant, movie=movie)
+    #         interaction.seen_status = seen_status
+    #         interaction.rating = rating
+    #         interaction.likely_to_watch = likely_to_watch
+    #         interaction.save()
+    #     except Interaction.DoesNotExist:
+    #         interaction = Interaction.objects.create(
+    #             participant=participant,
+    #             movie=movie,
+    #             seen_status=seen_status,
+    #             rating=rating,
+    #             likely_to_watch=likely_to_watch,
+    #         )
+
+    #     if interaction_exists == False:
+    #         participant.remaining_judge_actions -= 1
+    #         participant.save()
+
+    # return redirect("movie_judge")
+
+    # context = {
+    #     "movie": movie,
+    #     "ex_seen_status": ex_seen_status,
+    #     "ex_rating": ex_rating,
+    #     "ex_likely_to_watch": ex_likely_to_watch,
+    #     "interaction_exists": interaction_exists,
+    # }
     return render(request, "movies/item.html", context)
 
 
