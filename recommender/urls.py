@@ -21,6 +21,7 @@ from movies.views import handle_404
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("movies.urls")),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
 
 handler404 = handle_404

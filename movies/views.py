@@ -50,22 +50,34 @@ def home(request):
 
 @login_required
 def movie_list(request):
+    # participant = Participant.objects.get(user=request.user)
+    # user_movies = participant.movies.all().order_by("title")
+
+    # judged_movies = []
+
+    # interactions = {}
+    # for movie in user_movies:
+    #     try:
+    #         interaction = Interaction.objects.get(movie=movie, participant=participant)
+    #         interactions[movie.movieId] = interaction
+    #         judged_movies.append(movie)
+    #     except Interaction.DoesNotExist:
+    #         interactions[movie.movieId] = None
+
     participant = Participant.objects.get(user=request.user)
-    user_movies = participant.movies.all().order_by("title")
+    user_interactions = (
+        Interaction.objects.filter(participant=participant)
+        .select_related("movie")
+        .order_by("movie__title")
+    )
+    judged_movies = [interaction.movie for interaction in user_interactions]
 
     if participant.fully_done:
         return render(request, "movies/rankingDone.html")
 
-    judged_movies = []
-
-    interactions = {}
-    for movie in user_movies:
-        try:
-            interaction = Interaction.objects.get(movie=movie, participant=participant)
-            interactions[movie.movieId] = interaction
-            judged_movies.append(movie)
-        except Interaction.DoesNotExist:
-            interactions[movie.movieId] = None
+    interactions = {
+        interaction.movie.movieId: interaction for interaction in user_interactions
+    }
 
     sort_by = request.GET.get("sort_by", None)
     INTEREST_LEVELS = [
@@ -169,23 +181,31 @@ def movie_detail(request, movie_id):
 @login_required
 def judge(request):
     participant = Participant.objects.get(user=request.user)
-    unjudged_movie = None
-
-    remaining = participant.remaining_judge_actions
-
-    if remaining == 0:
+    unjudged_movie = participant.movies.exclude(
+        interaction__participant=participant
+    ).first()
+    if unjudged_movie is None:
         return render(request, "movies/judgeDone.html")
     else:
-        # get the first unjudged movie
-        for movie in participant.movies.all():
-            try:
-                interaction = Interaction.objects.get(
-                    movie=movie, participant=participant
-                )
-            except Interaction.DoesNotExist:
-                unjudged_movie = movie
-                break
         return redirect("movie_detail", movie_id=unjudged_movie.movieId)
+
+    # unjudged_movie = None
+
+    # remaining = participant.remaining_judge_actions
+
+    # if remaining == 0:
+    #     return render(request, "movies/judgeDone.html")
+    # else:
+    #     # get the first unjudged movie
+    #     for movie in participant.movies.all():
+    #         try:
+    #             interaction = Interaction.objects.get(
+    #                 movie=movie, participant=participant
+    #             )
+    #         except Interaction.DoesNotExist:
+    #             unjudged_movie = movie
+    #             break
+    #     return redirect("movie_detail", movie_id=unjudged_movie.movieId)
 
 
 @login_required

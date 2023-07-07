@@ -86,14 +86,14 @@
                 </td>
                 <td class="text-center">{{ movie.year }}</td>
                 <td class="text-center">
-                    {% if interactions|length > 0 and interactions|get_item:movie.movieId %}
+                    {% if interactions|get_item:movie.movieId %}
                         {{ interactions|get_rating:movie.movieId }}
                     {% else %}
                         
                     {% endif %}
                 </td>
                 <td class="text-center">
-                    {% if interactions|length > 0 and interactions|get_item:movie.movieId %}
+                    {% if interactions|get_item:movie.movieId %}
                         {{ interactions|get_likely:movie.movieId }}
                     {% else %}
                         
@@ -104,9 +104,7 @@
         </tbody>
     </table>
     {% else %}
-    <p>You have not judged any movies yet. 
-        <!-- <a href="{% url 'movie_judge' %}"> Click to begin!</a> -->
-    </p>
+    <p>You have not judged any movies yet.</p>
     {% endif %}
 
     <hr>
