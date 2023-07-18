@@ -11,10 +11,10 @@ import logging
 """
 TODO:
 ------------------------------
-add normal info level logging and test it out
 add time spent on each page to views (and also focus mode?)
 handle anon logging in (just on the surface!)
 add critical or failiure level logging and also proper notification
+add logging to movie detail page once everthing is finialized
 """
 
 
@@ -87,7 +87,7 @@ def movie_list(request):
     participant = Participant.objects.get(user=request.user)
 
     logger.info(
-        f"view_movie_list: User {participant.user.username} is on movie list page."
+        f"view_movie_list: User {participant.user.username} shown movie list page."
     )
 
     user_interactions = (
@@ -257,7 +257,10 @@ def judge(request):
     unjudged_movie = participant.movies.exclude(
         interaction__participant=participant
     ).first()
-    if unjudged_movie is None:
+    if unjudged_movie is None and participant.remaining_judge_actions == 0:
+        logger.info(
+            f"view_judge_done: User {participant.user.username} shown judge done page."
+        )
         return render(request, "movies/judgeDone.html")
     else:
         return redirect("movie_detail", movie_id=unjudged_movie.movieId)
@@ -286,9 +289,15 @@ def final_ranking(request):
     participant = Participant.objects.get(user=request.user)
     remaining = participant.remaining_judge_actions
     if remaining != 0:
+        logger.info(
+            f"view_ranking_locked: User {participant.user.username} shown ranking locked page."
+        )
         return render(request, "movies/rankingLocked.html")
 
     if participant.fully_done:
+        logger.info(
+            f"view_ranking_done: User {participant.user.username} shown ranking done page."
+        )
         return render(request, "movies/rankingDone.html")
 
     if request.method == "POST":
@@ -310,6 +319,9 @@ def final_ranking(request):
 
         participant.fully_done = True
         participant.save()
+        logger.info(
+            f"submit_ranking_action: User {participant.user.username} submitted ranking."
+        )
         return render(request, "movies/rankingDone.html")
 
     top_interactions = Interaction.objects.filter(
@@ -344,14 +356,22 @@ def final_ranking(request):
 
     context = {"top_movies": top_movies}
 
+    logger.info(f"view_ranking: User {participant.user.username} shown ranking page.")
     return render(request, "movies/ranking.html", context)
 
 
 def handle_404(request, exception):
+    participant = Participant.objects.get(user=request.user)
+    logger.info(
+        f"view_404: User {participant.user.username} shown 404 page for {request}."
+    )
     return render(request, "movies/404.html", status=404)
 
 
 def logout_view(request):
+    participant = Participant.objects.get(user=request.user)
     logout(request)
-    logger.info(f"logout_action: User {request.user.username} successfully logged out.")
+    logger.info(
+        f"logout_action: User {participant.user.username} successfully logged out."
+    )
     return redirect("login")
