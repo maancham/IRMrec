@@ -5,12 +5,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Movie, Participant, Interaction
 from django.contrib.auth import logout
+import logging
 
 
 """
 TODO:
 ------------------------------
 add normal info level logging and test it out
+add time spent on each page to views (and also focus mode?)
 handle anon logging in (just on the surface!)
 add critical or failiure level logging and also proper notification
 """
@@ -27,6 +29,9 @@ PROCESS TO POPULATE AN EMPTY DB:
 """
 
 
+logger = logging.getLogger(__name__)
+
+
 # Create your views here.
 def login_view(request):
     if request.method == "POST":
@@ -35,11 +40,12 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            logger.info(f"login_action: User {username} successfully logged in.")
             return redirect("home")
         else:
             messages.error(
                 request,
-                "Invalid username or password, please contact h2chaman@uwaterloo.ca for assistance",
+                "Invalid username or password, please try again or contact h2chaman@uwaterloo.ca for assistance",
             )
     return render(request, "movies/login.html")
 
@@ -79,6 +85,11 @@ def movie_list(request):
     #         interactions[movie.movieId] = None
 
     participant = Participant.objects.get(user=request.user)
+
+    logger.info(
+        f"view_movie_list: User {participant.user.username} is on movie list page."
+    )
+
     user_interactions = (
         Interaction.objects.filter(participant=participant)
         .select_related("movie")
@@ -103,6 +114,9 @@ def movie_list(request):
     ]
 
     if sort_by == "reaction":
+        logger.info(
+            f"change_sort_by: User {participant.user.username} changed sorting to reaction."
+        )
         judged_movies.sort(
             key=lambda movie: INTEREST_LEVELS.index(
                 interactions[movie.movieId].likely_to_watch
@@ -110,6 +124,9 @@ def movie_list(request):
         )
 
     elif sort_by == "rating":
+        logger.info(
+            f"change_sort_by: User {participant.user.username} changed sorting to rating."
+        )
         judged_movies = sorted(
             judged_movies,
             key=lambda m: interactions[m.movieId].rating
@@ -121,6 +138,9 @@ def movie_list(request):
     paginator = Paginator(judged_movies, 10)
     page = request.GET.get("page")
     try:
+        logger.info(
+            f"change_list_page: User {participant.user.username} changed page to {page}."
+        )
         movies = paginator.page(page)
     except PageNotAnInteger:
         movies = paginator.page(1)
@@ -333,4 +353,5 @@ def handle_404(request, exception):
 
 def logout_view(request):
     logout(request)
+    logger.info(f"logout_action: User {request.user.username} successfully logged out.")
     return redirect("login")
