@@ -10,6 +10,20 @@ from django.contrib.auth import logout
 """
 TODO:
 ------------------------------
+add normal info level logging and test it out
+handle anon logging in (just on the surface!)
+add critical or failiure level logging and also proper notification
+"""
+
+
+"""
+PROCESS TO POPULATE AN EMPTY DB:
+1 - make migrations
+2 - migrate
+3 - create superuser (admin)
+4 - add movies from file
+5 - add participants from file
+
 """
 
 
