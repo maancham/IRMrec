@@ -14,6 +14,7 @@ import logging
 import dj_database_url
 import os
 from dotenv import load_dotenv, find_dotenv
+from datetime import timedelta
 
 load_dotenv(find_dotenv())
 
@@ -31,7 +32,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 RENDER_EXTERNAL_DB_URL = os.environ["RENDER_EXTERNAL_DB_URL"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "movies.middleware.SessionTimeoutMiddleware",
 ]
 
 ROOT_URLCONF = "recommender.urls"

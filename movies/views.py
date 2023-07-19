@@ -11,8 +11,6 @@ import logging
 """
 TODO:
 ------------------------------
-add time spent on each page to views (and also focus mode?)
-handle anon logging in (just on the surface!)
 add critical or failiure level logging and also proper notification
 add logging to movie detail page once everthing is finialized
 """
@@ -25,7 +23,6 @@ PROCESS TO POPULATE AN EMPTY DB:
 3 - create superuser (admin)
 4 - add movies from file
 5 - add participants from file
-
 """
 
 
