@@ -11,7 +11,6 @@ import logging
 """
 TODO:
 ------------------------------
-add critical or failiure level logging and also proper notification
 add logging to movie detail page once everthing is finialized
 """
 
@@ -67,20 +66,6 @@ def home(request):
 
 @login_required
 def movie_list(request):
-    # participant = Participant.objects.get(user=request.user)
-    # user_movies = participant.movies.all().order_by("title")
-
-    # judged_movies = []
-
-    # interactions = {}
-    # for movie in user_movies:
-    #     try:
-    #         interaction = Interaction.objects.get(movie=movie, participant=participant)
-    #         interactions[movie.movieId] = interaction
-    #         judged_movies.append(movie)
-    #     except Interaction.DoesNotExist:
-    #         interactions[movie.movieId] = None
-
     participant = Participant.objects.get(user=request.user)
 
     logger.info(
@@ -163,18 +148,6 @@ def movie_detail(request, movie_id):
     if participant.fully_done:
         return render(request, "movies/rankingDone.html")
 
-    # try:
-    #     interaction = Interaction.objects.get(participant=participant, movie=movie)
-    #     ex_seen_status = interaction.seen_status
-    #     ex_rating = "N/A" if interaction.rating == None else interaction.rating
-    #     ex_likely_to_watch = interaction.likely_to_watch
-    #     interaction_exists = True
-    # except:
-    #     ex_seen_status = None
-    #     ex_rating = None
-    #     ex_likely_to_watch = None
-    #     interaction_exists = False
-
     interaction = Interaction.objects.filter(
         participant=participant, movie=movie
     ).first()
@@ -212,39 +185,6 @@ def movie_detail(request, movie_id):
         "interaction_exists": interaction is not None,
     }
 
-    # if request.method == "POST":
-    #     seen_status = request.POST.get("seen_status")
-    #     rating = request.POST.get("rating")
-    #     likely_to_watch = request.POST.get("likely_to_watch")
-
-    #     try:
-    #         interaction = Interaction.objects.get(participant=participant, movie=movie)
-    #         interaction.seen_status = seen_status
-    #         interaction.rating = rating
-    #         interaction.likely_to_watch = likely_to_watch
-    #         interaction.save()
-    #     except Interaction.DoesNotExist:
-    #         interaction = Interaction.objects.create(
-    #             participant=participant,
-    #             movie=movie,
-    #             seen_status=seen_status,
-    #             rating=rating,
-    #             likely_to_watch=likely_to_watch,
-    #         )
-
-    #     if interaction_exists == False:
-    #         participant.remaining_judge_actions -= 1
-    #         participant.save()
-
-    # return redirect("movie_judge")
-
-    # context = {
-    #     "movie": movie,
-    #     "ex_seen_status": ex_seen_status,
-    #     "ex_rating": ex_rating,
-    #     "ex_likely_to_watch": ex_likely_to_watch,
-    #     "interaction_exists": interaction_exists,
-    # }
     return render(request, "movies/item.html", context)
 
 
@@ -261,24 +201,6 @@ def judge(request):
         return render(request, "movies/judgeDone.html")
     else:
         return redirect("movie_detail", movie_id=unjudged_movie.movieId)
-
-    # unjudged_movie = None
-
-    # remaining = participant.remaining_judge_actions
-
-    # if remaining == 0:
-    #     return render(request, "movies/judgeDone.html")
-    # else:
-    #     # get the first unjudged movie
-    #     for movie in participant.movies.all():
-    #         try:
-    #             interaction = Interaction.objects.get(
-    #                 movie=movie, participant=participant
-    #             )
-    #         except Interaction.DoesNotExist:
-    #             unjudged_movie = movie
-    #             break
-    #     return redirect("movie_detail", movie_id=unjudged_movie.movieId)
 
 
 @login_required

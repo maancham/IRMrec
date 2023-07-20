@@ -42,7 +42,7 @@
         <h2 style="margin-left: 0;"> Judged List </h2>
 
         {% if remaining_judge_actions == 0 %}
-        <h3> <a href="{% url 'final_ranking' %}">You're done! Go to Final Ranking</a></h3>
+        <h3> <a href="{% url 'final_ranking' %}">Judgement finished! Go to Final Ranking</a></h3>
         {% else %}
             <h3> <a href="{% url 'movie_judge' %}">{{ remaining_judge_actions }} Movies Left to Judge, Click to Resume</a></h3>
         {% endif %}

@@ -69,7 +69,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-    "movies.middleware.SessionTimeoutMiddleware",
+    # "movies.middleware.SessionTimeoutMiddleware",
 ]
 
 ROOT_URLCONF = "recommender.urls"

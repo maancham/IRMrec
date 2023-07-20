@@ -9,8 +9,14 @@
       <div class="card">
         <div class="card-body">
           <h3 class="card-title">Judgement finished!</h3>
-          <p class="card-text">You are done with the recommendation judgement phase! Only the final ranking left:</p>
-          <a href="{% url 'final_ranking' %}" class="btn btn-primary btn-lg btn-block">Choose Your Top Picks</a>
+          <p class="card-text">You are done with the recommendation judgement phase!</p>
+          <p class="card-text">If you want, you can take a look at the list of judged movies here (you can also choose to edit each item):</p>
+          <a href="{% url 'movie_list' %}" class="btn btn-primary btn-lg btn-block">Judged Movie List</a>
+
+          <hr>
+
+          <p class="card-text">Alternatively, you can go to the final ranking directly:</p>
+          <a href="{% url 'final_ranking' %}" class="btn btn-primary btn-lg btn-block">Final Ranking</a>
         </div>
       </div>
     </div>
