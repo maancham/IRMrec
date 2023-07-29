@@ -59,16 +59,19 @@ class Participant(models.Model):
 class Interaction(models.Model):
     participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    seen_status = models.CharField(
+    familiarity = models.CharField(
         max_length=20,
         choices=[
             ("Never", "Never heard of it"),
-            ("Heard", "Just heard about it"),
-            ("Seen", "I have seen it"),
+            ("Familiar", "Familiar with movie"),
+            ("Very familiar", "Very familiar (read reviews, seen trailers, etc.)"),
+            ("Seen", "Seen it"),
         ],
         null=True,
         blank=True,
     )
+
+    seen_status = models.BooleanField(default=False)
 
     rating = models.DecimalField(
         decimal_places=1,
@@ -78,20 +81,19 @@ class Interaction(models.Model):
         validators=[MinValueValidator(0.5), MaxValueValidator(5)],
     )
 
-    likely_to_watch = models.CharField(
+    will_to_watch = models.CharField(
         max_length=20,
         choices=[
-            ("Awful/Horrible", ""),
-            ("Disappointed", ""),
-            ("Not Interested", ""),
+            ("Not interested", ""),
+            ("Somewhat interested", ""),
             ("Interested", ""),
-            ("Very Interested", ""),
+            ("Very interested", ""),
+            ("Extremely interested", ""),
         ],
         null=True,
         blank=True,
     )
     rank = models.IntegerField(null=True, blank=True)
-    comparison_count = models.IntegerField(default=0)
 
     class Meta:
         unique_together = [["participant", "movie"]]
@@ -103,4 +105,4 @@ class Interaction(models.Model):
         return self.rating
 
     def get_likely(self):
-        return self.likely_to_watch
+        return self.will_to_watch

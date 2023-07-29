@@ -11,7 +11,27 @@ import logging
 """
 TODO:
 ------------------------------
+handle the standalone items page and view
+edit movie list page according to updated movie details
 add logging to movie detail page once everthing is finialized
+
+
+add /overview url for when users first click on banner
+    (no login required
+    copy paste from ethics
+    need to edit participant model to save consent and demographic data, movies empty for now)
+add /upload_profile url for users to add their ratings.csv, need to save it to DB somehow
+implement the two phase scenario
+    edit userpooling so that 10 items from ratings profile are shuffled into the first 100 (depth k1 from all algo outputs)
+    change user model to have two sets of movies (p1 and p2)
+    change user model to have two sets of (rem_judge, done) pairs for each phase
+    change interaction model to have two ranks (p1 rank and p2 rank)
+    set a global flag on views.py to denote we're on phase 1 or 2?
+    change all views to get movies from correct movie set based on flag
+
+
+Change the load_users section, make username and password anon (B-userpooling on colab)
+
 """
 
 
