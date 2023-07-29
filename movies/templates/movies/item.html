@@ -154,25 +154,6 @@
     .button:hover {
         background-color: #bbb;
     }
-    
-
-
-
-    @media only screen and (max-width: 600px) {
-        .movie-container {
-        flex-direction: column;
-        align-items: center;
-        }
-        
-        .movie-img {
-        margin-right: 0;
-        margin-bottom: 20px;
-        }
-
-        .btn-lg {
-            font-size: 14px;
-        }
-    }
 </style>
 {% endblock %}
 
@@ -263,7 +244,7 @@
                             <input type="radio" id="starhalf" name="rating" value= 0.5 /><label class="half" for="starhalf" title="Awful - 0.5"></label>
                         </fieldset>
                     </div>
-                    <div style="flex: 2; margin-top: 2%;">
+                    <div style="flex: 2; max-width: 100px; margin-top: 2%;">
                         <div id="rating-preview" style="border: 1px solid #ccc; border-radius: 5px; text-align: center;">-</div>
                     </div>
                 </div>

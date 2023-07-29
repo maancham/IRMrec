@@ -3,7 +3,6 @@
 {% load static %}
 {% load movies_extra %}
 
-
 {% block stylesheet %}
 <style>
     table {
@@ -43,7 +42,7 @@
         <h2 style="margin-left: 0;"> Judged List </h2>
 
         {% if remaining_judge_actions == 0 %}
-        <h3> <a href="{% url 'final_ranking' %}">You're done! Go to Final Ranking</a></h3>
+        <h3> <a href="{% url 'final_ranking' %}">Judgement finished! Go to Final Ranking</a></h3>
         {% else %}
             <h3> <a href="{% url 'movie_judge' %}">{{ remaining_judge_actions }} Movies Left to Judge, Click to Resume</a></h3>
         {% endif %}
@@ -86,14 +85,14 @@
                 </td>
                 <td class="text-center">{{ movie.year }}</td>
                 <td class="text-center">
-                    {% if interactions|length > 0 and interactions|get_item:movie.movieId %}
+                    {% if interactions|get_item:movie.movieId %}
                         {{ interactions|get_rating:movie.movieId }}
                     {% else %}
                         
                     {% endif %}
                 </td>
                 <td class="text-center">
-                    {% if interactions|length > 0 and interactions|get_item:movie.movieId %}
+                    {% if interactions|get_item:movie.movieId %}
                         {{ interactions|get_likely:movie.movieId }}
                     {% else %}
                         
@@ -104,9 +103,7 @@
         </tbody>
     </table>
     {% else %}
-    <p>You have not judged any movies yet. 
-        <!-- <a href="{% url 'movie_judge' %}"> Click to begin!</a> -->
-    </p>
+    <p>You have not judged any movies yet.</p>
     {% endif %}
 
     <hr>

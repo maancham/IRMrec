@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import logging
+import dj_database_url
 import os
 from dotenv import load_dotenv, find_dotenv
+from datetime import timedelta
 
 load_dotenv(find_dotenv())
 
@@ -38,6 +41,11 @@ if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,6 +57,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "widget_tweaks",
     "movies",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -59,6 +68,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "movies.middleware.SessionTimeoutMiddleware",
 ]
 
 ROOT_URLCONF = "recommender.urls"
@@ -109,8 +120,6 @@ WSGI_APPLICATION = "recommender.wsgi.application"
 
 
 ### Render PostgreSQL database live:
-import dj_database_url
-
 DATABASES = {"default": dj_database_url.parse(RENDER_EXTERNAL_DB_URL)}
 
 
@@ -155,3 +164,32 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": BASE_DIR / "logs" / "app.log",
+            "maxBytes": 10 * 1024 * 1024,
+            "backupCount": 20,
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["file"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
+    "formatters": {
+        "verbose": {
+            "format": "{asctime} {levelname} {module} {message}",
+            "style": "{",
+        },
+    },
+}
