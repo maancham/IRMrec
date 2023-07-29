@@ -31,129 +31,20 @@
     .movie-info {
         display: flex;
     }
+
+    .submit-button {
+        background-color: #007bff; /* Use a blue-ish color for the button background */
+        color: #fff; /* Text color is white */
+        padding: 10px 20px; /* Add some padding to make the button larger */
+        border: none; /* Remove the default button border */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Add a pointer cursor when hovering over the button */
+        float: right; /* Float the button to the right */
+        margin-top: 10px; /* Add some top margin to separate it from the dropdowns */
+    }
     
 
-    /****** Style Star Rating Widget *****/
 
-    .rating { 
-        border: none;
-        float: left;
-    }
-
-    .rating > input { display: none; } 
-    .rating > label:before { 
-        margin: 0 10px 0 0;
-        font-size: 2em;
-        font-family: "Font Awesome 6 Free";
-        display: inline-block;
-        content: "\f005";
-    }
-
-    .rating > .half:before { 
-        content: "\f089";
-        position: absolute;
-    }
-
-    .rating > label { 
-        color: #ddd; 
-        float: right; 
-        cursor: pointer;
-    }
-
-
-    /***** CSS Magic to Highlight Stars on Hover *****/
-    .rating > input:checked ~ label, /* show gold star when clicked */
-    .rating:not(:checked) > label:hover, /* hover current star */
-    .rating:not(:checked) > label:hover ~ label { color: #dcad1a;  } /* hover previous stars in list */
-
-    .rating > input:checked + label:hover, /* hover current star when changing rating */
-    .rating > input:checked ~ label:hover,
-    .rating > label:hover ~ input:checked ~ label /* lighten current selection */
-    .rating > input:checked ~ label:hover ~ label { color: #dcad1a;  }
-
-
-    /* Reset styling when hovering outside star zone */
-    .rating:hover > label:not(:hover) {
-        color: #ddd;    
-    }
-
-
-
-    .radio-container {
-        display: inline-block;
-        margin-right: 10px;
-        margin-left: 5px;
-    }
-
-    .radio-container label {
-        display: block;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        text-align: center;
-        cursor: pointer;
-    }
-
-    .radio-container input[type="radio"] {
-        display: none;
-    }
-
-    .radio-container input[type="radio"]:checked + label {
-        background-color: #337ab7;
-        color: #fff;
-    }
-
-    .radio-container:hover {
-        background-color: #bbb;
-    }
-
-
-
-
-    .checkbox-group {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .checkbox-box {
-        position: relative;
-        display: block;
-        margin-right: 1em;
-        margin-bottom: 1em;
-        cursor: pointer;
-    }
-
-    .checkbox-box input[type="radio"] {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-    }
-
-    .checkbox-box .checkbox-label {
-        display: block;
-        height: 2em;
-        width: 10em;
-        line-height: 2em;
-        text-align: center;
-        /* background-color: #ddd; */
-        border: 1px solid #aaa;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-    }
-
-    .checkbox-box input[type="radio"]:checked + .checkbox-label {
-        background-color: #337ab7;
-        color: #fff;
-    }
-
-    .checkbox-box:hover .checkbox-label {
-        background-color: #bbb;
-    }
-
-
-    .button:hover {
-        background-color: #bbb;
-    }
 </style>
 {% endblock %}
 
@@ -194,7 +85,7 @@
         </div>
     </div>
 
-
+    <!-- TODO: change this part: -->
     {% if interaction_exists %}
     <div id="previousFeedback">
         <h3 style="margin-top: 10px;">Previous feedback:</h3>
@@ -216,69 +107,68 @@
     <form method="POST" id="input-form" {% if interaction_exists %}style="display:none;"{% endif %}>
         {% csrf_token %}
 
-        <div class="form-group" id="seen-rating-fields">
-            <label><strong>Have you seen this movie?</strong></label>
-            <div class="radio-container">
-                <input type="radio" id="never-heard" name="seen_status" value="Never">
-                <label for="never-heard">Never Heard of It</label>
-            </div>
-            <div class="radio-container">
-                <input type="radio" id="just-heard" name="seen_status" value="Heared">
-                <label for="just-heard">Heard About It</label>
-            </div>
-            <div style="border: 1px solid #ccc; border-radius: 5px; padding: 1%; display: inline-block; width: 50%;">
-                <div style="display: flex; flex-direction: row;">
-                    <label style="flex: 2; margin-top: 2%;">Have Seen It, Rating:</label>
-                    <div style="flex: 3;">
-                        <fieldset class="rating" id="rating-field">
-                            <input type="radio" id="seen-and-rated" name="seen_status" value="Seen" style="display:none">
-                            <input type="radio" id="star5" name="rating" value= 5 /><label class="full" for="star5" title="Must Watch - 5"></label>
-                            <input type="radio" id="star4half" name="rating" value= 4.5 /><label class="half" for="star4half" title="Must Watch - 4.5"></label>
-                            <input type="radio" id="star4" name="rating" value= 4 /><label class="full" for="star4" title="Good - 4"></label>
-                            <input type="radio" id="star3half" name="rating" value= 3.5 /><label class="half" for="star3half" title="Good - 3.5"></label>
-                            <input type="radio" id="star3" name="rating" value= 3 /><label class="full" for="star3" title="OK - 3"></label>
-                            <input type="radio" id="star2half" name="rating" value= 2.5 /><label class="half" for="star2half" title="OK - 2.5"></label>
-                            <input type="radio" id="star2" name="rating" value= 2 /><label class="full" for="star2" title="Poor - 2"></label>
-                            <input type="radio" id="star1half" name="rating" value= 1.5 /><label class="half" for="star1half" title="Poor - 1.5"></label>
-                            <input type="radio" id="star1" name="rating" value= 1 /><label class="full" for="star1" title="Awful - 1"></label>
-                            <input type="radio" id="starhalf" name="rating" value= 0.5 /><label class="half" for="starhalf" title="Awful - 0.5"></label>
-                        </fieldset>
-                    </div>
-                    <div style="flex: 2; max-width: 100px; margin-top: 2%;">
-                        <div id="rating-preview" style="border: 1px solid #ccc; border-radius: 5px; text-align: center;">-</div>
-                    </div>
-                </div>
-            </div>
+        <div class="form-group" id="familiar-fields">
+            <label>How familiar are you with this movie?</label>
+            <select id="familiar-select" name="seen_rating">
+                <option value="">Choose an option</option>
+                <option value="Never">Never heard of it</option>
+                <option value="Familiar">Familiar with movie</option>
+                <option value="Very familiar">Very familiar (read reviews, seen trailers, etc.)</option>
+                <option value="Seen - 0.5">Seen the movie - 0.5 stars (Awful)</option>
+                <option value="Seen - 1">Seen the movie - 1 star (Awful)</option>
+                <option value="Seen - 1.5">Seen the movie - 1.5 stars (Poor)</option>
+                <option value="Seen - 2">Seen the movie - 2 stars (Poor)</option>
+                <option value="Seen - 2.5">Seen the movie - 2.5 stars (OK)</option>
+                <option value="Seen - 3">Seen the movie - 3 stars (OK)</option>
+                <option value="Seen - 3.5">Seen the movie - 3.5 stars (Good)</option>
+                <option value="Seen - 4">Seen the movie - 4 stars (Good)</option>
+                <option value="Seen - 4.5">Seen the movie - 4.5 stars (Must Watch)</option>
+                <option value="Seen - 5">Seen the movie - 5 stars (Must Watch)</option>
+            </select>
+
+            <!-- Hidden input fields -->
+            <input type="hidden" name="familiarity" id="familiarity-input">
+            <input type="hidden" name="seen_status" id="seen-status-input">
+            <input type="hidden" name="rating" id="rating-input">
+
         </div>
 
+        <br>
 
-        <div class="form-group" id="likely-feedback-field" style="display:none;">
-            <br>
-            <label for="likely_to_watch" style="padding-bottom: 5px;"><strong>If we were to recommend this movie to you, what would be your reaction?</strong></label>
-            <div class="checkbox-group">
-              <label class="checkbox-box">
-                <input type="radio" name="likely_to_watch" value="Awful/Horrible">
-                <span class="checkbox-label">Awful/Horrible</span>
-              </label>
-              <label class="checkbox-box">
-                <input type="radio" name="likely_to_watch" value="Disappointed">
-                <span class="checkbox-label">Disappointed</span>
-              </label>
-              <label class="checkbox-box">
-                <input type="radio" name="likely_to_watch" value="Not Interested">
-                <span class="checkbox-label">Not Interested</span>
-              </label>
-              <label class="checkbox-box">
-                <input type="radio" name="likely_to_watch" value="Interested">
-                <span class="checkbox-label">Interested</span>
-              </label>
-              <label class="checkbox-box">
-                <input type="radio" name="likely_to_watch" value="Very Interested">
-                <span class="checkbox-label">Very Interested</span>
-              </label>
-            </div>
+        <div class="form-group" id="watch-fields">
+            <label>How interested are you in watching this movie via a streaming service?</label>
+            <select id="watch-select" name="will_to_watch">
+                <option value="">Choose an option</option>
+                <option value="Not interested">Not interested</option>
+                <option value="Somewhat interested">Somewhat interested</option>
+                <option value="Interested">Interested</option>
+                <option value="Very interested">Very interested</option>
+                <option value="Extremely interested">Extremely interested</option>
+            </select>
         </div>
 
+        <br>
+
+        <div class="form-group" id="rating-fields">
+            <label><strong>For unseen movies only:</strong> If you were to watch this movie, what would you predict your rating of it to be?</label>
+            <select id="unseen-rating-select" name="unseen_rating_select">
+                <option value="">Choose an option</option>
+                <option value="0.5">0.5 stars (Awful)</option>
+                <option value="1">1 star (Awful)</option>
+                <option value="1.5">1.5 stars (Poor)</option>
+                <option value="2">2 stars (Poor)</option>
+                <option value="2.5">2.5 stars (OK)</option>
+                <option value="3">3 stars (OK)</option>
+                <option value="3.5">3.5 stars (Good)</option>
+                <option value="4">4 stars (Good)</option>
+                <option value="4.5">4.5 stars (Must Watch)</option>
+                <option value="5">5 stars (Must Watch)</option>
+            </select>
+        </div>
+
+        <br>
+
+        <button type="submit" class="submit-button">Submit</button>
 
     </form>
 
@@ -288,71 +178,124 @@
 
     <script>
 
-        const seenRatingField = document.getElementById('seen-rating-fields');
-        const SeenBoxes = document.querySelectorAll('input[name="seen_status"]');  
-        const likelyfeedbackField = document.getElementById('likely-feedback-field');
-        const ratingStars = document.querySelectorAll('input[name="rating"]');
-        const radioButtons = document.querySelectorAll('input[name="likely_to_watch"]');
-        const editPrevButton = document.getElementById('editPreviousButton');
-        const ratingField = document.getElementById("rating-field");
-        const ratingPreview = document.getElementById("rating-preview");
-
-        let hasClickedOnRating = false;
+        const familiarSelect = document.getElementById('familiar-select');
+        const watchSelect = document.getElementById('watch-select');
+        const familiarityInput = document.getElementById('familiarity-input');
+        const seenStatusInput = document.getElementById('seen-status-input');
+        const ratingInput = document.getElementById('rating-input');
+        const unseenRatingInput = document.getElementById('unseen-rating-select');
+        const form = document.getElementById('input-form');
 
 
+        familiarSelect.addEventListener('change', function () {
+            const selectedValue = this.value;
 
-        if (editPrevButton) {
-            editPrevButton.addEventListener('click', () => {
-                document.getElementById('previousFeedback').style.display = 'none';
-                document.getElementById('input-form').style.display = 'block';
-            });
-        }
+            if (selectedValue.startsWith('Seen')) {
+                const [_, ratingValue] = selectedValue.split(' - ');
 
-
-        ratingField.addEventListener("mouseover", function(event) {
-            star_title = document.elementFromPoint(event.clientX, event.clientY).title;
-            ratingPreview.innerHTML = star_title;
+                familiarityInput.value = 'Seen';
+                seenStatusInput.value = true;
+                ratingInput.value = parseFloat(ratingValue);
+            } else {
+                familiarityInput.value = selectedValue;
+                seenStatusInput.value = false;
+            }
         });
 
-        ratingField.addEventListener("click", function(event) {
-            star_title = document.elementFromPoint(event.clientX, event.clientY).title;
-            ratingPreview.innerHTML = star_title;
-            hasClickedOnRating = true;
+        familiarSelect.addEventListener('change', (event) => {
+            if (seenStatusInput.value === 'true') {
+                unseenRatingInput.disabled = true; // Enable the unseen rating input
+            } else {
+                unseenRatingInput.disabled = false; // Disable the unseen rating input
+            }
         });
 
-        ratingField.addEventListener("mouseout", function(event) {
-            if (!hasClickedOnRating) {
-                ratingPreview.innerHTML = '-'
+        unseenRatingInput.addEventListener('change', function () {
+            ratingInput.value = parseFloat(this.value);
+        });
+
+
+        
+        form.addEventListener('submit', function (event) {
+            if (!familiarSelect.value) {
+                alert('Please select an option for question 1.');
+                event.preventDefault();
+            } else if (!watchSelect.value) {
+                alert('Please select an option for question 2.');
+                event.preventDefault();
+            } else if (!unseenRatingInput.disabled && !unseenRatingInput.value) {
+                alert('Please select an option for question 3.');
+                event.preventDefault();
             }
         });
 
 
-        // auto choose the third option for has_seen when rating is provided
-        ratingStars.forEach(star => {
-            star.addEventListener('click', function() {
-                const seenAndRated = document.getElementById('seen-and-rated');
-                seenAndRated.checked = true;
-                likelyfeedbackField.style.display = "block";
-                seenRatingField.style.display = 'none';
-            });
+
+        // const seenRatingField = document.getElementById('seen-rating-fields');
+        // const SeenBoxes = document.querySelectorAll('input[name="seen_status"]');  
+        // const likelyfeedbackField = document.getElementById('likely-feedback-field');
+        // const ratingStars = document.querySelectorAll('input[name="rating"]');
+        // const radioButtons = document.querySelectorAll('input[name="likely_to_watch"]');
+        // const editPrevButton = document.getElementById('editPreviousButton');
+        // const ratingField = document.getElementById("rating-field");
+        // const ratingPreview = document.getElementById("rating-preview");
+
+        // let hasClickedOnRating = false;
+
+
+
+        // if (editPrevButton) {
+        //     editPrevButton.addEventListener('click', () => {
+        //         document.getElementById('previousFeedback').style.display = 'none';
+        //         document.getElementById('input-form').style.display = 'block';
+        //     });
+        // }
+
+
+        // ratingField.addEventListener("mouseover", function(event) {
+        //     star_title = document.elementFromPoint(event.clientX, event.clientY).title;
+        //     ratingPreview.innerHTML = star_title;
+        // });
+
+        // ratingField.addEventListener("click", function(event) {
+        //     star_title = document.elementFromPoint(event.clientX, event.clientY).title;
+        //     ratingPreview.innerHTML = star_title;
+        //     hasClickedOnRating = true;
+        // });
+
+        // ratingField.addEventListener("mouseout", function(event) {
+        //     if (!hasClickedOnRating) {
+        //         ratingPreview.innerHTML = '-'
+        //     }
+        // });
+
+
+        // // auto choose the third option for has_seen when rating is provided
+        // ratingStars.forEach(star => {
+        //     star.addEventListener('click', function() {
+        //         const seenAndRated = document.getElementById('seen-and-rated');
+        //         seenAndRated.checked = true;
+        //         likelyfeedbackField.style.display = "block";
+        //         seenRatingField.style.display = 'none';
+        //     });
             
-        });
+        // });
 
-        SeenBoxes.forEach(box => {
-            box.addEventListener('click', function() {
-                likelyfeedbackField.style.display = "block";
-                seenRatingField.style.display = 'none';
-            });
-        });
+        // SeenBoxes.forEach(box => {
+        //     box.addEventListener('click', function() {
+        //         likelyfeedbackField.style.display = "block";
+        //         seenRatingField.style.display = 'none';
+        //     });
+        // });
 
 
 
-        radioButtons.forEach(radioButton => {
-            radioButton.addEventListener("change", function() {
-                // submit the form when a radio button is selected
-                document.querySelector('form').submit();
-            });
-        });
+        // radioButtons.forEach(radioButton => {
+        //     radioButton.addEventListener("change", function() {
+        //         // submit the form when a radio button is selected
+        //         document.querySelector('form').submit();
+        //     });
+        // });
     </script>
 
 {% endblock %}
