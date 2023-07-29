@@ -30,8 +30,11 @@ implement the two phase scenario
     change all views to get movies from correct movie set based on flag
 
 
-Change the load_users section, make username and password anon (B-userpooling on colab)
+Change the load_users section, make username and password anon (B-userpooling on colab + load_users)
 
+
+
+remove the django-toolbar from the project
 """
 
 

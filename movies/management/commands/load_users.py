@@ -25,8 +25,8 @@ class Command(BaseCommand):
                 last_name=user_data["last_name"],
                 username=user_data["first_name"][0].lower()
                 + user_data["last_name"][0].lower()
-                + "_"
-                + user_data["dataset_id"],
+                + "participant_"
+                + str(user_data["dataset_id"]),
                 password=make_password(user_data["pass"]),
             )
             user_obj.save()
