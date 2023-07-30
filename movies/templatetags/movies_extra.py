@@ -10,6 +10,11 @@ def get_item(dictionary, key):
 
 
 @register.filter
+def get_familiarity(dictionary, key):
+    return dictionary.get(key, None).familiarity if key in dictionary else None
+
+
+@register.filter
 def get_rating(dictionary, key):
     rating = dictionary.get(key, None).rating if key in dictionary else "N/A"
     if rating == None:
@@ -20,8 +25,8 @@ def get_rating(dictionary, key):
 
 
 @register.filter
-def get_likely(dictionary, key):
-    return dictionary.get(key, None).likely_to_watch if key in dictionary else None
+def get_will(dictionary, key):
+    return dictionary.get(key, None).will_to_watch if key in dictionary else None
 
 
 @register.filter

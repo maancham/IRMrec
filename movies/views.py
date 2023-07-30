@@ -11,7 +11,6 @@ import logging
 """
 TODO:
 ------------------------------
-handle the standalone items page and view (also add keyboard selection method to the page)
 edit movie list page according to updated movie details
 add logging to movie detail page once everthing is finialized
 
@@ -108,20 +107,20 @@ def movie_list(request):
 
     sort_by = request.GET.get("sort_by", None)
     INTEREST_LEVELS = [
-        "Very Interested",
+        "Extremely interested",
+        "Very interested",
         "Interested",
-        "Not Interested",
-        "Disappointed",
-        "Awful/Horrible",
+        "Somewhat interested",
+        "Not interested",
     ]
 
-    if sort_by == "reaction":
+    if sort_by == "willingness":
         logger.info(
-            f"change_sort_by: User {participant.user.username} changed sorting to reaction."
+            f"change_sort_by: User {participant.user.username} changed sorting to willingness."
         )
         judged_movies.sort(
             key=lambda movie: INTEREST_LEVELS.index(
-                interactions[movie.movieId].likely_to_watch
+                interactions[movie.movieId].will_to_watch
             )
         )
 

@@ -51,7 +51,7 @@
           <label for="sort_by">Sort Movies By:</label>
           <select name="sort_by" id="sort_by">
             <option value=""> </option>
-            <option value="reaction" {% if sort_by == 'reaction' %}{% endif %}>Reaction Group</option> 
+            <option value="willingness" {% if sort_by == 'willingness' %}{% endif %}>Willingness</option> 
             <option value="rating" {% if sort_by == 'rating' %}{% endif %}>Rating</option>     
           </select>
         </form>
@@ -66,8 +66,9 @@
             <th></th>
             <th class="text-center">Title</th>
             <th class="text-center">Year</th>
+            <th class="text-center">Familiarity</th>
             <th class="text-center">Your Rating</th>
-            <th class="text-center">Reccomendation Reaction</th>
+            <th class="text-center">Willingness to Watch</th>
         </tr>
         </thead>
         <tbody>
@@ -86,6 +87,13 @@
                 <td class="text-center">{{ movie.year }}</td>
                 <td class="text-center">
                     {% if interactions|get_item:movie.movieId %}
+                        {{ interactions|get_familiarity:movie.movieId }}
+                    {% else %}
+                        
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if interactions|get_item:movie.movieId %}
                         {{ interactions|get_rating:movie.movieId }}
                     {% else %}
                         
@@ -93,7 +101,7 @@
                 </td>
                 <td class="text-center">
                     {% if interactions|get_item:movie.movieId %}
-                        {{ interactions|get_likely:movie.movieId }}
+                        {{ interactions|get_will:movie.movieId }}
                     {% else %}
                         
                     {% endif %}

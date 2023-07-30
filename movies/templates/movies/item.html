@@ -109,7 +109,7 @@
 
         <div class="form-group" id="familiar-fields">
             <label>How familiar are you with this movie?</label>
-            <select id="familiar-select" name="seen_rating">
+            <select id="familiar-select" name="seen_rating" class="dropdown-select" tabindex="0">
                 <option value="">Choose an option</option>
                 <option value="Never">Never heard of it</option>
                 <option value="Familiar">Familiar with movie</option>
@@ -137,7 +137,7 @@
 
         <div class="form-group" id="watch-fields">
             <label>How interested are you in watching this movie via a streaming service?</label>
-            <select id="watch-select" name="will_to_watch">
+            <select id="watch-select" name="will_to_watch" class="dropdown-select" tabindex="1">
                 <option value="">Choose an option</option>
                 <option value="Not interested">Not interested</option>
                 <option value="Somewhat interested">Somewhat interested</option>
@@ -151,7 +151,7 @@
 
         <div class="form-group" id="rating-fields">
             <label><strong>For unseen movies only:</strong> If you were to watch this movie, what would you predict your rating of it to be?</label>
-            <select id="unseen-rating-select" name="unseen_rating_select">
+            <select id="unseen-rating-select" name="unseen_rating_select" class="dropdown-select" tabindex="2">
                 <option value="">Choose an option</option>
                 <option value="0.5">0.5 stars (Awful)</option>
                 <option value="1">1 star (Awful)</option>
@@ -168,7 +168,7 @@
 
         <br>
 
-        <button type="submit" class="submit-button">Submit</button>
+        <button type="submit" class="submit-button" tabindex="3">Submit</button>
 
     </form>
 
@@ -240,63 +240,38 @@
         }
 
 
+        // keyboard navigation part
+        const dropdowns = document.querySelectorAll('.dropdown-select');
+        const submitButton = document.querySelector('.submit-button');
 
-        // const seenRatingField = document.getElementById('seen-rating-fields');
-        // const SeenBoxes = document.querySelectorAll('input[name="seen_status"]');  
-        // const likelyfeedbackField = document.getElementById('likely-feedback-field');
-        // const ratingStars = document.querySelectorAll('input[name="rating"]');
-        // const radioButtons = document.querySelectorAll('input[name="likely_to_watch"]');
-        // 
-        // const ratingField = document.getElementById("rating-field");
-        // const ratingPreview = document.getElementById("rating-preview");
+        dropdowns.forEach((dropdown, index) => {
+            dropdown.addEventListener('keydown', (event) => {
+            const key = event.key;
 
-        // let hasClickedOnRating = false;
+            if (key === 'ArrowDown' || key === 'Down') {
+                if (index + 1 < dropdowns.length) {
+                dropdowns[index + 1].focus();
+                }
+            } else if (key === 'ArrowUp' || key === 'Up') {
+                if (index - 1 >= 0) {
+                dropdowns[index - 1].focus();
+                }
+            } else if (key === 'Tab') {
+                return;
+            } else if (key === 'Enter') {
+                dropdown.focus();
+            }
+            });
+        });
 
-
-        // ratingField.addEventListener("mouseover", function(event) {
-        //     star_title = document.elementFromPoint(event.clientX, event.clientY).title;
-        //     ratingPreview.innerHTML = star_title;
-        // });
-
-        // ratingField.addEventListener("click", function(event) {
-        //     star_title = document.elementFromPoint(event.clientX, event.clientY).title;
-        //     ratingPreview.innerHTML = star_title;
-        //     hasClickedOnRating = true;
-        // });
-
-        // ratingField.addEventListener("mouseout", function(event) {
-        //     if (!hasClickedOnRating) {
-        //         ratingPreview.innerHTML = '-'
-        //     }
-        // });
-
-
-        // // auto choose the third option for has_seen when rating is provided
-        // ratingStars.forEach(star => {
-        //     star.addEventListener('click', function() {
-        //         const seenAndRated = document.getElementById('seen-and-rated');
-        //         seenAndRated.checked = true;
-        //         likelyfeedbackField.style.display = "block";
-        //         seenRatingField.style.display = 'none';
-        //     });
-            
-        // });
-
-        // SeenBoxes.forEach(box => {
-        //     box.addEventListener('click', function() {
-        //         likelyfeedbackField.style.display = "block";
-        //         seenRatingField.style.display = 'none';
-        //     });
-        // });
+        dropdowns[dropdowns.length - 1].addEventListener('keydown', (event) => {
+            if (event.key === 'Tab') {
+            event.preventDefault();
+            submitButton.focus();
+            }
+        });
 
 
-
-        // radioButtons.forEach(radioButton => {
-        //     radioButton.addEventListener("change", function() {
-        //         // submit the form when a radio button is selected
-        //         document.querySelector('form').submit();
-        //     });
-        // });
     </script>
 
 {% endblock %}
