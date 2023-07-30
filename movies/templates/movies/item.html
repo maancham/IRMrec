@@ -85,14 +85,14 @@
         </div>
     </div>
 
-    <!-- TODO: change this part: -->
     {% if interaction_exists %}
     <div id="previousFeedback">
         <h3 style="margin-top: 10px;">Previous feedback:</h3>
         <ul>
-            <li>Seen or Heard About This Movie: <strong> {{ ex_seen_status }} </strong></li>
-            <li>Your Rating: <strong> {{ ex_rating }} </strong></li>
-            <li>Reaction Upon Getting It Recommended: <strong> {{ ex_likely_to_watch }} </strong></li>
+            <li>How familiar are you with this movie: <strong> {{ ex_familiarity }} </strong></li>
+            <li>You have seen this movie before: <strong> {{ ex_seen_status }} </strong></li>
+            <li>Your previous rating to this movie: <strong> {{ ex_rating }} </strong></li>
+            <li>You willingness to watch this movie: <strong> {{ ex_will_to_watch }} </strong></li>
         </ul>
         <p>Would you like to edit your previous feedback?</p>
         <button id="editPreviousButton">I Want to Edit</button>
@@ -185,6 +185,7 @@
         const ratingInput = document.getElementById('rating-input');
         const unseenRatingInput = document.getElementById('unseen-rating-select');
         const form = document.getElementById('input-form');
+        const editPrevButton = document.getElementById('editPreviousButton');
 
 
         familiarSelect.addEventListener('change', function () {
@@ -231,25 +232,25 @@
 
 
 
+        if (editPrevButton) {
+            editPrevButton.addEventListener('click', () => {
+                document.getElementById('previousFeedback').style.display = 'none';
+                document.getElementById('input-form').style.display = 'block';
+            });
+        }
+
+
+
         // const seenRatingField = document.getElementById('seen-rating-fields');
         // const SeenBoxes = document.querySelectorAll('input[name="seen_status"]');  
         // const likelyfeedbackField = document.getElementById('likely-feedback-field');
         // const ratingStars = document.querySelectorAll('input[name="rating"]');
         // const radioButtons = document.querySelectorAll('input[name="likely_to_watch"]');
-        // const editPrevButton = document.getElementById('editPreviousButton');
+        // 
         // const ratingField = document.getElementById("rating-field");
         // const ratingPreview = document.getElementById("rating-preview");
 
         // let hasClickedOnRating = false;
-
-
-
-        // if (editPrevButton) {
-        //     editPrevButton.addEventListener('click', () => {
-        //         document.getElementById('previousFeedback').style.display = 'none';
-        //         document.getElementById('input-form').style.display = 'block';
-        //     });
-        // }
 
 
         // ratingField.addEventListener("mouseover", function(event) {

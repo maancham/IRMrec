@@ -11,7 +11,7 @@ import logging
 """
 TODO:
 ------------------------------
-handle the standalone items page and view
+handle the standalone items page and view (also add keyboard selection method to the page)
 edit movie list page according to updated movie details
 add logging to movie detail page once everthing is finialized
 
@@ -31,9 +31,6 @@ implement the two phase scenario
 
 
 Change the load_users section, make username and password anon (B-userpooling on colab + load_users)
-
-
-
 remove the django-toolbar from the project
 """
 
@@ -177,21 +174,29 @@ def movie_detail(request, movie_id):
 
     if request.method == "POST":
         seen_status = request.POST.get("seen_status")
+        familiarity = request.POST.get("familiarity")
         rating = request.POST.get("rating")
-        likely_to_watch = request.POST.get("likely_to_watch")
+        will_to_watch = request.POST.get("will_to_watch")
+
+        if seen_status == "true":
+            seen_status = True
+        else:
+            seen_status = False
 
         if interaction:
             interaction.seen_status = seen_status
+            interaction.familiarity = familiarity
             interaction.rating = rating
-            interaction.likely_to_watch = likely_to_watch
+            interaction.will_to_watch = will_to_watch
             interaction.save()
         else:
             interaction = Interaction.objects.create(
                 participant=participant,
                 movie=movie,
                 seen_status=seen_status,
+                familiarity=familiarity,
                 rating=rating,
-                likely_to_watch=likely_to_watch,
+                will_to_watch=will_to_watch,
             )
             participant.remaining_judge_actions -= 1
             participant.save()
@@ -201,10 +206,11 @@ def movie_detail(request, movie_id):
     context = {
         "movie": movie,
         "ex_seen_status": interaction.seen_status if interaction else None,
+        "ex_familiarity": interaction.familiarity if interaction else None,
         "ex_rating": "N/A"
         if not interaction or not interaction.rating
         else interaction.rating,
-        "ex_likely_to_watch": interaction.likely_to_watch if interaction else None,
+        "ex_will_to_watch": interaction.will_to_watch if interaction else None,
         "interaction_exists": interaction is not None,
     }
 
