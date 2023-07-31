@@ -3,8 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Movie, Participant, Interaction
+from .models import Movie, Participant, ParticipantInfo, Interaction
 from django.contrib.auth import logout
+from .forms import ParticipantInfoForm
 import logging
 
 
@@ -12,10 +13,10 @@ import logging
 TODO:
 ------------------------------
 
-add /overview url for when users first click on banner
-    (no login required
-    copy paste from ethics
-    need to edit participant model to save consent and demographic data, movies empty for now)
+
+
+edits all logs so that values are also logged
+
 add /upload_profile url for users to add their ratings.csv, need to save it to DB somehow
 implement the two phase scenario
     edit userpooling so that 10 items from ratings profile are shuffled into the first 100 (depth k1 from all algo outputs)
@@ -49,7 +50,33 @@ logger = logging.getLogger(__name__)
 
 
 def overview(request):
-    return render(request, "movies/overview.html")
+    if request.method == "POST":
+        form = ParticipantInfoForm(request.POST)
+        if form.is_valid():
+            full_name = form.cleaned_data["full_name"]
+            email = form.cleaned_data["email"]
+            age = form.cleaned_data["age"]
+            country = form.cleaned_data["country"]
+            consent = form.cleaned_data.get("consent")
+
+            participant_info = ParticipantInfo(
+                full_name=full_name,
+                email=email,
+                age=age,
+                country=country,
+                consent=consent,
+            )
+            participant_info.save()
+
+            logger.info(
+                f"submit_consent: {full_name}, {age}, with email {email}, from {country} gave consent"
+            )
+
+            return render(request, "movies/overviewDone.html")
+    else:
+        form = ParticipantInfoForm()
+
+    return render(request, "movies/overview.html", {"form": form})
 
 
 # Create your views here.

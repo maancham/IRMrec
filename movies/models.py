@@ -42,6 +42,21 @@ class Movie(models.Model):
         return movie_representation
 
 
+class ParticipantInfo(models.Model):
+    full_name = models.CharField(max_length=150)
+    email = models.EmailField()
+    age = models.IntegerField()
+    gender = models.CharField(max_length=15, null=True, blank=True)
+    ethnicity = models.CharField(max_length=50, null=True, blank=True)
+    race = models.CharField(max_length=50, null=True, blank=True)
+    education = models.CharField(max_length=100, null=True, blank=True)
+    country = models.CharField(max_length=100)
+    consent = models.BooleanField()
+
+    def __str__(self) -> str:
+        return self.full_name
+
+
 class Participant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 

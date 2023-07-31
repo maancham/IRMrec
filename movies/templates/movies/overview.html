@@ -65,12 +65,11 @@
                                 certain
                                 quality, you can participate in the second phase, which will take up to 5 hours.</li>
                             <li>If you consent to participate in this study, we will contact you with details on how you
-                                can
-                                export your ratings profile from Movielens, which will be used to generate personalized
-                                movie
-                                recommendations for you to judge in the two phases mentioned above. The ratings that you
-                                send
-                                us will become part of the study’s data.</li>
+                                can export your ratings profile from Movielens, which will be used to generate
+                                personalized
+                                movie recommendations for you to judge in the two phases mentioned above. The ratings
+                                that you
+                                send us will become part of the study’s data.</li>
                             <li>It will take us approximately one week to process your ratings and produce
                                 recommendations.
                                 Once the movie recommendations are ready, we'll reach out to you and provide login
@@ -214,23 +213,15 @@
                             {% csrf_token %}
 
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="consent1" name="consent1">
+                                <input type="checkbox" class="form-check-input" id="consent" name="consent">
                                 <label class="form-check-label" for="consent1">
                                     I confirm that I have fully read this document and I consent to all items above.
                                 </label>
                             </div>
 
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="consent2" name="consent2">
-                                <label class="form-check-label" for="consent2">
-                                    I do not consent to the mentioned items above nor do I want to participate in the
-                                    study.
-                                </label>
-                            </div>
-
                             <div class="mb-3">
                                 <label for="fullName" class="form-label">Full Name:</label>
-                                <input type="text" class="form-control" id="fullName" name="fullName" required>
+                                <input type="text" class="form-control" id="fullName" name="full_name" required>
                             </div>
 
                             <div class="mb-3">
@@ -249,6 +240,16 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary">Submit</button>
+
+                            {% if form.errors %}
+                            <div class="alert alert-danger mt-3">
+                                {% for field in form %}
+                                {% for error in field.errors %}
+                                <p>{{ field.label }}: {{ error }}</p>
+                                {% endfor %}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
                         </form>
 
                     </div>
