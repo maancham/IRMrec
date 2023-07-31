@@ -48,6 +48,10 @@ PROCESS TO POPULATE AN EMPTY DB:
 logger = logging.getLogger(__name__)
 
 
+def overview(request):
+    return render(request, "movies/overview.html")
+
+
 # Create your views here.
 def login_view(request):
     if request.method == "POST":

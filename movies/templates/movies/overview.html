@@ -1,0 +1,260 @@
+<title>{% block title %}IRMrec{% endblock %}</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
+    type="text/css">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-top: 1px; padding-bottom: 1px;">
+    <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand" href="{% url 'home' %}">IRMrec</a>
+
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu"
+            aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+
+<div class="container">
+    <ol class="breadcrumb my-4">
+        {% block breadcrumb %}
+        {% endblock %}
+    </ol>
+    {% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Study: A test collection for offline evaluation of recommender</h3>
+
+
+                        <p class="card-text" style="text-align: justify;">
+                            <br>
+                            <strong>Student Investigator: </strong> <a href="mailto:h2chaman@uwaterloo.ca">Houmaan
+                                Chamani</a>
+                            <br>
+                            <strong>Faculty Supervisor: </strong> <a href="mailto:mark.smucker@uwaterloo.ca">Prof. Mark
+                                D. Smucker</a>, 519-888-4567 x38620
+                            <br>
+                            In this page, we explain what the study is about, possible risks and benefits, and your
+                            rights as a research participant. You may print/save a copy for your records. If you do not
+                            understand something in the letter, please ask one of the investigators before consenting to
+                            participate.
+                        </p>
+                        <hr>
+
+                        <p class="card-text" style="text-align: justify;">
+                            <strong>Project Summary: </strong>
+                            <br>
+                            The purpose of this study is to investigate the application of traditional information
+                            retrieval techniques to evaluate recommendation systems. The hypothesis is that by adapting
+                            established test collection construction methods from information retrieval, we can develop
+                            a robust evaluation framework for recommendation systems. The aim is to compare existing
+                            evaluation methods with a novel approach that incorporates user assessments of recommended
+                            movies.
+                            <br>
+                        </p>
+                        <p class="card-text">
+                            <strong>Procedure:</strong>
+                        </p>
+                        <ul class="procedure-list">
+                            <li>There are two phases to this study. The first phase will take about 1.5 hours. After the
+                                first phase, if you’d like to continue to the second phase, and if your work meets a
+                                certain
+                                quality, you can participate in the second phase, which will take up to 5 hours.</li>
+                            <li>If you consent to participate in this study, we will contact you with details on how you
+                                can
+                                export your ratings profile from Movielens, which will be used to generate personalized
+                                movie
+                                recommendations for you to judge in the two phases mentioned above. The ratings that you
+                                send
+                                us will become part of the study’s data.</li>
+                            <li>It will take us approximately one week to process your ratings and produce
+                                recommendations.
+                                Once the movie recommendations are ready, we'll reach out to you and provide login
+                                credentials
+                                to the system. When you log in, you’ll first submit your demographics information. Next,
+                                you'll find a tutorial to complete on how to use the system. The judgment task is the
+                                core of
+                                this phase, and it involves reviewing a set of movies, around 100 in total. For each
+                                movie,
+                                we'll ask you three questions:
+                                <ul class="inner-list">
+                                    <li>"How familiar are you with this movie?"</li>
+                                    <li>"How interested are you in watching this movie via a streaming service?"</li>
+                                    <li>"For unseen movies only: If you were to watch this movie, what would you predict
+                                        your
+                                        rating of it to be?"</li>
+                                </ul>
+                            </li>
+                            <li>Following these questions, you will be presented with the movies you are most interested
+                                in
+                                watching (based on your answers to the question above), and you will be asked to rank
+                                them
+                                (about 3 to 5 items). For the last part of the first phase, you will be asked to fill
+                                out a
+                                post-study questionnaire that aims to gather feedback on your overall experience.</li>
+                            <li>As mentioned before, the first phase is expected to take up to 1.5 hours. At the end, we
+                                will
+                                ask you if you are interested in participating in the second phase of the study. If you
+                                are
+                                interested, we will update your profile and shortly contact you if you are selected to
+                                start
+                                the second phase. We will also be in contact to handle remuneration for the first phase.
+                            </li>
+                            <li>The second phase is the same as the first one, except that there will be up to 1000
+                                recommendations this time and it will take up to 5 hours. Upon completion, you can
+                                expect to
+                                see the top movie ranking and post-study questionnaire like before. We will handle the
+                                remuneration process from there.</li>
+                            <li>To participate, you must be able to read, comprehend, and communicate in English. You
+                                must
+                                also have a laptop or desktop computer that you can use. A mobile device will not work.
+                                Your
+                                computer must be connected to the internet to be able to access our websites. Also, to
+                                participate in this study you must reside in USA or Canada and be over the age of 17.
+                            </li>
+                            <li>We will collect your judgments of the recommendations as well as computer usage. You may
+                                stop
+                                participating in the study at any point and withdraw your consent without penalty.</li>
+                        </ul>
+
+
+                        <p class="card-text" style="text-align: justify;">
+                            <strong>Confidentiality and Data Security: </strong>
+                            <br>
+                            During the study, we will store all your responses to questions and all your interactions
+                            with the system. To keep your data unidentified, you will be issued an anonymous identifier
+                            in the form of a participant ID. During the study, you will use our website to answer
+                            questions and conduct web searches. We will not record your IP address. We will only use
+                            your anonymous ID to record your answers and behavior. All anonymized data collected will be
+                            retained for a minimum of 7 years and will only be used for research purposes. We may refer
+                            to individual participants when describing the results of the study, and in these cases, we
+                            will always refer to “Participant 1” or some other similar anonymous name. Your name will
+                            never appear in any publication that results from this study.
+                            Once you have finished participating in the study, we will destroy our record of the
+                            association of your name with your anonymous ID. If you want to withdraw your consent, you
+                            must do it before finishing participation. Once we have destroyed this association between
+                            your identity and the anonymous identifier, we will not be able to remove your data from our
+                            study.
+                            <br>
+                        </p>
+
+                        <p class="card-text" style="text-align: justify;">
+                            <strong>Broad consent for the storage and future unspecified use of data: </strong>
+                            <br>
+                            We will make your Movielens ratings, collected computer behavioral data, decisions, and
+                            responses to all questions during the study, but excluding demographic data, available to
+                            other researchers who request access to it for similar research purposes as we have
+                            outlined, i.e., research on evaluation of recommendation systems. Researchers granted access
+                            to the data may be located outside of Canada and may not be subject to the same ethical
+                            standards (TCPS). While we will only release the data to other researchers, the use by these
+                            researchers will not be controlled by us. All data will be anonymized, but each
+                            participant’s data will remain identifiable as coming from an individual, i.e., “Participant
+                            1”, “Participant 2”, etc. as such, the likelihood that someone could determine your identity
+                            from the data is very low. We will not publicly share this data, i.e., the data would only
+                            be made available to other researchers for research purposes. The data that we release to
+                            other researchers will be stored in an access-controlled repository (GitHub) and will not be
+                            openly available to the public. We and other researchers will not contact you regarding
+                            future research related to this data, for the data will be anonymized and not tied to your
+                            personal information.
+                            <br>
+                        </p>
+
+
+                        <p class="card-text" style="text-align: justify;">
+                            <strong>Remuneration for Your Participation for phase one: </strong>
+                            <br>
+                            The duration of the first phase of this user study is 1.5 hours. You will be paid $30 CAD
+                            (if you reside in Canada) or $23 USD (if you reside in USA) as an Amazon.ca/Amazon.com
+                            e-gift card for the study. It is your responsibility to report this amount for income tax
+                            purposes.
+                            <br>
+                        </p>
+
+
+                        <p class="card-text" style="text-align: justify;">
+                            <strong>Remuneration for Your Participation for phase two: </strong>
+                            <br>
+                            The duration of the second phase of this user study is estimated to be up to 5 hours. You
+                            will be paid an hourly rate of $20 CAD (if you reside in Canada) or $15 USD (if you reside
+                            in USA) as an Amazon.ca/Amazon.com e-gift card for the study. Should you stop before
+                            completing the study, you will be paid based on the amount of time spent doing judgement,
+                            calculated from website logs, rounded up to the nearest hour. It is your responsibility to
+                            report this amount for income tax purposes.
+                            <br>
+                        </p>
+
+
+                        <p class="card-text" style="text-align: justify;">
+                            <strong>Risks and Benefits: </strong>
+                            <br>
+                            There is minimal risk to you from participation in this study. There are no direct benefits
+                            to you from participation. However, we hope the study will provide results that can lead to
+                            advances in the evaluation and development of recommender systems that will benefit society
+                            at large.
+                            <br>
+                        </p>
+
+
+                        <p class="card-text" style="text-align: justify;">
+                            <strong>Research Ethics Clearance: </strong>
+                            <br>
+                            This study has been reviewed and received ethics clearance through a University of Waterloo
+                            Research Ethics Board (REB #45524) If you have questions for the Board, contact the Office
+                            of Research Ethics, toll-free at 1-833-643-2379 (Canada and USA), 1-519-888-4440, or
+                            reb@uwaterloo.ca. For all other questions regarding this project please contact the
+                            researchers listed above. Thank you for your interest in this project.
+                            <br>
+                        </p>
+
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="consent1" name="consent1">
+                                <label class="form-check-label" for="consent1">
+                                    I confirm that I have fully read this document and I consent to all items above.
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="consent2" name="consent2">
+                                <label class="form-check-label" for="consent2">
+                                    I do not consent to the mentioned items above nor do I want to participate in the
+                                    study.
+                                </label>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Full Name:</label>
+                                <input type="text" class="form-control" id="fullName" name="fullName" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address:</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="age" class="form-label">Age:</label>
+                                <input type="number" class="form-control" id="age" name="age" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="country" class="form-label">Country of Residence:</label>
+                                <input type="text" class="form-control" id="country" name="country" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</div>
