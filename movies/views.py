@@ -11,9 +11,6 @@ import logging
 """
 TODO:
 ------------------------------
-edit movie list page according to updated movie details
-add logging to movie detail page once everthing is finialized
-
 
 add /overview url for when users first click on banner
     (no login required
@@ -27,10 +24,14 @@ implement the two phase scenario
     change interaction model to have two ranks (p1 rank and p2 rank)
     set a global flag on views.py to denote we're on phase 1 or 2?
     change all views to get movies from correct movie set based on flag
+    make sure to edit the final ranking and remove likely_to_watch thing
 
 
 Change the load_users section, make username and password anon (B-userpooling on colab + load_users)
+log processing
+dockerization
 remove the django-toolbar from the project
+activate SessionTimeoutMiddleware in settings
 """
 
 
@@ -167,6 +168,10 @@ def movie_detail(request, movie_id):
     if participant.fully_done:
         return render(request, "movies/rankingDone.html")
 
+    logger.info(
+        f"view_movie: User {participant.user.username} shown movie/{movie.movieId} page."
+    )
+
     interaction = Interaction.objects.filter(
         participant=participant, movie=movie
     ).first()
@@ -188,6 +193,10 @@ def movie_detail(request, movie_id):
             interaction.rating = rating
             interaction.will_to_watch = will_to_watch
             interaction.save()
+
+            logger.info(
+                f"edit_judge_action: User {participant.user.username} edited interaction with movie/{movie.movieId}."
+            )
         else:
             interaction = Interaction.objects.create(
                 participant=participant,
@@ -199,6 +208,10 @@ def movie_detail(request, movie_id):
             )
             participant.remaining_judge_actions -= 1
             participant.save()
+
+            logger.info(
+                f"submit_judge_action: User {participant.user.username} submitted interaction with movie/{movie.movieId}."
+            )
 
         return redirect("movie_judge")
 
