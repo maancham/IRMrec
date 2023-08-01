@@ -57,6 +57,19 @@ class ParticipantInfo(models.Model):
     def __str__(self) -> str:
         return self.full_name
 
+    def save(self, *args, **kwargs):
+        if not self.ParticipantId:
+            latest_participant_info = ParticipantInfo.objects.order_by(
+                "-ParticipantId"
+            ).first()
+
+            if latest_participant_info:
+                self.ParticipantId = latest_participant_info.ParticipantId + 1
+            else:
+                self.ParticipantId = 1
+
+        super().save(*args, **kwargs)
+
 
 class Participant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

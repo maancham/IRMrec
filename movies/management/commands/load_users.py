@@ -1,7 +1,7 @@
 import json
 from django.core.management import BaseCommand
 from django.contrib.auth.hashers import make_password
-from ...models import Movie, Participant
+from ...models import Movie, Participant, ParticipantInfo
 from django.contrib.auth.models import User
 
 
@@ -20,12 +20,15 @@ class Command(BaseCommand):
             user_dicts = json.load(json_file)
 
         for user_data in user_dicts:
+            participant_info = ParticipantInfo.objects.get(
+                ParticipantId=user_data["participant_id"]
+            )
+
             user_obj = User(
                 first_name=user_data["first_name"],
                 last_name=user_data["last_name"],
-                username=user_data["first_name"][0].lower()
-                + user_data["last_name"][0].lower()
-                + "participant_"
+                username="participant_"
+                + str(participant_info.ParticipantId)
                 + str(user_data["dataset_id"]),
                 password=make_password(user_data["pass"]),
             )
@@ -35,6 +38,7 @@ class Command(BaseCommand):
 
             new_participant = Participant(
                 user=user_obj,
+                participant_info=participant_info,
                 datasetId=user_data["dataset_id"],
                 remaining_judge_actions=len(rec_movies),
             )
