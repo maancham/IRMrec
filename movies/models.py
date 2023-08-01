@@ -43,6 +43,7 @@ class Movie(models.Model):
 
 
 class ParticipantInfo(models.Model):
+    ParticipantId = models.IntegerField(null=False, primary_key=True)
     full_name = models.CharField(max_length=150)
     email = models.EmailField()
     age = models.IntegerField()
@@ -59,11 +60,13 @@ class ParticipantInfo(models.Model):
 
 class Participant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    participant_info = models.OneToOneField(ParticipantInfo, on_delete=models.CASCADE)
 
     datasetId = models.IntegerField(null=False)
     movies = models.ManyToManyField(Movie)
 
     taken_initial_quiz = models.BooleanField(default=False)
+    given_demographics = models.BooleanField(default=False)
     remaining_judge_actions = models.IntegerField(default=0)
     fully_done = models.BooleanField(default=False)
 

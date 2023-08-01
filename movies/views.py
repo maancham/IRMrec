@@ -12,12 +12,17 @@ import logging
 """
 TODO:
 ------------------------------
+users the first time logging into the system:
+    -redirected to home page
+    -need to add a field to participant and participantinfo to check if they have given demographic info
+    -shown the demographic questions and get answers
+    -shown text tutorial
+    -shown a link to the video tutorial and ask them to take a look
+    -presented with the quiz, change answers until all correct [leave question text blank for now, but handle options and logic]
 
+users the other times logging into the system:
+    -redirected to the normal version of home, nothing extra there
 
-
-edits all logs so that values are also logged
-
-add /upload_profile url for users to add their ratings.csv, need to save it to DB somehow
 implement the two phase scenario
     edit userpooling so that 10 items from ratings profile are shuffled into the first 100 (depth k1 from all algo outputs)
     change user model to have two sets of movies (p1 and p2)
@@ -27,7 +32,8 @@ implement the two phase scenario
     change all views to get movies from correct movie set based on flag
     make sure to edit the final ranking and remove likely_to_watch thing
 
-
+edits all logs so that values are also logged
+    
 Change the load_users section, make username and password anon (B-userpooling on colab + load_users)
 log processing
 dockerization
@@ -108,6 +114,7 @@ def home(request):
             "movies/home.html",
             {
                 "remaining_judge_actions": participant.remaining_judge_actions,
+                "given_demographics": participant.given_demographics,
                 # TODO: CHANGE THIS BACK TO NORMAL:
                 # "quiz_done": participant.taken_initial_quiz,
                 "quiz_done": True,

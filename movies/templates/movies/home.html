@@ -5,13 +5,21 @@
 {% block content %}
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-lg-10">
       <div class="card">
         <div class="card-body">
           <h3 class="card-title">Welcome to the Information Retrieval Movie Recommendation!</h3>
           <p class="card-text" style="text-align: justify;">
-            Thank you for participating in this study. We are working to build the first test collection for offline
-            evaluation of recommender systems that follows the best practices of information retrieval.
+            Thank you for participating in this study. We aim to evaluate how well recommendation
+            systems, like those used by e-commerce applications and streaming services, understand users' preferences
+            for movies.
+          </p>
+          {%if given_demographics != true %}
+          <p> ridi</p>
+
+          {% else %}
+
+          <p class="card-text" style="text-align: justify;">
             As you have seen in the tutorial video, our website consists of three main parts. You can access each part
             from the dropdown menu in the top right corner of the page:
             <br>
@@ -30,6 +38,8 @@
             that this step will only be unlocked once you have judged all the recommended movies.
           </p>
           <hr>
+
+          {% endif %}
 
           {% if quiz_done %}
           {% if remaining_judge_actions != 0 %}
