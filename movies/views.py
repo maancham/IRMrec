@@ -12,16 +12,6 @@ import logging
 """
 TODO:
 ------------------------------
-users the first time logging into the system:
-    -redirected to home page
-    -need to add a field to participant and participantinfo to check if they have given demographic info
-    -shown the demographic questions and get answers
-    -shown text tutorial
-    -shown a link to the video tutorial and ask them to take a look
-    -presented with the quiz, change answers until all correct [leave question text blank for now, but handle options and logic]
-
-users the other times logging into the system:
-    -redirected to the normal version of home, nothing extra there
 
 all other pages beside /home should be locked if quiz_done is not set to True    
 
@@ -34,10 +24,13 @@ implement the two phase scenario
     change all views to get movies from correct movie set based on flag
     make sure to edit the final ranking and remove likely_to_watch thing
 
-edits all logs so that values are also logged
+WITH MARK: firgure out 5 quiz questions and their answers and change tutorial.html
     
+edits all logs so that values are also logged
+
 Change the load_users section, make username and password anon (B-userpooling on colab + load_users)
 log processing
+handle the video tutorial once everything is finalized
 dockerization
 remove the django-toolbar from the project
 activate SessionTimeoutMiddleware in settings
@@ -129,8 +122,22 @@ def demographic(request):
 
 
 @login_required
+def tutorial(request):
+    participant = Participant.objects.get(user=request.user)
+
+    if request.method == "POST":
+        participant.taken_initial_quiz = True
+        participant.save()
+        return redirect("home")
+
+    return render(request, "movies/tutorial.html")
+
+
+@login_required
 def home(request):
     participant = Participant.objects.get(user=request.user)
+    if not participant.taken_initial_quiz:
+        return redirect("tutorial")
     if participant.given_demographics != True:
         return redirect("demographic")
     if participant.fully_done:
@@ -139,12 +146,7 @@ def home(request):
         return render(
             request,
             "movies/home.html",
-            {
-                "remaining_judge_actions": participant.remaining_judge_actions,
-                # TODO: CHANGE THIS BACK TO NORMAL:
-                # "quiz_done": participant.taken_initial_quiz,
-                "quiz_done": True,
-            },
+            {"remaining_judge_actions": participant.remaining_judge_actions},
         )
 
 

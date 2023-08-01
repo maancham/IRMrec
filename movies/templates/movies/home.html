@@ -9,18 +9,10 @@
       <div class="card">
         <div class="card-body">
           <h3 class="card-title">Welcome to the Information Retrieval Movie Recommendation!</h3>
-          <p class="card-text" style="text-align: justify;">
-            Thank you for participating in this study. We aim to evaluate how well recommendation
-            systems, like those used by e-commerce applications and streaming services, understand users' preferences
-            for movies.
-          </p>
-          {%if given_demographics != true %}
-          <p> </p>
 
-          {% else %}
 
           <p class="card-text" style="text-align: justify;">
-            As you have seen in the tutorial video, our website consists of three main parts. You can access each part
+            As you have seen in the tutorial, this study consists of three main parts. You can access each part
             from the dropdown menu in the top right corner of the page:
             <br>
             <strong>1. Judge Movies:</strong>
@@ -34,25 +26,18 @@
 
             <br>
             <strong>3. Final Ranking:</strong>
-            In the last step, we will ask you to choose your top three movies from all the recommendations. Please note
+            In the last step, we will ask you to choose your top movies from all the recommendations. Please note
             that this step will only be unlocked once you have judged all the recommended movies.
           </p>
           <hr>
 
-          {% endif %}
 
-          {% if quiz_done %}
           {% if remaining_judge_actions != 0 %}
           <p class="card-text">Looks like you already handled the quiz, so please judge the following movies:</p>
           <a href="{% url 'movie_judge' %}" class="btn btn-primary btn-lg btn-block">Judge movies</a>
           {% else %}
           <p class="card-text">You are done with the recommendation judgement phase! Only the final ranking left:</p>
           <a href="{% url 'final_ranking' %}" class="btn btn-primary btn-lg btn-block">Choose Your Top Picks</a>
-          {% endif %}
-          {% else %}
-          <p class="card-text">Before we get started, please complete this quiz to make sure you know how to work with
-            the system:</p>
-          <a href="https://google.com" target="_blank" class="btn btn-primary btn-lg btn-block">Take the quiz</a>
           {% endif %}
 
 

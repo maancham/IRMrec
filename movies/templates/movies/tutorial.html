@@ -1,0 +1,91 @@
+<title>{% block title %}IRMrec{% endblock %}</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
+    type="text/css">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-top: 1px; padding-bottom: 1px;">
+    <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand" href="{% url 'home' %}">IRMrec</a>
+
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu"
+            aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<div class="container">
+    <ol class="breadcrumb my-4">
+        {% block breadcrumb %}
+        {% endblock %}
+    </ol>
+    {% block content %}
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card">  
+                        <div class="card-body">
+                            <h3 class="card-title">Tutorial Part!</h3>
+                            <p class="card-text" style="text-align: justify;">
+                                Watch the video tutorial to learn how to navigate and use the system effectively.
+                                After watching the video, please answer the quiz questions at the end. You need to
+                                answer all questions correctly to proceed to the homepage. By clicking on the link below, a new 
+                                browser tab will be opened for you, showing you a YouTube tutorial for this study.
+                            </p>
+
+                            <!-- Add your video tutorial link here -->
+                            <a href="https://google.com" target="_blank">Link to Video Tutorial</a>
+
+                            <hr>
+
+                            <!-- Quiz Section -->
+                            <h4>Quiz Questions</h4>
+                            <form method="post" onsubmit="return validateQuizForm();">
+                                {% csrf_token %}
+
+                                <p>Question 1: What is the first step in the movie recommendation process?</p>
+                                <input type="radio" name="q1" value="a"> Option A<br>
+                                <input type="radio" name="q1" value="b"> Option B<br>
+                                <input type="radio" name="q1" value="c"> Option C<br>
+                                <br>
+
+                                <p>Question 2: How many main parts does the study consist of?</p>
+                                <input type="radio" name="q2" value="a"> Option A<br>
+                                <input type="radio" name="q2" value="b"> Option B<br>
+                                <input type="radio" name="q2" value="c"> Option C<br>
+                                <br>
+                                <!-- Add more quiz questions here -->
+
+                                <br>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+</div>
+
+<script>
+    function validateQuizForm() {
+        const q1Answer = document.querySelector('input[name="q1"]:checked');
+        const q2Answer = document.querySelector('input[name="q2"]:checked');
+        // Add more quiz question validation as needed
+
+        if (!q1Answer || !q2Answer /* Add more conditions for other questions */) {
+            alert("Please answer all quiz questions.");
+            return false;
+        }
+
+        // Check quiz answers
+        if (q1Answer.value !== "b" || q2Answer.value !== "c" /* Add correct answers for other questions */) {
+            alert("One or more answers are incorrect. Please review the tutorial and try again.");
+            return false;
+        }
+
+        // If all checks are passed, the form can be submitted
+        return true;
+    }
+</script>
