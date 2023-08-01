@@ -23,6 +23,8 @@ users the first time logging into the system:
 users the other times logging into the system:
     -redirected to the normal version of home, nothing extra there
 
+all other pages beside /home should be locked if quiz_done is not set to True    
+
 implement the two phase scenario
     edit userpooling so that 10 items from ratings profile are shuffled into the first 100 (depth k1 from all algo outputs)
     change user model to have two sets of movies (p1 and p2)
@@ -104,8 +106,33 @@ def login_view(request):
 
 
 @login_required
+def demographic(request):
+    participant = Participant.objects.get(user=request.user)
+    participant_info = participant.participant_info
+
+    if request.method == "POST":
+        participant_info.gender = request.POST["gender"]
+        participant_info.race = request.POST["race"]
+        participant_info.education = request.POST["education"]
+        participant_info.save()
+
+        participant.given_demographics = True
+        participant.save()
+
+        logger.info(
+            f"demographic_action: User {participant.user.username} submitted their demographic info."
+        )
+
+        return redirect("home")
+
+    return render(request, "movies/demographic.html")
+
+
+@login_required
 def home(request):
     participant = Participant.objects.get(user=request.user)
+    if participant.given_demographics != True:
+        return redirect("demographic")
     if participant.fully_done:
         return render(request, "movies/rankingDone.html")
     else:
@@ -114,7 +141,6 @@ def home(request):
             "movies/home.html",
             {
                 "remaining_judge_actions": participant.remaining_judge_actions,
-                "given_demographics": participant.given_demographics,
                 # TODO: CHANGE THIS BACK TO NORMAL:
                 # "quiz_done": participant.taken_initial_quiz,
                 "quiz_done": True,

@@ -1,0 +1,197 @@
+<title>{% block title %}IRMrec{% endblock %}</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
+    type="text/css">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-top: 1px; padding-bottom: 1px;">
+    <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand" href="{% url 'home' %}">IRMrec</a>
+
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu"
+            aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<style>
+    /* Feel free to adjust styles as needed */
+    .card {
+      margin-top: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+  
+    .form-check {
+      margin-bottom: 10px;
+    }
+  
+    .btn-primary {
+      margin-top: 10px;
+    }
+</style>
+
+
+<div class="container">
+    <ol class="breadcrumb my-4">
+        {% block breadcrumb %}
+        {% endblock %}
+    </ol>
+    {% block content %}
+        <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                <h3 class="card-title">Welcome to the Information Retrieval Movie Recommendation!</h3>
+                <p class="card-text" style="text-align: justify;">
+                    Thank you for participating in this study. We aim to evaluate how well recommendation
+                    systems, like those used by e-commerce applications and streaming services, understand users' preferences
+                    for movies. This is the only general questionnaire given at the start of the study, which aims to collect demographic information on participants.  
+                </p>
+
+                <hr>
+                
+
+                <form method="post" onsubmit="return validateForm();">
+                    {% csrf_token %}
+                    <label for="gender">What is your gender?</label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gender" id="gender_male" value="Man">
+                      <label class="form-check-label" for="gender_male">Man</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gender" id="gender_female" value="Woman">
+                      <label class="form-check-label" for="gender_female">Woman</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gender" id="gender_non_binary" value="Non-binary">
+                      <label class="form-check-label" for="gender_non_binary">Non-binary</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gender" id="gender_other" value="Other">
+                      <label class="form-check-label" for="gender_other">Prefer to self-identify as (12 characters max)</label>
+                      <input type="text" name="gender_other_text" id="gender_other_text" maxlength="12">
+                    </div>
+        
+                    <br>
+                    <label for="race">What is your race or ethnic background?</label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="race" id="race_african" value="African">
+                      <label class="form-check-label" for="race_african">African, Afro-Caribbean, African-Canadian descent</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="race" id="race_east_asian" value="East_Asian">
+                      <label class="form-check-label" for="race_east_asian">Chinese, Korean, Japanese, Taiwanese descent</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="race" id="race_latin_american" value="Latin_American">
+                      <label class="form-check-label" for="race_latin_american">Latin American or Hispanic descent</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="race" id="race_arab_persian" value="Arab_Persian">
+                      <label class="form-check-label" for="race_arab_persian">Arab, Persian, West Asian descent, e.g., Afghan, Egyptian, Iranian, etc.</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="race" id="race_south_asian" value="South_Asian">
+                      <label class="form-check-label" for="race_south_asian">South Asian descent e.g., East Indian, Pakistani, Sri Lankan, Indo-Caribbean, etc.</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="race" id="race_southeast_asian" value="Southeast_Asian">
+                      <label class="form-check-label" for="race_southeast_asian">Southeast Asian descent e.g., Filipino, Vietnamese, Cambodian, Thai, etc.</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="race" id="race_european" value="European">
+                      <label class="form-check-label" for="race_european">European descent</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="race" id="race_other" value="Other">
+                        <label class="form-check-label" for="race_other">Prefer to self-identify as (40 characters max)</label>
+                        <input type="text" name="race_ethnicity_other_text" id="race_ethnicity_other_text" maxlength="40">
+                    </div>
+        
+                    <br>
+                    <label for="education">What is your highest education level obtained? (40 characters max)</label>
+                    <input type="text" name="education" id="education" required>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+
+
+
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    {% endblock %}
+
+</div>
+
+
+<script>
+    function validateForm() {
+        // Check if the gender is selected
+        const genderSelected = document.querySelector('input[name="gender"]:checked');
+        if (!genderSelected) {
+            alert("Please select your gender.");
+            return false;
+        }
+
+        // Check if the race is selected
+        const raceSelected = document.querySelector('input[name="race"]:checked');
+        if (!raceSelected) {
+            alert("Please select your race or ethnic background.");
+            return false;
+        }
+
+        // Check if the education level is entered
+        const educationLevel = document.getElementById('education').value.trim();
+        if (!educationLevel) {
+            alert("Please enter your highest education level obtained.");
+            return false;
+        }
+
+        // Check if "Prefer to self-identify as" is selected and capture the value
+        const otherGenderSelected = document.getElementById('gender_other');
+        const otherGenderText = document.getElementById('gender_other_text').value.trim();
+        if (otherGenderSelected.checked && !otherGenderText) {
+            alert("Please enter your self-identified gender.");
+            return false;
+        }
+
+        // Attach the self-identified gender value to the form data if provided
+        document.getElementById('gender_other').value = otherGenderText;
+
+        // Check if "Prefer to self-identify as" for race/ethnicity is selected and capture the value
+        const otherRaceSelected = document.getElementById('race_other');
+        const otherRaceText = document.getElementById('race_ethnicity_other_text').value.trim();
+        if (otherRaceSelected.checked && !otherRaceText) {
+            alert("Please enter your self-identified race/ethnicity.");
+            return false;
+        }
+
+        // Attach the self-identified race/ethnicity value to the form data if provided
+        document.getElementById('race_other').value = otherRaceText;
+
+        // Additional checks for maximum character lengths
+        if (educationLevel.length > 40) {
+            alert("Please limit the highest education level to 40 characters.");
+            return false;
+        }
+
+        if (otherGenderText && otherGenderText.length > 12) {
+            alert("Please limit the self-identified gender to 12 characters.");
+            return false;
+        }
+
+        if (otherRaceText && otherRaceText.length > 40) {
+            alert("Please limit the self-identified race/ethnicity to 40 characters.");
+            return false;
+        }
+
+        // If all checks are passed, the form can be submitted
+        return true;
+    }
+</script>
