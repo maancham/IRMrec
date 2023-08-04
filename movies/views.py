@@ -16,12 +16,6 @@ STUDY_STAGE = 1
 """
 TODO:
 ------------------------------
-
-implement the two phase scenario
-    edit userpooling so that 10 items from ratings profile are shuffled into the first 100 (depth k1 from all algo outputs)
-
-/edit rankingDone page
-Once they are finished with phase one: thank you page stuff + will be in contact with phase two stuff (also ask question)
 when they login for the second phase:
     -normal homepage
 
@@ -33,6 +27,7 @@ edits all logs so that values are also logged
 log processing
 handle the video tutorial once everything is finalized
 dockerization
+edit userpooling so that 10 items from ratings profile are shuffled into the first 100 (depth k1 from all algo outputs)
 remove the django-toolbar from the project
 activate SessionTimeoutMiddleware in settings
 """
@@ -137,12 +132,17 @@ def tutorial(request):
 @login_required
 def home(request):
     participant = Participant.objects.get(user=request.user)
-    if not participant.taken_initial_quiz:
-        return redirect("tutorial")
     if participant.given_demographics != True:
         return redirect("demographic")
-    if participant.fully_done:
-        return render(request, "movies/rankingDone.html")
+
+    if not participant.taken_initial_quiz:
+        return redirect("tutorial")
+
+    fully_done = (
+        participant.fully_p1_done if STUDY_STAGE == 1 else participant.fully_p2_done
+    )
+    if fully_done:
+        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
     else:
         remaining_judge_actions = (
             participant.remaining_p1_judge_actions
@@ -176,7 +176,7 @@ def movie_list(request):
     if (STUDY_STAGE == 1 and participant.fully_p1_done) or (
         STUDY_STAGE == 2 and participant.fully_p2_done
     ):
-        return render(request, "movies/rankingDone.html")
+        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
 
     interactions = {
         interaction.movie.movieId: interaction for interaction in user_interactions
@@ -247,7 +247,7 @@ def movie_detail(request, movie_id):
     if (STUDY_STAGE == 1 and participant.fully_p1_done) or (
         STUDY_STAGE == 2 and participant.fully_p2_done
     ):
-        return render(request, "movies/rankingDone.html")
+        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
 
     logger.info(
         f"view_movie: User {participant.user.username} shown movie/{movie.movieId} page."
@@ -352,15 +352,15 @@ def final_ranking(request):
         )
         return render(request, "movies/rankingLocked.html")
 
-    full_done = (
+    fully_done = (
         participant.fully_p1_done if STUDY_STAGE == 1 else participant.fully_p2_done
     )
 
-    if full_done:
+    if fully_done:
         logger.info(
             f"view_ranking_done: User {participant.user.username} shown ranking done page."
         )
-        return render(request, "movies/rankingDone.html")
+        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
 
     if request.method == "POST":
         ranks = []
@@ -390,7 +390,7 @@ def final_ranking(request):
         logger.info(
             f"submit_ranking_action: User {participant.user.username} submitted ranking."
         )
-        return render(request, "movies/rankingDone.html")
+        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
 
     top_interactions = Interaction.objects.filter(
         participant=participant, will_to_watch="Extremely interested"

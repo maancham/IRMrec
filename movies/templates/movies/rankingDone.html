@@ -6,13 +6,19 @@
     <div class="col-lg-8">
       <div class="card">
         <div class="card-body">
-            <h3 class="card-title">Thank you very much and congratulations!</h3>
-            <p class="card-text">You have completed the IRMrec study.</p>
-            <p class="card-text">To finalize your participation, please fill out the <a href=https://docs.google.com/forms/d/e/1FAIpQLSfPVYMljcabm0ZOxM0wuV5G1YDO6xDMqVqgudMHFZRIvBJlQQ/viewform?usp=sf_link" target="_blank">post-study questionnaire.</a> Your feedback is valuable to us.</p>
-            <p class="card-text">Lastly, to receive reimbursement, please send an email to 
-                <a href="mailto:h2chaman@uwaterloo.ca">h2chaman@uwaterloo.ca</a> 
-                with your contact details. We will shortly handle the process from there.
-            </p>
+          {% if study_stage == 1 %}
+            <h3 class="card-title">Thank you for completing Phase One!</h3>
+            <p class="card-text">You have successfully completed Phase One of the IRMrec study.</p>
+            <p class="card-text">To finalize your participation, please fill out the <a href="https://docs.google.com/forms/d/e/1FAIpQLSfPVYMljcabm0ZOxM0wuV5G1YDO6xDMqVqgudMHFZRIvBJlQQ/viewform?usp=sf_link" target="_blank">post-study questionnaire</a>. Your feedback is valuable to us.</p>
+            <p class="card-text">To receive reimbursement for your time, send us an email at <a href="mailto:h2chaman@uwaterloo.ca">h2chaman@uwaterloo.ca</a> </p>
+            <p class="card-text"><strong>Also, if</strong> you are interested in participating in Phase Two, which involves the assessment of up to 1000 movies, please let us know in your email. We will contact you if you are selected for Phase Two.</p>
+          {% elif study_stage == 2 %}
+            <h3 class="card-title">Congratulations! You have completed the IRMrec study!</h3>
+            <p class="card-text">You have successfully completed both phases of the IRMrec study.</p>
+            <p class="card-text">To finalize your participation, please fill out the <a href="https://docs.google.com/forms/d/e/1FAIpQLSfPVYMljcabm0ZOxM0wuV5G1YDO6xDMqVqgudMHFZRIvBJlQQ/viewform?usp=sf_link" target="_blank">post-study questionnaire</a>. Your feedback is valuable to us.</p>
+            <p class="card-text">To receive reimbursement for your time, send us an email at <a href="mailto:h2chaman@uwaterloo.ca">h2chaman@uwaterloo.ca</a> </p>
+            <p class="card-text">Thank you for your time and participation in the study!</p>
+          {% endif %}
         </div>
       </div>
     </div>
