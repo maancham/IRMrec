@@ -19,10 +19,8 @@ TODO:
 
 implement the two phase scenario
     edit userpooling so that 10 items from ratings profile are shuffled into the first 100 (depth k1 from all algo outputs)
-    set a global flag on views.py to denote we're on phase 1 or 2?
-    change all views to get movies from correct movie set based on flag
-    make sure to edit the final ranking and remove likely_to_watch thing
 
+/edit rankingDone page
 Once they are finished with phase one: thank you page stuff + will be in contact with phase two stuff (also ask question)
 when they login for the second phase:
     -normal homepage
@@ -343,14 +341,22 @@ def final_ranking(request):
     if not participant.taken_initial_quiz:
         return redirect("home")
 
-    remaining = participant.remaining_judge_actions
-    if remaining != 0:
+    remaining_judge_actions = (
+        participant.remaining_p1_judge_actions
+        if STUDY_STAGE == 1
+        else participant.remaining_p2_judge_actions
+    )
+    if remaining_judge_actions != 0:
         logger.info(
             f"view_ranking_locked: User {participant.user.username} shown ranking locked page."
         )
         return render(request, "movies/rankingLocked.html")
 
-    if participant.fully_done:
+    full_done = (
+        participant.fully_p1_done if STUDY_STAGE == 1 else participant.fully_p2_done
+    )
+
+    if full_done:
         logger.info(
             f"view_ranking_done: User {participant.user.username} shown ranking done page."
         )
@@ -368,12 +374,18 @@ def final_ranking(request):
                 interaction = Interaction.objects.get(
                     participant=participant, movie=movie
                 )
-                interaction.rank = idx + 1
+                if STUDY_STAGE == 1:
+                    interaction.rank_p1 = idx + 1
+                else:
+                    interaction.rank_p2 = idx + 1
                 interaction.save()
             except:
                 print("ranking save not successful!")
 
-        participant.fully_done = True
+        if STUDY_STAGE == 1:
+            participant.fully_p1_done = True
+        else:
+            participant.fully_p2_done = True
         participant.save()
         logger.info(
             f"submit_ranking_action: User {participant.user.username} submitted ranking."
@@ -381,29 +393,33 @@ def final_ranking(request):
         return render(request, "movies/rankingDone.html")
 
     top_interactions = Interaction.objects.filter(
-        participant=participant, likely_to_watch="Very Interested"
+        participant=participant, will_to_watch="Extremely interested"
     )
 
     if len(top_interactions) < 3:
         top_interactions = Interaction.objects.filter(
             participant=participant,
-            likely_to_watch__in=["Very Interested", "Interested"],
+            will_to_watch__in=["Extremely interested", "Very interested"],
         )
 
     if len(top_interactions) < 3:
         top_interactions = Interaction.objects.filter(
             participant=participant,
-            likely_to_watch__in=["Very Interested", "Interested", "Not Interested"],
-        )
-
-    if len(top_interactions) < 3:
-        top_interactions = Interaction.objects.filter(
-            participant=participant,
-            likely_to_watch__in=[
-                "Very Interested",
+            will_to_watch__in=[
+                "Extremely interested",
+                "Very interested",
                 "Interested",
-                "Not Interested",
-                "Disappointed",
+            ],
+        )
+
+    if len(top_interactions) < 3:
+        top_interactions = Interaction.objects.filter(
+            participant=participant,
+            will_to_watch__in=[
+                "Extremely interested",
+                "Very interested",
+                "Interested",
+                "Somewhat interested",
             ],
         )
 

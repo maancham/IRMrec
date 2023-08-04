@@ -79,8 +79,12 @@ class Participant(models.Model):
     given_demographics = models.BooleanField(default=False)
 
     datasetId = models.IntegerField(null=False)
-    phaseone_movies = models.ManyToManyField(Movie)
-    phasetwo_movies = models.ManyToManyField(Movie)
+    phaseone_movies = models.ManyToManyField(
+        Movie, related_name="phaseone_participants"
+    )
+    phasetwo_movies = models.ManyToManyField(
+        Movie, related_name="phasetwo_participants"
+    )
 
     remaining_p1_judge_actions = models.IntegerField(default=0)
     fully_p1_done = models.BooleanField(default=False)
