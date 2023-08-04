@@ -75,13 +75,18 @@ class Participant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     participant_info = models.OneToOneField(ParticipantInfo, on_delete=models.CASCADE)
 
-    datasetId = models.IntegerField(null=False)
-    movies = models.ManyToManyField(Movie)
-
     taken_initial_quiz = models.BooleanField(default=False)
     given_demographics = models.BooleanField(default=False)
-    remaining_judge_actions = models.IntegerField(default=0)
-    fully_done = models.BooleanField(default=False)
+
+    datasetId = models.IntegerField(null=False)
+    phaseone_movies = models.ManyToManyField(Movie)
+    phasetwo_movies = models.ManyToManyField(Movie)
+
+    remaining_p1_judge_actions = models.IntegerField(default=0)
+    fully_p1_done = models.BooleanField(default=False)
+
+    remaining_p2_judge_actions = models.IntegerField(default=0)
+    fully_p2_done = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.user.username
@@ -124,7 +129,8 @@ class Interaction(models.Model):
         null=True,
         blank=True,
     )
-    rank = models.IntegerField(null=True, blank=True)
+    rank_p1 = models.IntegerField(null=True, blank=True)
+    rank_p2 = models.IntegerField(null=True, blank=True)
 
     class Meta:
         unique_together = [["participant", "movie"]]

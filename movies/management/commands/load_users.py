@@ -34,17 +34,20 @@ class Command(BaseCommand):
             )
             user_obj.save()
 
-            rec_movies = Movie.objects.filter(movieId__in=user_data["recs"])
+            p1_recs = Movie.objects.filter(movieId__in=user_data["p1_recs"])
+            p2_recs = Movie.objects.filter(movieId__in=user_data["p2_recs"])
 
             new_participant = Participant(
                 user=user_obj,
                 participant_info=participant_info,
                 datasetId=user_data["dataset_id"],
-                remaining_judge_actions=len(rec_movies),
+                remaining_p1_judge_actions=len(p1_recs),
+                remaining_p2_judge_actions=len(p2_recs),
             )
             new_participant.save()
 
-            new_participant.movies.add(*rec_movies)
+            new_participant.phaseone_movies.add(*p1_recs)
+            new_participant.phasetwo_movies.add(*p2_recs)
 
             print(f"User: {user_data['dataset_id']} saved...")
 

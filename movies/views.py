@@ -9,26 +9,29 @@ from .forms import ParticipantInfoForm
 import logging
 
 
+## global flag to set the stage (1 or 2)
+STUDY_STAGE = 1
+
+
 """
 TODO:
 ------------------------------
 
-all other pages beside /home should be locked if quiz_done is not set to True    
-
 implement the two phase scenario
     edit userpooling so that 10 items from ratings profile are shuffled into the first 100 (depth k1 from all algo outputs)
-    change user model to have two sets of movies (p1 and p2)
-    change user model to have two sets of (rem_judge, done) pairs for each phase
-    change interaction model to have two ranks (p1 rank and p2 rank)
     set a global flag on views.py to denote we're on phase 1 or 2?
     change all views to get movies from correct movie set based on flag
     make sure to edit the final ranking and remove likely_to_watch thing
+
+Once they are finished with phase one: thank you page stuff + will be in contact with phase two stuff (also ask question)
+when they login for the second phase:
+    -normal homepage
+
 
 WITH MARK: firgure out 5 quiz questions and their answers and change tutorial.html
     
 edits all logs so that values are also logged
 
-Change the load_users section, make username and password anon (B-userpooling on colab + load_users)
 log processing
 handle the video tutorial once everything is finalized
 dockerization
@@ -143,16 +146,23 @@ def home(request):
     if participant.fully_done:
         return render(request, "movies/rankingDone.html")
     else:
+        remaining_judge_actions = (
+            participant.remaining_p1_judge_actions
+            if STUDY_STAGE == 1
+            else participant.remaining_p2_judge_actions
+        )
         return render(
             request,
             "movies/home.html",
-            {"remaining_judge_actions": participant.remaining_judge_actions},
+            {"remaining_judge_actions": remaining_judge_actions},
         )
 
 
 @login_required
 def movie_list(request):
     participant = Participant.objects.get(user=request.user)
+    if not participant.taken_initial_quiz:
+        return redirect("home")
 
     logger.info(
         f"view_movie_list: User {participant.user.username} shown movie list page."
@@ -165,7 +175,9 @@ def movie_list(request):
     )
     judged_movies = [interaction.movie for interaction in user_interactions]
 
-    if participant.fully_done:
+    if (STUDY_STAGE == 1 and participant.fully_p1_done) or (
+        STUDY_STAGE == 2 and participant.fully_p2_done
+    ):
         return render(request, "movies/rankingDone.html")
 
     interactions = {
@@ -231,7 +243,12 @@ def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
     participant = Participant.objects.get(user=request.user)
 
-    if participant.fully_done:
+    if not participant.taken_initial_quiz:
+        return redirect("home")
+
+    if (STUDY_STAGE == 1 and participant.fully_p1_done) or (
+        STUDY_STAGE == 2 and participant.fully_p2_done
+    ):
         return render(request, "movies/rankingDone.html")
 
     logger.info(
@@ -298,10 +315,20 @@ def movie_detail(request, movie_id):
 @login_required
 def judge(request):
     participant = Participant.objects.get(user=request.user)
+    if not participant.taken_initial_quiz:
+        return redirect("home")
+
     unjudged_movie = participant.movies.exclude(
         interaction__participant=participant
     ).first()
-    if unjudged_movie is None and participant.remaining_judge_actions == 0:
+
+    remaining_judge_actions = (
+        participant.remaining_p1_judge_actions
+        if STUDY_STAGE == 1
+        else participant.remaining_p2_judge_actions
+    )
+
+    if unjudged_movie is None and remaining_judge_actions == 0:
         logger.info(
             f"view_judge_done: User {participant.user.username} shown judge done page."
         )
@@ -313,6 +340,9 @@ def judge(request):
 @login_required
 def final_ranking(request):
     participant = Participant.objects.get(user=request.user)
+    if not participant.taken_initial_quiz:
+        return redirect("home")
+
     remaining = participant.remaining_judge_actions
     if remaining != 0:
         logger.info(
