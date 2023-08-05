@@ -10,19 +10,16 @@ import logging
 
 
 ## global flag to set the stage (1 or 2)
-STUDY_STAGE = 1
+STUDY_STAGE = 2
 
 
 """
 TODO:
 ------------------------------
-when they login for the second phase:
-    -normal homepage
-
-
+edits all logs so that values are also logged
+    
 WITH MARK: firgure out 5 quiz questions and their answers and change tutorial.html
     
-edits all logs so that values are also logged
 
 log processing
 handle the video tutorial once everything is finalized
@@ -225,13 +222,18 @@ def movie_list(request):
     except EmptyPage:
         movies = paginator.page(paginator.num_pages)
 
+    remaining_judge_actions = (
+        participant.remaining_p1_judge_actions
+        if STUDY_STAGE == 1
+        else participant.remaining_p2_judge_actions
+    )
     return render(
         request,
         "movies/items.html",
         {
             "movies": movies,
             "interactions": interactions,
-            "remaining_judge_actions": participant.remaining_judge_actions,
+            "remaining_judge_actions": remaining_judge_actions,
         },
     )
 
@@ -287,7 +289,10 @@ def movie_detail(request, movie_id):
                 rating=rating,
                 will_to_watch=will_to_watch,
             )
-            participant.remaining_judge_actions -= 1
+            if STUDY_STAGE == 1:
+                participant.remaining_p1_judge_actions -= 1
+            else:
+                participant.remaining_p2_judge_actions -= 1
             participant.save()
 
             logger.info(
@@ -316,9 +321,14 @@ def judge(request):
     if not participant.taken_initial_quiz:
         return redirect("home")
 
-    unjudged_movie = participant.movies.exclude(
-        interaction__participant=participant
-    ).first()
+    if STUDY_STAGE == 1:
+        unjudged_movie = participant.phaseone_movies.exclude(
+            interaction__participant=participant
+        ).first()
+    else:
+        unjudged_movie = participant.phasetwo_movies.exclude(
+            interaction__participant=participant
+        ).first()
 
     remaining_judge_actions = (
         participant.remaining_p1_judge_actions
