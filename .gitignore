@@ -141,3 +141,5 @@ GitHub.sublime-settings
 *.json
 
 *.log
+
+*.sh

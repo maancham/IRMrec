@@ -1,0 +1,31 @@
+version: '3'
+services:
+  web:
+    image: python:3.8
+    command: >
+      bash -c "
+        pip install -r requirements.txt &&
+        python manage.py runserver 0.0.0.0:3624"
+    volumes:
+      - .:/code
+    ports:
+      - "3624:3624"
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    mem_limit: 16g
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:

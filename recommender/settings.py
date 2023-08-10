@@ -14,7 +14,6 @@ import logging
 import dj_database_url
 import os
 from dotenv import load_dotenv, find_dotenv
-from datetime import timedelta
 
 load_dotenv(find_dotenv())
 
@@ -57,7 +56,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "widget_tweaks",
     "movies",
-    "debug_toolbar",
+    # "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -68,8 +67,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
-    # "movies.middleware.SessionTimeoutMiddleware",
+    "movies.middleware.SessionTimeoutMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "recommender.urls"
@@ -96,13 +95,6 @@ WSGI_APPLICATION = "recommender.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
 
 # Local PostgreSQL:
 # DB_NAME = os.environ["DB_NAME"]
@@ -118,9 +110,20 @@ WSGI_APPLICATION = "recommender.wsgi.application"
 #     }
 # }
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ["DB_NAME"],
+        "USER": os.environ["DB_USER"],
+        "PASSWORD": os.environ["DB_PASS"],
+        "HOST": "db",  # This should match the service name in docker-compose.yml
+        "PORT": "5432",  # Default PostgreSQL port
+    }
+}
+
 
 ### Render PostgreSQL database live:
-DATABASES = {"default": dj_database_url.parse(RENDER_EXTERNAL_DB_URL)}
+# DATABASES = {"default": dj_database_url.parse(RENDER_EXTERNAL_DB_URL)}
 
 
 # Password validation

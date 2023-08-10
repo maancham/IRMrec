@@ -16,6 +16,9 @@ STUDY_STAGE = 2
 """
 TODO:
 ------------------------------
+http://127.0.0.1:8000/accounts/login/?next=/home/
+results in error when not logged in!
+
 edits all logs so that values are also logged
     
 WITH MARK: firgure out 5 quiz questions and their answers and change tutorial.html
