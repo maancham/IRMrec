@@ -4,11 +4,8 @@ FROM python:3.8
 # Set the working directory
 WORKDIR /code
 
-# Copy the requirements file
-COPY requirements.txt /code/
+# Copy the entire project directory
+COPY . /code
 
 # Install project dependencies
-RUN pip install -r requirements.txt
-
-# Copy the rest of the project files
-COPY . /code/
+RUN pip install -r code/requirements.txt

@@ -4,8 +4,8 @@ services:
     image: python:3.8
     command: >
       bash -c "
-        pip install -r requirements.txt &&
-        python manage.py runserver 0.0.0.0:3624"
+        pip install -r code/requirements.txt &&
+        python code/manage.py runserver 0.0.0.0:3624"
     volumes:
       - .:/code
     ports:
@@ -23,7 +23,6 @@ services:
       POSTGRES_PASSWORD: ${DB_PASS}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    mem_limit: 16g
     env_file:
       - .env
 
