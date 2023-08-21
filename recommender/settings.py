@@ -67,7 +67,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "movies.middleware.SessionTimeoutMiddleware",
+    # "movies.middleware.SessionTimeoutMiddleware",
     # "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
@@ -110,20 +110,21 @@ WSGI_APPLICATION = "recommender.wsgi.application"
 #     }
 # }
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ["DB_NAME"],
-        "USER": os.environ["DB_USER"],
-        "PASSWORD": os.environ["DB_PASS"],
-        "HOST": "db",  # This should match the service name in docker-compose.yml
-        "PORT": "5432",  # Default PostgreSQL port
-    }
-}
+# Mooneye:
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.environ["DB_NAME"],
+#         "USER": os.environ["DB_USER"],
+#         "PASSWORD": os.environ["DB_PASS"],
+#         "HOST": "db",  # This should match the service name in docker-compose.yml
+#         "PORT": "5432",  # Default PostgreSQL port
+#     }
+# }
 
 
 ### Render PostgreSQL database live:
-# DATABASES = {"default": dj_database_url.parse(RENDER_EXTERNAL_DB_URL)}
+DATABASES = {"default": dj_database_url.parse(RENDER_EXTERNAL_DB_URL)}
 
 
 # Password validation

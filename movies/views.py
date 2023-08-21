@@ -28,7 +28,6 @@ log processing
 handle the video tutorial once everything is finalized
 dockerization
 edit userpooling so that 10 items from ratings profile are shuffled into the first 100 (depth k1 from all algo outputs)
-remove the django-toolbar from the project
 activate SessionTimeoutMiddleware in settings
 """
 
