@@ -28,7 +28,6 @@ class Command(BaseCommand):
             cast = row["cast"]
             directors = row["directors"]
             languages = row["languages"]
-            map = row.get("map")
 
             # if not movieId.isdigit():
             #     continue
@@ -50,7 +49,7 @@ class Command(BaseCommand):
                 cast=cast,
                 directors=directors,
                 languages=languages,
-                map=map,
+                map=None,
             )
 
             # Save movie object

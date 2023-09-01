@@ -71,7 +71,7 @@
             <p> {{ movie.overview }} </p>
             <div class="movie-info">
                 <p style="flex: 1;"><strong>Release Year:</strong> {{ movie.year }}</p>
-                <p style="flex: 1;"><strong>MPA Rating:</strong> {{ movie|get_map }}</p>
+                <!-- <p style="flex: 1;"><strong>MPA Rating:</strong> {{ movie|get_map }}</p> -->
                 {% if movie.runtime == 0 %}
                     <p style="flex: 1;"><strong>Runtime(min):</strong> N/A </p>
                 {% else %}

@@ -13,11 +13,11 @@
 
           <p class="card-text" style="text-align: justify;">
             As you have seen in the tutorial, this study consists of three main parts. You can access each part
-            from the dropdown menu in the top right corner of the page:
+            from the dropdown menu in the top right corner of the page, you can also revisit the tutorial from the dropdown if needed:
             <br>
             <strong>1. Judge Movies:</strong>
-            Based on your rating profile, you will be recommended a set of movies. For each movie, there are a few
-            questions that you need to answer.
+            Based on your rating profile, you will be recommended a set of movies. For each movie, there are a two or three
+            questions that you should answer.
 
             <br>
             <strong>2. View Judged Movies:</strong>
@@ -33,7 +33,7 @@
 
 
           {% if remaining_judge_actions != 0 %}
-          <p class="card-text">Looks like you already handled the quiz, so please judge the following movies:</p>
+          <p class="card-text">Looks like you already passed the quiz, so please judge the following movies:</p>
           <a href="{% url 'movie_judge' %}" class="btn btn-primary btn-lg btn-block">Judge movies</a>
           {% else %}
           <p class="card-text">You are done with the recommendation judgement phase! Only the final ranking left:</p>

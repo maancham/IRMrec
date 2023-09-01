@@ -10,7 +10,7 @@ import logging
 
 
 ## global flag to set the stage (1 or 2)
-STUDY_STAGE = 2
+STUDY_STAGE = 1
 
 
 """
@@ -19,15 +19,15 @@ TODO:
 http://127.0.0.1:8000/accounts/login/?next=/home/
 results in error when not logged in!
 
+update consent text accordingly once it is finalized
+
 edits all logs so that values are also logged
     
 WITH MARK: firgure out 5 quiz questions and their answers and change tutorial.html
-    
+   
 
 log processing
 handle the video tutorial once everything is finalized
-dockerization
-edit userpooling so that 10 items from ratings profile are shuffled into the first 100 (depth k1 from all algo outputs)
 activate SessionTimeoutMiddleware in settings
 """
 
