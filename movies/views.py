@@ -20,13 +20,10 @@ http://127.0.0.1:8000/accounts/login/?next=/home/
 results in error when not logged in!
 
 update consent text accordingly once it is finalized
-
-edits all logs so that values are also logged
     
 WITH MARK: firgure out 5 quiz questions and their answers and change tutorial.html
    
 
-log processing
 handle the video tutorial once everything is finalized
 activate SessionTimeoutMiddleware in settings
 """
@@ -108,7 +105,7 @@ def demographic(request):
         participant.save()
 
         logger.info(
-            f"demographic_action: User {participant.user.username} submitted their demographic info."
+            f"demographic_action: User {participant.user.username} submitted their demographic info. Gender: {participant_info.gender}, Race: {participant_info.race}, Education: {participant_info.education}"
         )
 
         return redirect("home")
@@ -280,7 +277,7 @@ def movie_detail(request, movie_id):
             interaction.save()
 
             logger.info(
-                f"edit_judge_action: User {participant.user.username} edited interaction with movie/{movie.movieId}."
+                f"edit_judge_action: User {participant.user.username} edited interaction with movie/{movie.movieId}. Seen Status: {seen_status}, Familiarity: {familiarity}, Rating: {rating}, Will to Watch: {will_to_watch}"
             )
         else:
             interaction = Interaction.objects.create(
@@ -298,7 +295,7 @@ def movie_detail(request, movie_id):
             participant.save()
 
             logger.info(
-                f"submit_judge_action: User {participant.user.username} submitted interaction with movie/{movie.movieId}."
+                f"submit_judge_action: User {participant.user.username} submitted interaction with movie/{movie.movieId}. Seen Status: {seen_status}, Familiarity: {familiarity}, Rating: {rating}, Will to Watch: {will_to_watch}"
             )
 
         return redirect("movie_judge")
@@ -399,9 +396,12 @@ def final_ranking(request):
         else:
             participant.fully_p2_done = True
         participant.save()
+
+        rank_values = ", ".join(ranks)
         logger.info(
-            f"submit_ranking_action: User {participant.user.username} submitted ranking."
+            f"submit_ranking_action: User {participant.user.username} submitted ranking. Ranks: {rank_values}"
         )
+
         return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
 
     top_interactions = Interaction.objects.filter(
