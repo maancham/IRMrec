@@ -44,18 +44,45 @@
                             <form method="post" onsubmit="return validateQuizForm();">
                                 {% csrf_token %}
 
-                                <p>Question 1: What is the first step in the movie recommendation process?</p>
-                                <input type="radio" name="q1" value="a"> Option A<br>
-                                <input type="radio" name="q1" value="b"> Option B<br>
-                                <input type="radio" name="q1" value="c"> Option C<br>
+                                <p>Question 1: What is the main order of steps involved in this user study?</p>
+                                <input type="radio" name="q1" value="a"> Judging movies / Choosing top picks (Ranking) / Survey<br>
+                                <input type="radio" name="q1" value="b"> Choosing top picks (Ranking) / Judging movies / Survery<br>
+                                <input type="radio" name="q1" value="c"> Survey / Choosing top picks (Ranking) / Judging movies<br>
                                 <br>
 
-                                <p>Question 2: How many main parts does the study consist of?</p>
-                                <input type="radio" name="q2" value="a"> Option A<br>
-                                <input type="radio" name="q2" value="b"> Option B<br>
-                                <input type="radio" name="q2" value="c"> Option C<br>
+                                <p>Question 2: How can you view the list of movies you've already judged during the judgement phase?</p>
+                                <input type="radio" name="q2" value="a"> It is not possible<br>
+                                <input type="radio" name="q2" value="b"> Refresh the homepage<br>
+                                <input type="radio" name="q2" value="c"> Click on the corresponding option in the top-right dropdown menu<br>
+                                <input type="radio" name="q2" value="d"> You will automatically be redirected to that page after judging each movie<br>
                                 <br>
-                                <!-- Add more quiz questions here -->
+
+                                <p>Question 3: How can you make edits to your answers for a movie you have already judged?</p>
+                                <input type="radio" name="q3" value="a"> A page will pop up right after submitting the first set of answers for that specific movie<br>
+                                <input type="radio" name="q3" value="b"> By clicking on the movie title available on the judged movie list page<br>
+                                <input type="radio" name="q3" value="c"> It is not possible<br>
+                                <br>
+                                
+                                <p>Question 4: Which page contains the number of remaining movies to be judged?</p>
+                                <input type="radio" name="q4" value="a"> Homepage<br>
+                                <input type="radio" name="q4" value="b"> Judge Movies<br>
+                                <input type="radio" name="q4" value="c"> Ranking<br>
+                                <input type="radio" name="q4" value="d"> Judged Movie List<br>
+                                <br>
+
+                                <p>Question 5: How can you access the ranking page before finishing all judgement tasks?</p>
+                                <input type="radio" name="q5" value="a"> You can't as it will become available once all movies have been judged<br>
+                                <input type="radio" name="q5" value="b"> By Clicking on the corresponding option in the top-right dropdown menu<br>
+                                <input type="radio" name="q5" value="c"> You can access it via a link on the Judged Movie List page<br>
+                                <br>
+
+                                <p>Question 6: What is the most accurate description of the ranking phase?</p>
+                                <input type="radio" name="q6" value="a"> Randomly fill out the available spots from the pool of shown movies on the page<br>
+                                <input type="radio" name="q6" value="b"> Pick three unique movies and rank them in order based on your preference<br>
+                                <input type="radio" name="q6" value="c"> Choose upto three unique items and rank them in order based on your preference<br>
+                                <br>
+
+                                
 
                                 <br>
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -72,15 +99,20 @@
     function validateQuizForm() {
         const q1Answer = document.querySelector('input[name="q1"]:checked');
         const q2Answer = document.querySelector('input[name="q2"]:checked');
+        const q3Answer = document.querySelector('input[name="q3"]:checked');
+        const q4Answer = document.querySelector('input[name="q4"]:checked');
+        const q5Answer = document.querySelector('input[name="q5"]:checked');
+        const q6Answer = document.querySelector('input[name="q6"]:checked');
         // Add more quiz question validation as needed
 
-        if (!q1Answer || !q2Answer /* Add more conditions for other questions */) {
+        if (!q1Answer || !q2Answer || !q3Answer || !q4Answer || !q5Answer || !q6Answer) {
             alert("Please answer all quiz questions.");
             return false;
         }
 
         // Check quiz answers
-        if (q1Answer.value !== "b" || q2Answer.value !== "c" /* Add correct answers for other questions */) {
+        if (q1Answer.value !== "a" || q2Answer.value !== "c" || q3Answer.value !== "b" ||
+            q4Answer.value !== "d" || q5Answer.value !== "a" || q6Answer.value !== "b") {
             alert("One or more answers are incorrect. Please review the tutorial and try again.");
             return false;
         }
