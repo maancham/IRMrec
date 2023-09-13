@@ -21,8 +21,10 @@ results in error when not logged in!
 
 update consent text accordingly once it is finalized
     
-WITH MARK: firgure out 5 quiz questions and their answers and change tutorial.html
-   
+add the tutorial file to the app once it is finalized.
+edit tutorial.html to have the tutorial file (remove video stuff)  
+
+right after logging in: consent online before anything / after that demographics / then tutorial / then homepage
 
 handle the video tutorial once everything is finalized
 activate SessionTimeoutMiddleware in settings
