@@ -92,6 +92,12 @@ class Participant(models.Model):
     remaining_p2_judge_actions = models.IntegerField(default=0)
     fully_p2_done = models.BooleanField(default=False)
 
+    p1_feedback = models.TextField(max_length=300, blank=True, null=True)
+    gave_p1_feedback = models.BooleanField(default=False)
+
+    p2_feedback = models.TextField(max_length=300, blank=True, null=True)
+    gave_p2_feedback = models.BooleanField(default=False)
+
     def __str__(self) -> str:
         return self.user.username
 

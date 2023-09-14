@@ -97,18 +97,16 @@ WSGI_APPLICATION = "recommender.wsgi.application"
 
 
 # Local PostgreSQL:
-# DB_NAME = os.environ["DB_NAME"]
-# DB_PASS = os.environ["DB_PASS"]
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": DB_NAME,
-#         "USER": "houmch",
-#         "PASSWORD": DB_PASS,
-#         "HOST": "localhost",
-#         "PORT": "5432",
-#     }
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ["LOCAL_DB_NAME"],
+        "USER": "houmch",
+        "PASSWORD": os.environ["LOCAL_DB_PASS"],
+        "HOST": "localhost",
+        "PORT": "5432",
+    }
+}
 
 # Mooneye:
 # DATABASES = {
@@ -124,7 +122,7 @@ WSGI_APPLICATION = "recommender.wsgi.application"
 
 
 ### Render PostgreSQL database live:
-DATABASES = {"default": dj_database_url.parse(RENDER_EXTERNAL_DB_URL)}
+# DATABASES = {"default": dj_database_url.parse(RENDER_EXTERNAL_DB_URL)}
 
 
 # Password validation

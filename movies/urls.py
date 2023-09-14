@@ -13,5 +13,6 @@ urlpatterns = [
     path("item/<int:movie_id>/", views.movie_detail, name="movie_detail"),
     path("judge/", views.judge, name="movie_judge"),
     path("ranking/", views.final_ranking, name="final_ranking"),
+    path("feedback/", views.feedback, name="feedback"),
     path("overview/", views.overview, name="overview"),
 ]

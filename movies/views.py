@@ -16,6 +16,14 @@ STUDY_STAGE = 1
 """
 TODO:
 ------------------------------
+steps to handle new form:
+add users
+
+add new view to redirect after finishing ranking (call it feedback)
+change rankingDone to phaseDone
+feedback goes to phaseDone only if gave_phase_feedback is set to true for user
+
+
 http://127.0.0.1:8000/accounts/login/?next=/home/
 results in error when not logged in!
 
@@ -444,6 +452,12 @@ def final_ranking(request):
 
     logger.info(f"view_ranking: User {participant.user.username} shown ranking page.")
     return render(request, "movies/ranking.html", context)
+
+
+@login_required
+def feedback(request):
+    participant = Participant.objects.get(user=request.user)
+    # if not participant.gave_p1_feedback
 
 
 def handle_404(request, exception):
