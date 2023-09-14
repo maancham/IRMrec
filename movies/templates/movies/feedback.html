@@ -6,33 +6,50 @@
     <div class="col-lg-8">
       <div class="card">
         <div class="card-body">
-          {% if study_stage == 1 %}
-          <h3 class="card-title">Thank you for completing phase one!</h3>
-          <p class="card-text">You have successfully completed phase one of the IRMrec study.</p>
-          <p class="card-text">To finalize your participation, please fill out the <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLSfPVYMljcabm0ZOxM0wuV5G1YDO6xDMqVqgudMHFZRIvBJlQQ/viewform?usp=sf_link"
-              target="_blank">post-study questionnaire</a> using the code <strong>C265XTHW8</strong>. Your feedback is
-            valuable to us.</p>
-          <p class="card-text">To receive reimbursement for your time, send us an email at <a
-              href="mailto:h2chaman@uwaterloo.ca">h2chaman@uwaterloo.ca</a>. </p>
-          <p class="card-text"><strong>Also, </strong>if you are interested in participating in phase two, which
-            involves the assessment of up to 1000 movies, please let us know in your email. We will contact you if you
-            are selected for phase two.</p>
-        
-          {% elif study_stage == 2 %}
-          <h3 class="card-title">Congratulations! You have completed the IRMrec study!</h3>
-          <p class="card-text">You have successfully completed both phases of the IRMrec study.</p>
-          <p class="card-text">To finalize your participation, please fill out the <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLSfgntjcaaAVA5Qo3IVwREc-gZi6U8E5fJkx6ih7xXCiHCnVrA/viewform?usp=sf_link"
-              target="_blank">post-study questionnaire</a> using the code <strong>M235YTHW4</strong>. Your feedback is
-            valuable to us.</p>
-          <p class="card-text">To receive reimbursement for your time, send us an email at <a
-              href="mailto:h2chaman@uwaterloo.ca">h2chaman@uwaterloo.ca</a>. </p>
-          <p class="card-text">Thank you for your time and participation in the study!</p>
-          {% endif %}
+            {% if study_stage == 1 %}
+            <h3 class="card-title">Almost there!</h3>
+            <p>The only remaining part is the post-study feedback for phase one!</p>
+            {% elif study_stage == 2 %}
+            <h3 class="card-title">Almost there!</h3>
+            <p>The only remaining part is the post-study feedback for phase two!</p>
+            {% endif %}
+
+
+            <p class="card-text">Please give us any sort of feedback you can think of regarding the system, user experience, study design, 
+                or any other aspect! We will use your valuable response to improve future studies.</p>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea class="form-control" id="feedback" name="feedback" rows="4" maxlength="300"></textarea>
+                    <small class="text-muted" id="char-count">Characters left: 300</small>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+    const feedbackTextarea = document.getElementById("feedback");
+    const charCount = document.getElementById("char-count");
+  
+    feedbackTextarea.addEventListener("input", function () {
+      const remainingChars = 300 - feedbackTextarea.value.length;
+      charCount.textContent = `Characters left: ${remainingChars}`;
+    });
+  
+    feedbackTextarea.addEventListener("keyup", function () {
+      if (feedbackTextarea.value.length > 300) {
+        feedbackTextarea.value = feedbackTextarea.value.substring(0, 300);
+        charCount.textContent = "You have reached the character limit!";
+      }
+    });
+</script>
+
+
 {% endblock %}

@@ -30,7 +30,9 @@ results in error when not logged in!
 update consent text accordingly once it is finalized
     
 add the tutorial file to the app once it is finalized.
-edit tutorial.html to have the tutorial file (remove video stuff)  
+edit tutorial.html to have the tutorial file (remove video stuff) 
+
+maybe change logging order to be handled in its own view for each
 
 right after logging in: consent online before anything / after that demographics / then tutorial / then homepage
 
@@ -377,9 +379,9 @@ def final_ranking(request):
 
     if fully_done:
         logger.info(
-            f"view_ranking_done: User {participant.user.username} shown ranking done page."
+            f"view_feedback: User {participant.user.username} shown feedback page."
         )
-        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
+        return redirect("feedback")
 
     if request.method == "POST":
         ranks = []
@@ -412,7 +414,7 @@ def final_ranking(request):
             f"submit_ranking_action: User {participant.user.username} submitted ranking. Ranks: {rank_values}"
         )
 
-        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
+        return redirect("feedback")
 
     top_interactions = Interaction.objects.filter(
         participant=participant, will_to_watch="Extremely interested"
@@ -458,12 +460,12 @@ def final_ranking(request):
 def feedback(request):
     participant = Participant.objects.get(user=request.user)
 
-    if not participant.gave_p1_feedback or (
-        participant.gave_p1_feedback
-        and STUDY_STAGE == 2
-        and not participant.gave_p2_feedback
-    ):
-        return render(request, "movies/feedback.html", {"study_stage": STUDY_STAGE})
+    # if not participant.gave_p1_feedback or (
+    #     participant.gave_p1_feedback
+    #     and STUDY_STAGE == 2
+    #     and not participant.gave_p2_feedback
+    # ):
+    #     return render(request, "movies/feedback.html", {"study_stage": STUDY_STAGE})
 
     if (participant.gave_p1_feedback and STUDY_STAGE == 1) or (
         participant.gave_p2_feedback and STUDY_STAGE == 2
@@ -471,7 +473,17 @@ def feedback(request):
         return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
 
     if request.method == "POST":
-        pass
+        feedback_text = request.POST.get("feedback")
+        if STUDY_STAGE == 1:
+            participant.p1_feedback = feedback_text
+            participant.gave_p1_feedback = True
+        else:
+            participant.p2_feedback = feedback_text
+            participant.gave_p2_feedback = True
+        participant.save()
+        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
+
+    return render(request, "movies/feedback.html", {"study_stage": STUDY_STAGE})
 
 
 def handle_404(request, exception):
