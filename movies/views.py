@@ -457,7 +457,21 @@ def final_ranking(request):
 @login_required
 def feedback(request):
     participant = Participant.objects.get(user=request.user)
-    # if not participant.gave_p1_feedback
+
+    if not participant.gave_p1_feedback or (
+        participant.gave_p1_feedback
+        and STUDY_STAGE == 2
+        and not participant.gave_p2_feedback
+    ):
+        return render(request, "movies/feedback.html", {"study_stage": STUDY_STAGE})
+
+    if (participant.gave_p1_feedback and STUDY_STAGE == 1) or (
+        participant.gave_p2_feedback and STUDY_STAGE == 2
+    ):
+        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
+
+    if request.method == "POST":
+        pass
 
 
 def handle_404(request, exception):
