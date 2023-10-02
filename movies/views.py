@@ -16,25 +16,9 @@ STUDY_STAGE = 1
 """
 TODO:
 ------------------------------
-steps to handle new form:
-add users
-
-add new view to redirect after finishing ranking (call it feedback)
-change rankingDone to phaseDone
-feedback goes to phaseDone only if gave_phase_feedback is set to true for user
-
-
 http://127.0.0.1:8000/accounts/login/?next=/home/
 results in error when not logged in!
-
-update consent text accordingly once it is finalized
     
-add the tutorial file to the app once it is finalized.
-edit tutorial.html to have the tutorial file (remove video stuff) 
-
-maybe change logging order to be handled in its own view for each
-
-handle the video tutorial once everything is finalized
 activate SessionTimeoutMiddleware in settings
 """
 

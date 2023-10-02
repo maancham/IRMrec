@@ -21,91 +21,115 @@
         {% endblock %}
     </ol>
     {% block content %}
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="card">  
-                        <div class="card-body">
-                            <h3 class="card-title">Tutorial Part!</h3>
-                            <p class="card-text" style="text-align: justify;">
-                                Please read through the tutorial to learn how to navigate and use the system effectively. A PDF file will be opened once you click on the link below.
-                                <br>
-                                <a href="https://google.com" target="_blank">Link to Text Tutorial</a>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Tutorial Part!</h3>
+                        <p class="card-text" style="text-align: justify;">
+                            Please read through the tutorial to learn how to navigate and use the system effectively. A
+                            PDF file will be opened once you click on the link below.
+                            <br>
+                            <a href="https://google.com" target="_blank">Link to Text Tutorial</a>
+                        </p>
+
+
+                        <br>
+
+                        <p class="card-text" style="text-align: justify;">
+                            Alternatively, if you prefer to watch a video tutorial, please use the link below.
+                            By clicking on the link, a new browser tab will be opened for you, showing you a YouTube
+                            tutorial for this study.
+                            <br>
+                            <a href="https://google.com" target="_blank">Link to Video Tutorial</a>
+                        </p>
+
+
+
+                        <hr>
+
+
+
+                        <p class="card-text" style="text-align: justify;">
+                            Once you feel like you have a good understanding of the steps involved in this study, please
+                            answer the quiz questions below. You need to answer all questions correctly to proceed to
+                            the homepage.
+                        </p>
+
+                        <!-- Quiz Section -->
+                        <h4>Quiz Questions</h4>
+                        <form method="post" onsubmit="return validateQuizForm();">
+                            {% csrf_token %}
+
+                            <p><strong>Question 1: </strong>What is the main order of steps involved in this user study?
                             </p>
-                                                        
-                            
+                            <input type="radio" name="q1" value="a"> Judging movies / Choosing top picks (Ranking) /
+                            Survey<br>
+                            <input type="radio" name="q1" value="b"> Choosing top picks (Ranking) / Judging movies /
+                            Survey<br>
+                            <input type="radio" name="q1" value="c"> Survey / Choosing top picks (Ranking) / Judging
+                            movies<br>
                             <br>
 
-                            <p class="card-text" style="text-align: justify;">
-                                Alternatively, if you prefer to watch a video tutorial, please use the link below. 
-                                By clicking on the link, a new browser tab will be opened for you, showing you a YouTube tutorial for this study.
-                                <br> 
-                                <a href="https://google.com" target="_blank">Link to Video Tutorial</a>                              
+                            <p><strong>Question 2: </strong>How can you view the list of movies you've already judged
+                                during the judgment phase?</p>
+                            <input type="radio" name="q2" value="a"> It is not possible<br>
+                            <input type="radio" name="q2" value="b"> Refresh the homepage<br>
+                            <input type="radio" name="q2" value="c"> Click on the corresponding option in the top-right
+                            dropdown menu<br>
+                            <input type="radio" name="q2" value="d"> You will automatically be redirected to that page
+                            after judging each movie<br>
+                            <br>
+
+                            <p><strong>Question 3: </strong>How can you make edits to your answers for a movie you have
+                                already judged?
                             </p>
+                            <input type="radio" name="q3" value="a"> A page will pop up right after submitting the first
+                            set of answers for that specific movie<br>
+                            <input type="radio" name="q3" value="b"> By clicking on the movie title available on the
+                            judged movie list page<br>
+                            <input type="radio" name="q3" value="c"> It is not possible<br>
+                            <br>
 
-                            
-                            
-                            <hr>
+                            <p><strong>Question 4: </strong>Which page contains the number of remaining movies to be
+                                judged?</p>
+                            <input type="radio" name="q4" value="a"> Homepage<br>
+                            <input type="radio" name="q4" value="b"> Judge Movies<br>
+                            <input type="radio" name="q4" value="c"> Ranking<br>
+                            <input type="radio" name="q4" value="d"> Judged Movie List<br>
+                            <br>
 
+                            <p><strong>Question 5: </strong>How can you access the ranking page before finishing all
+                                judgment tasks?</p>
+                            <input type="radio" name="q5" value="a"> You can't as it will become available once all
+                            movies have been judged<br>
+                            <input type="radio" name="q5" value="b"> By Clicking on the corresponding option in the
+                            top-right dropdown menu<br>
+                            <input type="radio" name="q5" value="c"> You can access it via a link on the Judged Movie
+                            List page<br>
+                            <br>
 
-
-                            <p class="card-text" style="text-align: justify;">
-                                Once you feel like you have a good understanding of the steps involved in this study, please answer the quiz questions below. You need to answer all questions correctly to proceed to the homepage.                                                               
+                            <p><strong>Question 6: </strong>What is the most accurate description of the ranking phase?
                             </p>
+                            <input type="radio" name="q6" value="a"> Randomly fill out the available spots from the pool
+                            of shown movies on the page<br>
+                            <input type="radio" name="q6" value="b"> Pick three unique movies and rank them in order
+                            based on your preference<br>
+                            <input type="radio" name="q6" value="c"> Choose up to three unique items and rank them in
+                            order based on your preference<br>
+                            <br>
 
-                            <!-- Quiz Section -->
-                            <h4>Quiz Questions</h4>
-                            <form method="post" onsubmit="return validateQuizForm();">
-                                {% csrf_token %}
 
-                                <p>Question 1: What is the main order of steps involved in this user study?</p>
-                                <input type="radio" name="q1" value="a"> Judging movies / Choosing top picks (Ranking) / Survey<br>
-                                <input type="radio" name="q1" value="b"> Choosing top picks (Ranking) / Judging movies / Survey<br>
-                                <input type="radio" name="q1" value="c"> Survey / Choosing top picks (Ranking) / Judging movies<br>
-                                <br>
 
-                                <p>Question 2: How can you view the list of movies you've already judged during the judgment phase?</p>
-                                <input type="radio" name="q2" value="a"> It is not possible<br>
-                                <input type="radio" name="q2" value="b"> Refresh the homepage<br>
-                                <input type="radio" name="q2" value="c"> Click on the corresponding option in the top-right dropdown menu<br>
-                                <input type="radio" name="q2" value="d"> You will automatically be redirected to that page after judging each movie<br>
-                                <br>
-
-                                <p>Question 3: How can you make edits to your answers for a movie you have already judged?</p>
-                                <input type="radio" name="q3" value="a"> A page will pop up right after submitting the first set of answers for that specific movie<br>
-                                <input type="radio" name="q3" value="b"> By clicking on the movie title available on the judged movie list page<br>
-                                <input type="radio" name="q3" value="c"> It is not possible<br>
-                                <br>
-                                
-                                <p>Question 4: Which page contains the number of remaining movies to be judged?</p>
-                                <input type="radio" name="q4" value="a"> Homepage<br>
-                                <input type="radio" name="q4" value="b"> Judge Movies<br>
-                                <input type="radio" name="q4" value="c"> Ranking<br>
-                                <input type="radio" name="q4" value="d"> Judged Movie List<br>
-                                <br>
-
-                                <p>Question 5: How can you access the ranking page before finishing all judgment tasks?</p>
-                                <input type="radio" name="q5" value="a"> You can't as it will become available once all movies have been judged<br>
-                                <input type="radio" name="q5" value="b"> By Clicking on the corresponding option in the top-right dropdown menu<br>
-                                <input type="radio" name="q5" value="c"> You can access it via a link on the Judged Movie List page<br>
-                                <br>
-
-                                <p>Question 6: What is the most accurate description of the ranking phase?</p>
-                                <input type="radio" name="q6" value="a"> Randomly fill out the available spots from the pool of shown movies on the page<br>
-                                <input type="radio" name="q6" value="b"> Pick three unique movies and rank them in order based on your preference<br>
-                                <input type="radio" name="q6" value="c"> Choose up to three unique items and rank them in order based on your preference<br>
-                                <br>
-
-                                
-
-                                <br>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
-                        </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     {% endblock %}
 </div>
 
