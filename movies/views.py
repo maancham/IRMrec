@@ -34,8 +34,6 @@ edit tutorial.html to have the tutorial file (remove video stuff)
 
 maybe change logging order to be handled in its own view for each
 
-right after logging in: consent online before anything / after that demographics / then tutorial / then homepage
-
 handle the video tutorial once everything is finalized
 activate SessionTimeoutMiddleware in settings
 """
@@ -62,7 +60,7 @@ def overview(request):
             email = form.cleaned_data["email"]
             age = form.cleaned_data["age"]
             country = form.cleaned_data["country"]
-            consent = form.cleaned_data.get("consent")
+            consent = True
 
             participant_info = ParticipantInfo(
                 full_name=full_name,
@@ -459,13 +457,6 @@ def final_ranking(request):
 @login_required
 def feedback(request):
     participant = Participant.objects.get(user=request.user)
-
-    # if not participant.gave_p1_feedback or (
-    #     participant.gave_p1_feedback
-    #     and STUDY_STAGE == 2
-    #     and not participant.gave_p2_feedback
-    # ):
-    #     return render(request, "movies/feedback.html", {"study_stage": STUDY_STAGE})
 
     if (participant.gave_p1_feedback and STUDY_STAGE == 1) or (
         participant.gave_p2_feedback and STUDY_STAGE == 2

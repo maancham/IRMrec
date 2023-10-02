@@ -2,8 +2,6 @@ from django import forms
 
 
 class ParticipantInfoForm(forms.Form):
-    consent = forms.BooleanField(required=True)
-    consent1 = forms.BooleanField(required=True)
     full_name = forms.CharField(max_length=150, required=True)
     email = forms.EmailField(required=True)
     age = forms.IntegerField(min_value=18, max_value=1000, required=True)
