@@ -28,7 +28,7 @@ class Command(BaseCommand):
                 first_name=user_data["first_name"],
                 last_name=user_data["last_name"],
                 username="participant_"
-                + str(participant_info.ParticipantId)
+                + str(participant_info.ParticipantId) + "_"
                 + str(user_data["dataset_id"]),
                 password=make_password(user_data["pass"]),
             )

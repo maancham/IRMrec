@@ -18,7 +18,10 @@ TODO:
 ------------------------------
 http://127.0.0.1:8000/accounts/login/?next=/home/
 results in error when not logged in!
-    
+
+sudo service postgresql start
+
+
 activate SessionTimeoutMiddleware in settings
 """
 
