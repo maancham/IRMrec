@@ -10,7 +10,7 @@ import logging
 
 
 ## global flag to set the stage (1 or 2)
-STUDY_STAGE = 1
+STUDY_STAGE = 2
 
 
 """

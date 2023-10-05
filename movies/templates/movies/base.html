@@ -3,63 +3,73 @@
 
 <!DOCTYPE html>
 <html style="overflow-x: hidden;">
-  <head>
-    <meta charset="utf-8">
-    <title>{% block title %}IRMrec{% endblock %}</title>
-    <!-- <link rel="stylesheet" href="{% static 'movies/bootstrap.min.css' %}"> -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}IRMrec{% endblock %}</title>
+  <!-- <link rel="stylesheet" href="{% static 'movies/bootstrap.min.css' %}"> -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
+    type="text/css">
 
 
-    {% block stylesheet %}
-    {% endblock %}
-    
-  </head>
-  <body>
-    {% block body %}
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-top: 1px; padding-bottom: 1px;">
-        <div class="container-fluid">
-          <!-- Brand -->
-          <a class="navbar-brand" href="{% url 'home' %}">IRMrec</a>
-      
-          <!-- Toggler -->
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-      
-          <!-- Menu -->
-          <div class="collapse navbar-collapse" id="mainMenu">      
-            <ul class="navbar-nav ms-auto">
-              {% if user.is_authenticated %}
-                <li class="nav-item dropdown" style="padding-right: 15px">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ user.username }}
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="width: 80%;">
-                    <li><a class="dropdown-item" href="{% url 'home' %}">Homepage</a></li>
-                    <li><a class="dropdown-item" href="{% url 'movie_judge' %}">Judge Movies</a></li>
-                    <li><a class="dropdown-item" href="{% url 'movie_list' %}">Judged Movie List</a></li>
-                    <li><a class="dropdown-item" href="{% url 'final_ranking' %}">Final Ranking</a></li>
-                    <li><a class="dropdown-item" href="https://drive.google.com/file/d/1V03xBwPx1yc-ywTKHK4UHX8odmpTJRrk/view?usp=sharing" target="_blank">Tutorial File</a></li>
-                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                  </ul>
-                </li>
-              {% endif %}
+  {% block stylesheet %}
+  {% endblock %}
+
+</head>
+
+<body>
+  {% block body %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-top: 1px; padding-bottom: 1px;">
+    <div class="container-fluid">
+      <!-- Brand -->
+      <a class="navbar-brand" href="{% url 'home' %}">IRMrec</a>
+
+      <!-- Toggler -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu"
+        aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Menu -->
+      <div class="collapse navbar-collapse" id="mainMenu">
+        <ul class="navbar-nav ms-auto">
+          {% if user.is_authenticated %}
+          <li class="nav-item dropdown" style="padding-right: 15px">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              {{ user.username }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="width: 80%;">
+              <li><a class="dropdown-item" href="{% url 'home' %}">Homepage</a></li>
+              <li><a class="dropdown-item" href="{% url 'movie_judge' %}">Judge Movies</a></li>
+              <li><a class="dropdown-item" href="{% url 'movie_list' %}">Judged Movie List</a></li>
+              <li><a class="dropdown-item" href="{% url 'final_ranking' %}">Final Ranking</a></li>
+              <li><a class="dropdown-item"
+                  href="https://drive.google.com/file/d/1ozIBnwOzHij7wym-VNPoDD0B0I9_1_da/view?usp=sharing"
+                  target="_blank">Tutorial File</a></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
             </ul>
-          </div>
-        </div>
-      </nav>
-    
-      
-      <div class="container">
-        <ol class="breadcrumb my-4">
-          {% block breadcrumb %}
-          {% endblock %}
-        </ol>
-        {% block content %}
-        {% endblock %}
+          </li>
+          {% endif %}
+        </ul>
       </div>
-    {% endblock body %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    </div>
+  </nav>
 
-  </body>
+
+  <div class="container">
+    <ol class="breadcrumb my-4">
+      {% block breadcrumb %}
+      {% endblock %}
+    </ol>
+    {% block content %}
+    {% endblock %}
+  </div>
+  {% endblock body %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+    crossorigin="anonymous"></script>
+
+</body>
+
 </html>
