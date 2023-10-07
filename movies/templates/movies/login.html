@@ -2,52 +2,56 @@
 
 
 {% block stylesheet %}
-    <!-- <link rel="stylesheet" href="{% static 'movies/bootstrap.min.css' %}"> -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-        .card {
-            width: 100%;
-            max-width: 400px;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .btn-login {
-            margin-top: 1.5rem;
-        }
-    </style>
+<!-- <link rel="stylesheet" href="{% static 'movies/bootstrap.min.css' %}"> -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
+    type="text/css">
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-login {
+        margin-top: 1.5rem;
+    }
+</style>
 {% endblock %}
 
 
 {% block body %}
-    <div class="card">
-        <div class="card-body">
-            <h3 class="card-title">Login to IRMrec</h3>
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-            <form method="POST">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" name="username" id="username" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Log in</button>
-            </form>
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">Login to Study</h3>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
         </div>
+        {% endfor %}
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </form>
     </div>
+</div>
 {% endblock %}
