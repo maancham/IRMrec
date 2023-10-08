@@ -58,5 +58,5 @@ class Command(BaseCommand):
 
 
 """
-python manage.py load_movies --path movies.csv
+python manage.py load_movies --path code/movies.csv
 """

@@ -53,5 +53,5 @@ class Command(BaseCommand):
 
 
 """
-python manage.py load_users --path users.json
+python manage.py load_users --path code/users.json
 """

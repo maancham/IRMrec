@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
+    # "django.contrib.staticfiles",
     "widget_tweaks",
     "movies",
     # "debug_toolbar",
@@ -67,7 +67,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "movies.middleware.SessionTimeoutMiddleware",
+    "movies.middleware.SessionTimeoutMiddleware",
     # "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
@@ -97,28 +97,28 @@ WSGI_APPLICATION = "recommender.wsgi.application"
 
 
 # Local PostgreSQL:
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ["LOCAL_DB_NAME"],
-        "USER": "houmch",
-        "PASSWORD": os.environ["LOCAL_DB_PASS"],
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
-}
-
-# Mooneye:
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.environ["DB_NAME"],
-#         "USER": os.environ["DB_USER"],
-#         "PASSWORD": os.environ["DB_PASS"],
-#         "HOST": "db",  # This should match the service name in docker-compose.yml
-#         "PORT": "5432",  # Default PostgreSQL port
+#         "NAME": os.environ["LOCAL_DB_NAME"],
+#         "USER": "houmch",
+#         "PASSWORD": os.environ["LOCAL_DB_PASS"],
+#         "HOST": "localhost",
+#         "PORT": "5432",
 #     }
 # }
+
+# Mooneye:
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ["DB_NAME"],
+        "USER": os.environ["DB_USER"],
+        "PASSWORD": os.environ["DB_PASS"],
+        "HOST": "db",  # This should match the service name in docker-compose.yml
+        "PORT": "5432",  # Default PostgreSQL port
+    }
+}
 
 
 ### Render PostgreSQL database live:
@@ -159,7 +159,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "/static/"
+# STATIC_URL = "/static/"
 
 
 # Default primary key field type
