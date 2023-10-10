@@ -13,7 +13,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         Movie.objects.all().delete()
         path = kwargs["path"]
-        movie_df = pd.read_csv(path, lineterminator="\n")
+        movie_df = pd.read_csv(path, lineterminator="\n", encoding="utf-8")
 
         for index, row in movie_df.iterrows():
             movieId = row["movieId"]
@@ -29,8 +29,9 @@ class Command(BaseCommand):
             directors = row["directors"]
             languages = row["languages"]
 
-            # if not movieId.isdigit():
-            #     continue
+            if not movieId.isdigit():
+                print(row)
+                continue
 
             if isnan(runtime):
                 runtime = 0
@@ -54,9 +55,13 @@ class Command(BaseCommand):
 
             # Save movie object
             movie.save()
-            print(f"Movie: {movieId}, {title} saved...")
+            # print(f"Movie: {movieId}, {title} saved...")
+        
+        print("All movies: ", len(movie_df))
+        print("Saved movies: ", len(Movie.objects.all()))
+
 
 
 """
-python manage.py load_movies --path code/movies.csv
+docker-compose exec web python code/manage.py load_movies --path code/movies.csv
 """

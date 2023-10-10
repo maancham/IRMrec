@@ -26,13 +26,13 @@
             <div class="col-lg-10">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="card-title">Tutorial Part!</h3>
+                        <h3 class="card-title">Study Instructions and Quiz</h3>
                         <p class="card-text" style="text-align: justify;">
-                            Please read through the tutorial to learn how to navigate and use the system effectively. A
-                            PDF file will be opened once you click on the link below.
+                            Please click the link below to download a PDF of the study's instructions . You need to
+                            carefully read the instructions before proceeding.
                             <br>
                             <a href="https://drive.google.com/file/d/1kGiLopb0ZMG3saL2f0FISQRe6w4rxS58/view?usp=sharing"
-                                target="_blank">Link to Text Tutorial</a>
+                                target="_blank">Click here for the Study's Instructions</a>
                         </p>
 
 
@@ -42,136 +42,132 @@
 
 
                         <p class="card-text" style="text-align: justify;">
-                            Once you feel like you have a good understanding of the steps involved in this study, please
-                            answer the quiz questions below. You need to answer all questions correctly to proceed with
-                            the study.
+                            Once you have a good understanding of the steps involved in this study, please answer the
+                            quiz questions below. You will need to answer all questions correctly to proceed with the
+                            study.
                         </p>
 
-                        <!-- Quiz Section -->
                         <h4>Quiz Questions</h4>
                         <form method="post" onsubmit="return validateQuizForm();">
                             {% csrf_token %}
 
-                            <p><strong>Question 1: </strong>What is the main order of steps involved in this user study?
-                            </p>
-                            <input type="radio" name="q1" value="a"> Judging movies / Choosing top picks (Ranking) /
-                            Survey<br>
-                            <input type="radio" name="q1" value="b"> Choosing top picks (Ranking) / Judging movies /
-                            Survey<br>
-                            <input type="radio" name="q1" value="c"> Survey / Choosing top picks (Ranking) / Judging
-                            movies<br>
+                            <p><strong>Question 1: </strong>When judging movies and specifying your interest in watching
+                                the movie via a streaming service (Netflix, etc.), what should your interest level
+                                correspond to?</p>
+                            <input type="radio" name="q1" value="a"> The degree to which you like the movie or
+                            anticipate liking the movie, i.e. your rating. <br>
+                            <input type="radio" name="q1" value="b"> The likely order that you'd watch the movies, i.e.
+                            you want to watch the movies you are more interested in before the movies you are less
+                            interested in.<br>
+
                             <br>
 
-                            <p><strong>Question 2: </strong>How can you view the list of movies you've already judged
+                            <p><strong>Question 2: </strong>When judging movies and specifying your interest in watching
+                                movies via a streaming service (Netflix, etc.), can you be interested in watching
+                                movies that you've already seen?</p>
+                            <input type="radio" name="q2" value="a"> Yes. We all know the joy of finding a favorite
+                            movie available on a streaming service and wanting to watch it again.<br>
+                            <input type="radio" name="q2" value="b"> No. If you've already seen a movie, you should not
+                            be interested in watching it again.<br>
+
+                            <br>
+
+                            <p><strong>Question 3: </strong>When judging a movie and specifying your interest in
+                                watching a movie via a streaming service (Netflix, etc.), you have seen the movie
+                                previously and rated it 5 stars, the highest rating possible, can you be uninterested in
+                                watching it again?</p>
+                            <input type="radio" name="q3" value="a"> Yes. It is possible to love a movie but not be
+                            interested in watching it again. <br>
+                            <input type="radio" name="q3" value="b"> No. If you love a movie, you must be interested in
+                            watching it again very soon.<br>
+
+                            <br>
+
+                            <p><strong>Question 4: </strong>When judging movies, for the movies you've already seen,
+                                what is the rating scale that you will use?</p>
+                            <input type="radio" name="q4" value="a"> The Movielens rating scale of 0.5 to 5 stars, and
+                            I should rate the movies the same as if I was rating them on Movielens.<br>
+                            <input type="radio" name="q4" value="b"> On a scale of 0 to 100 where scores over 50 are
+                            for
+                            movies I like and scores less than 50 are for movies that I dislike.<br>
+                            <input type="radio" name="q4" value="c"> There is not a rating scale. I am supposed to
+                            describe in words my opinion of the movie.<br>
+
+                            <br>
+
+                            <p><strong>Question 5: </strong>For a movie you have not yet seen (an unseen movie), what
+                                are the possible judgments?</p>
+                            <input type="radio" name="q5" value="a"> 1. Never heard of it. 2. Familiar with it. 3. Very
+                            familiar with it.<br>
+                            <input type="radio" name="q5" value="b"> 1. Inappropriate or bad recommendation. 2. Okay
+                            recommendation. 3. Good recommendation.<br>
+                            <input type="radio" name="q5" value="c"> None of the above.<br>
+
+                            <br>
+
+                            <p><strong>Question 6: </strong>For an unseen movie, we will ask you to predict what your
+                                Movielens rating would be for the movie after you watch it. Is this the same as your
+                                interest in watching the movie?</p>
+                            <input type="radio" name="q6" value="a"> Yes. The higher your predicted rating, the more
+                            interested you are in watching the movie.<br>
+                            <input type="radio" name="q6" value="b"> No. Your predicted rating is based on how much you
+                            think you'll like the movie, but your "interest in watching" level is based on your true
+                            desire of what order you want to watch movies in.<br>
+
+
+                            <br>
+
+
+                            <p><strong>Question 7: </strong>How can you view the list of movies you've already judged
                                 during the judgment phase?</p>
-                            <input type="radio" name="q2" value="a"> It is not possible<br>
-                            <input type="radio" name="q2" value="b"> Refresh the homepage<br>
-                            <input type="radio" name="q2" value="c"> Click on the corresponding option in the top-right
+                            <input type="radio" name="q7" value="a"> It is not possible<br>
+                            <input type="radio" name="q7" value="b"> Refresh the homepage<br>
+                            <input type="radio" name="q7" value="c"> Click on the corresponding option in the top-right
                             dropdown menu<br>
-                            <input type="radio" name="q2" value="d"> You will automatically be redirected to that page
+                            <input type="radio" name="q7" value="d"> You will automatically be redirected to that page
                             after judging each movie<br>
                             <br>
 
-                            <p><strong>Question 3: </strong>How can you make edits to your answers for a movie you have
+                            <p><strong>Question 8: </strong>How can you make edits to your answers for a movie you have
                                 already judged?
                             </p>
-                            <input type="radio" name="q3" value="a"> A page will pop up right after submitting the first
+                            <input type="radio" name="q8" value="a"> A page will pop up right after submitting the first
                             set of answers for that specific movie<br>
-                            <input type="radio" name="q3" value="b"> By clicking on the movie title available on the
+                            <input type="radio" name="q8" value="b"> By clicking on the movie title available on the
                             judged movie list page<br>
-                            <input type="radio" name="q3" value="c"> It is not possible<br>
+                            <input type="radio" name="q8" value="c"> It is not possible<br>
                             <br>
 
-                            <p><strong>Question 4: </strong>Where can you find the number of remaining movies to be
+                            <p><strong>Question 9: </strong>Where can you find the number of remaining movies to be
                                 judged?
                             </p>
-                            <input type="radio" name="q4" value="a"> Homepage<br>
-                            <input type="radio" name="q4" value="b"> Judge Movies<br>
-                            <input type="radio" name="q4" value="c"> Ranking<br>
-                            <input type="radio" name="q4" value="d"> Judged Movie List<br>
+                            <input type="radio" name="q9" value="a">Go to the Homepage<br>
+                            <input type="radio" name="q9" value="b">You will see it after each movie you judge on the
+                            "Judge Movies" page.<br>
+                            <input type="radio" name="q9" value="c">If you go to the "Judged Movie List" to review your
+                            judgments, you will see the number of remaining movies to be judged, too.<br>
                             <br>
 
-                            <p><strong>Question 5: </strong>How can you access the ranking page before finishing all
+                            <p><strong>Question 10: </strong>How can you access the ranking page before finishing all
                                 judgment tasks?</p>
-                            <input type="radio" name="q5" value="a"> You can't as it will become available once all
+                            <input type="radio" name="q10" value="a"> You can't as it will become available once all
                             movies have been judged<br>
-                            <input type="radio" name="q5" value="b"> By Clicking on the corresponding option in the
+                            <input type="radio" name="q10" value="b"> By Clicking on the corresponding option in the
                             top-right dropdown menu<br>
-                            <input type="radio" name="q5" value="c"> You can access it via a link on the Judged Movie
+                            <input type="radio" name="q10" value="c"> You can access it via a link on the Judged Movie
                             List page<br>
                             <br>
 
-                            <p><strong>Question 6: </strong>What is the most accurate description of the ranking phase?
+                            <p><strong>Question 11: </strong>What is the most accurate description of the ranking phase?
                             </p>
-                            <input type="radio" name="q6" value="a"> Randomly fill out the available spots from the pool
+                            <input type="radio" name="q11" value="a"> Randomly fill out the available spots from the
+                            pool
                             of shown movies on the page<br>
-                            <input type="radio" name="q6" value="b"> From all the shown movies, pick the three you are
+                            <input type="radio" name="q11" value="b"> From all the shown movies, pick the three you are
                             most interested in watching and rank them in order based on your interest to watch them,
                             i.e. which movie you want to watch first, second, and third.<br>
-                            <input type="radio" name="q6" value="c"> Choose any three movies and rank them.<br>
+                            <input type="radio" name="q11" value="c"> Choose any three movies and rank them.<br>
                             <br>
-
-                            <p><strong>Question 7: </strong>When judging movies and specifying your interest in watching
-                                the movie via a streaming service (Netflix, etc.), what should your interest level
-                                correspond to?</p>
-                            <input type="radio" name="q7" value="a"> The degree to which you like the movie or
-                            anticipate liking the movie, i.e. your rating. <br>
-                            <input type="radio" name="q7" value="b"> The likely order that you'd watch the movies, i.e.
-                            you want to watch the movies you are more interested in before the movies you are less
-                            interested in.<br>
-                            <br>
-
-                            <p><strong>Question 8: </strong>When judging movies and specifying your interest in watching
-                                the movie via a streaming service (Netflix, etc.), can you be interested in watching
-                                movies that you've already seen?</p>
-                            <input type="radio" name="q8" value="a"> Yes. We all know the joy of finding a favorite
-                            movie available on a streaming service and wanting to watch it again.<br>
-                            <input type="radio" name="q8" value="b"> No. If you've already seen a movie, you should not
-                            be interested in watching it again.<br>
-                            <br>
-
-                            <p><strong>Question 9: </strong>When judging movies and specifying your interest in watching
-                                the movie via a streaming service (Netflix, etc.), you have seen the movie previously
-                                and rated it 5 stars, the highest rating possible, can you be uninterested in watching
-                                it again?</p>
-                            <input type="radio" name="q9" value="a"> Yes. It is possible to love a movie but not be
-                            interested in watching it again. <br>
-                            <input type="radio" name="q9" value="b"> No. If you love a movie, you must be interested in
-                            watching it again very soon.<br>
-                            <br>
-
-                            <p><strong>Question 10: </strong>When judging movies, for the movies you've already seen,
-                                what is the rating scale that you will use?</p>
-                            <input type="radio" name="q10" value="a"> The Movielens rating scale of 0.5 to 5 stars, and
-                            I
-                            should rate the movies the same as if I was rating them on Movielens.<br>
-                            <input type="radio" name="q10" value="b"> On a scale of 0 to 100 where scores over 50 are
-                            for
-                            movies I like and scores less than 50 are for movies that I dislike.<br>
-                            <input type="radio" name="q10" value="c"> There is not a rating scale. I am supposed to
-                            describe in words my opinion of the movie.<br>
-                            <br>
-
-                            <p><strong>Question 11: </strong>For a movie you have not yet seen (an unseen movie), what
-                                are the possible judgments?</p>
-                            <input type="radio" name="q11" value="a"> 1. Never heard of it. 2. Familiar with it. 3. Very
-                            familiar with it.<br>
-                            <input type="radio" name="q11" value="b"> 1. Inappropriate or bad recommendation. 2. Okay
-                            recommendation. 3. Good recommendation.<br>
-                            <input type="radio" name="q11" value="c"> None of the above.<br>
-                            <br>
-
-                            <p><strong>Question 12: </strong>For an unseen movie, we will ask you to predict what your
-                                Movielens rating would be for the movie after you watch it. Is this the same as your
-                                interest in watching the movie?</p>
-                            <input type="radio" name="q12" value="a"> Yes. The higher your predicted rating, the more
-                            interested you are in watching the movie.<br>
-                            <input type="radio" name="q12" value="b"> No. Your predicted rating is based on how much you
-                            think you'll like the movie, but your "interest in watching" level is based on your true
-                            desire of what order you want to watch movies in.<br>
-                            <br>
-
-
 
                             <br>
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -197,25 +193,68 @@
         const q9Answer = document.querySelector('input[name="q9"]:checked');
         const q10Answer = document.querySelector('input[name="q10"]:checked');
         const q11Answer = document.querySelector('input[name="q11"]:checked');
-        const q12Answer = document.querySelector('input[name="q12"]:checked');
-        // Add more quiz question validation as needed
 
-        if (!q1Answer || !q2Answer || !q3Answer || !q4Answer || !q5Answer || !q6Answer ||
-            !q7Answer || !q8Answer || !q9Answer || !q10Answer || !q11Answer || !q12Answer) {
-            alert("Please answer all quiz questions.");
+
+        let incorrectAnswers = [];
+
+        if (!q1Answer || q1Answer.value !== "b") {
+            incorrectAnswers.push("Question 1");
+        }
+
+        if (!q2Answer || q2Answer.value !== "a") {
+            incorrectAnswers.push("Question 2");
+        }
+
+        if (!q3Answer || q3Answer.value !== "a") {
+            incorrectAnswers.push("Question 3");
+        }
+
+        if (!q4Answer || q4Answer.value !== "a") {
+            incorrectAnswers.push("Question 4");
+        }
+
+        if (!q5Answer || q5Answer.value !== "c") {
+            incorrectAnswers.push("Question 5");
+        }
+
+        if (!q6Answer || q6Answer.value !== "b") {
+            incorrectAnswers.push("Question 6");
+        }
+
+        if (!q7Answer || q7Answer.value !== "c") {
+            incorrectAnswers.push("Question 7");
+        }
+
+        if (!q8Answer || q8Answer.value !== "b") {
+            incorrectAnswers.push("Question 8");
+        }
+
+        if (!q9Answer || q9Answer.value !== "c") {
+            incorrectAnswers.push("Question 9");
+        }
+
+        if (!q10Answer || q10Answer.value !== "a") {
+            incorrectAnswers.push("Question 10");
+        }
+
+        if (!q11Answer || q11Answer.value !== "b") {
+            incorrectAnswers.push("Question 11");
+        }
+
+        if (incorrectAnswers.length > 0) {
+            alert("You have answered the following questions incorrectly: " + incorrectAnswers.join(", "));
             return false;
         }
 
-        // Check quiz answers
-        if (q1Answer.value !== "a" || q2Answer.value !== "c" || q3Answer.value !== "b" ||
-            q4Answer.value !== "d" || q5Answer.value !== "a" || q6Answer.value !== "b" ||
-            q7Answer.value !== "b" || q8Answer.value !== "a" || q9Answer.value !== "a" ||
-            q10Answer.value !== "a" || q11Answer.value !== "c" || q12Answer.value !== "b") {
-            alert("One or more answers are incorrect. Please review the tutorial and try again.");
-            return false;
-        }
-
-        // If all checks are passed, the form can be submitted
         return true;
+
+        // if (q1Answer.value !== "b" || q2Answer.value !== "a" || q3Answer.value !== "a" ||
+        //     q4Answer.value !== "a" || q5Answer.value !== "c" || q6Answer.value !== "b" ||
+        //     q7Answer.value !== "c" || q8Answer.value !== "b" || q9Answer.value !== "c" ||
+        //     q10Answer.value !== "a" || q11Answer.value !== "b") {
+        //     alert("One or more answers are incorrect. Please review the tutorial and try again.");
+        //     return false;
+        // }
+
     }
 </script>

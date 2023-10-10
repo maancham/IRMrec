@@ -24,6 +24,8 @@ class Command(BaseCommand):
                 ParticipantId=user_data["participant_id"]
             )
 
+            username = "participant_" + str(participant_info.ParticipantId) + "_" + str(user_data["dataset_id"])
+
             user_obj = User(
                 first_name=user_data["first_name"],
                 last_name=user_data["last_name"],
@@ -49,9 +51,11 @@ class Command(BaseCommand):
             new_participant.phaseone_movies.add(*p1_recs)
             new_participant.phasetwo_movies.add(*p2_recs)
 
-            print(f"User: {user_data['dataset_id']} saved...")
+            print(f"User: {username} saved...")
+            print("P1 items", len(user_data["p1_recs"]), len(p1_recs))
+            print("P2 items", len(user_data["p2_recs"]), len(p2_recs))
 
 
 """
-python manage.py load_users --path code/users.json
+docker-compose exec web python code/manage.py load_users --path code/users.json
 """
