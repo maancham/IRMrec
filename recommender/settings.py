@@ -33,7 +33,7 @@ RENDER_EXTERNAL_DB_URL = os.environ["RENDER_EXTERNAL_DB_URL"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1", "129.97.74.32"]
+ALLOWED_HOSTS = ["127.0.0.1", "129.97.74.32", "mooneye.cs.uwaterloo.ca"]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ["RENDER_EXTERNAL_HOSTNAME"]
 if RENDER_EXTERNAL_HOSTNAME:

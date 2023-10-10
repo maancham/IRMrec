@@ -12,20 +12,20 @@
         border: 1px solid black;
         margin-top: -25px;
     }
-    
-    .movie-img img{
-        max-width: 53%;
-        max-height: 30%;
+
+    .movie-img img {
+        max-width: 40%;
+        max-height: 25%;
         width: auto;
-        margin-right: 10px;
-    }   
-    
+        margin-right: 5px;
+    }
+
     .movie-details {
         flex: 1;
         max-width: 85ch;
         overflow-wrap: break-word;
-        text-align: justify;
-        margin-left: -5%;
+        /* text-align: justify; */
+        margin-left: -10%;
     }
 
     .movie-info {
@@ -33,245 +33,254 @@
     }
 
     .submit-button {
-        background-color: #007bff; /* Use a blue-ish color for the button background */
-        color: #fff; /* Text color is white */
-        padding: 10px 20px; /* Add some padding to make the button larger */
-        border: none; /* Remove the default button border */
-        border-radius: 5px; /* Rounded corners */
-        cursor: pointer; /* Add a pointer cursor when hovering over the button */
-        float: right; /* Float the button to the right */
-        margin-top: 10px; /* Add some top margin to separate it from the dropdowns */
+        background-color: #007bff;
+        /* Use a blue-ish color for the button background */
+        color: #fff;
+        /* Text color is white */
+        padding: 10px 20px;
+        /* Add some padding to make the button larger */
+        border: none;
+        /* Remove the default button border */
+        border-radius: 5px;
+        /* Rounded corners */
+        cursor: pointer;
+        /* Add a pointer cursor when hovering over the button */
+        float: right;
+        /* Float the button to the right */
+        margin-top: 10px;
+        /* Add some top margin to separate it from the dropdowns */
     }
-    
-
-
 </style>
 {% endblock %}
 
 
 {% block content %}
 
-    <!-- <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css"> -->
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css" rel="stylesheet" type="text/css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css" rel="stylesheet" type="text/css">
+<!-- <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css"> -->
 
-    
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css" rel="stylesheet"
+    type="text/css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css" rel="stylesheet"
+    type="text/css">
 
-    <div class="movie-container">
-        <div class="movie-img">
-            {% if movie.img_path and movie.img_path != 'nan' %}
-                <img src="{{ movie.img_path }}" alt="{{ movie.title }}" class="img-thumbnail">
+
+
+<div class="movie-container">
+    <div class="movie-img">
+        {% if movie.img_path and movie.img_path != 'nan' %}
+        <img src="{{ movie.img_path }}" alt="{{ movie.title }}" class="img-thumbnail">
+        {% else %}
+        <img src="https://raw.githubusercontent.com/maancham/IRMrec/main/movies/static/movies/default.jpg" alt="default"
+            class="img-thumbnail">
+        {% endif %}
+    </div>
+    <div class="movie-details">
+        <h2>{{ movie.title }}</h2>
+        <p> {{ movie.overview }} </p>
+        <div class="movie-info">
+            <p style="flex: 1; margin-bottom: 0%;"><strong>Release Year:</strong> {{ movie.year }}</p>
+            <!-- <p style="flex: 1;"><strong>MPA Rating:</strong> {{ movie|get_map }}</p> -->
+            {% if movie.runtime == 0 %}
+            <p style="flex: 1;"><strong>Runtime(min):</strong> N/A </p>
             {% else %}
-                <img src="https://raw.githubusercontent.com/maancham/IRMrec/main/movies/static/movies/default.jpg" alt="default" class="img-thumbnail">
+            <p style="flex: 1;"><strong>Runtime(min):</strong> {{ movie.runtime }}</p>
             {% endif %}
         </div>
-        <div class="movie-details">
-            <h2>{{ movie.title }}</h2>
-            <p> {{ movie.overview }} </p>
-            <div class="movie-info">
-                <p style="flex: 1;"><strong>Release Year:</strong> {{ movie.year }}</p>
-                <!-- <p style="flex: 1;"><strong>MPA Rating:</strong> {{ movie|get_map }}</p> -->
-                {% if movie.runtime == 0 %}
-                    <p style="flex: 1;"><strong>Runtime(min):</strong> N/A </p>
-                {% else %}
-                    <p style="flex: 1;"><strong>Runtime(min):</strong> {{ movie.runtime }}</p>
-                {% endif %}
-              </div>
-            <p><strong>Cast:</strong> {{ movie.cast }}</p>
-            <p><strong>Director(s):</strong> {{ movie.directors }}</p>
-            <p><strong>Genres:</strong> {{ movie.genres }}</p>
-            <p><strong>Languages:</strong> {{ movie|get_language }}</p>
-        </div>
+        <p style="margin-bottom: 0%;"><strong>Cast:</strong> {{ movie.cast }}</p>
+        <p style="margin-bottom: 0%;"><strong>Director(s):</strong> {{ movie.directors }}</p>
+        <p style="margin-bottom: 0%;"><strong>Genres:</strong> {{ movie.genres }}</p>
+        <p><strong>Languages:</strong> {{ movie|get_language }}</p>
+    </div>
+</div>
+
+{% if interaction_exists %}
+<div id="previousFeedback">
+    <h3 style="margin-top: 10px;">Previous feedback:</h3>
+    <ul>
+        <li>How familiar are you with this movie: <strong> {{ ex_familiarity }} </strong></li>
+        <li>You have seen this movie before: <strong> {{ ex_seen_status }} </strong></li>
+        <li>Your previous rating to this movie: <strong> {{ ex_rating }} </strong></li>
+        <li>You willingness to watch this movie: <strong> {{ ex_will_to_watch }} </strong></li>
+    </ul>
+    <p>Would you like to edit your previous feedback?</p>
+    <button id="editPreviousButton">I Want to Edit</button>
+    <a href="{% url 'movie_list' %}"><button>I Don't Want to Edit</button></a>
+</div>
+
+{% endif %}
+
+
+<hr>
+
+<form method="POST" id="input-form" {% if interaction_exists %}style="display:none;" {% endif %}>
+    {% csrf_token %}
+
+    <div class="form-group" id="familiar-fields">
+        <label>How familiar are you with this movie?</label>
+        <select id="familiar-select" name="seen_rating" class="dropdown-select" tabindex="0">
+            <option value="">Choose an option</option>
+            <option value="Never">Unseen - Never heard of it</option>
+            <option value="Familiar">Unseen - Familiar with movie</option>
+            <option value="Very familiar">Unseen - Very familiar (read reviews, seen trailers, etc.)</option>
+            <option value="Seen - 0.5">Seen the movie - 0.5 stars (Awful)</option>
+            <option value="Seen - 1">Seen the movie - 1 star (Awful)</option>
+            <option value="Seen - 1.5">Seen the movie - 1.5 stars (Poor)</option>
+            <option value="Seen - 2">Seen the movie - 2 stars (Poor)</option>
+            <option value="Seen - 2.5">Seen the movie - 2.5 stars (OK)</option>
+            <option value="Seen - 3">Seen the movie - 3 stars (OK)</option>
+            <option value="Seen - 3.5">Seen the movie - 3.5 stars (Good)</option>
+            <option value="Seen - 4">Seen the movie - 4 stars (Good)</option>
+            <option value="Seen - 4.5">Seen the movie - 4.5 stars (Must Watch)</option>
+            <option value="Seen - 5">Seen the movie - 5 stars (Must Watch)</option>
+        </select>
+
+        <!-- Hidden input fields -->
+        <input type="hidden" name="familiarity" id="familiarity-input">
+        <input type="hidden" name="seen_status" id="seen-status-input">
+        <input type="hidden" name="rating" id="rating-input">
+
     </div>
 
-    {% if interaction_exists %}
-    <div id="previousFeedback">
-        <h3 style="margin-top: 10px;">Previous feedback:</h3>
-        <ul>
-            <li>How familiar are you with this movie: <strong> {{ ex_familiarity }} </strong></li>
-            <li>You have seen this movie before: <strong> {{ ex_seen_status }} </strong></li>
-            <li>Your previous rating to this movie: <strong> {{ ex_rating }} </strong></li>
-            <li>You willingness to watch this movie: <strong> {{ ex_will_to_watch }} </strong></li>
-        </ul>
-        <p>Would you like to edit your previous feedback?</p>
-        <button id="editPreviousButton">I Want to Edit</button>
-        <a href="{% url 'movie_list' %}"><button>I Don't Want to Edit</button></a>
+    <br>
+
+    <div class="form-group" id="watch-fields">
+        <label>How interested are you in watching this movie via a streaming service?</label>
+        <select id="watch-select" name="will_to_watch" class="dropdown-select" tabindex="1">
+            <option value="">Choose an option</option>
+            <option value="Not interested">Not interested</option>
+            <option value="Somewhat interested">Somewhat interested</option>
+            <option value="Interested">Interested</option>
+            <option value="Very interested">Very interested</option>
+            <option value="Extremely interested">Extremely interested</option>
+        </select>
     </div>
-        
-    {% endif %}
 
+    <br>
 
-    <hr>
+    <div class="form-group" id="rating-fields">
+        <label><strong>For unseen movies only:</strong> If you were to watch this movie, what would you predict your
+            rating of it to be?</label>
+        <select id="unseen-rating-select" name="unseen_rating_select" class="dropdown-select" tabindex="2">
+            <option value="">Choose an option</option>
+            <option value="0.5">0.5 stars (Awful)</option>
+            <option value="1">1 star (Awful)</option>
+            <option value="1.5">1.5 stars (Poor)</option>
+            <option value="2">2 stars (Poor)</option>
+            <option value="2.5">2.5 stars (OK)</option>
+            <option value="3">3 stars (OK)</option>
+            <option value="3.5">3.5 stars (Good)</option>
+            <option value="4">4 stars (Good)</option>
+            <option value="4.5">4.5 stars (Must Watch)</option>
+            <option value="5">5 stars (Must Watch)</option>
+        </select>
+    </div>
 
-    <form method="POST" id="input-form" {% if interaction_exists %}style="display:none;"{% endif %}>
-        {% csrf_token %}
+    <br>
 
-        <div class="form-group" id="familiar-fields">
-            <label>How familiar are you with this movie?</label>
-            <select id="familiar-select" name="seen_rating" class="dropdown-select" tabindex="0">
-                <option value="">Choose an option</option>
-                <option value="Never">Unseen - Never heard of it</option>
-                <option value="Familiar">Unseen - Familiar with movie</option>
-                <option value="Very familiar">Unseen - Very familiar (read reviews, seen trailers, etc.)</option>
-                <option value="Seen - 0.5">Seen the movie - 0.5 stars (Awful)</option>
-                <option value="Seen - 1">Seen the movie - 1 star (Awful)</option>
-                <option value="Seen - 1.5">Seen the movie - 1.5 stars (Poor)</option>
-                <option value="Seen - 2">Seen the movie - 2 stars (Poor)</option>
-                <option value="Seen - 2.5">Seen the movie - 2.5 stars (OK)</option>
-                <option value="Seen - 3">Seen the movie - 3 stars (OK)</option>
-                <option value="Seen - 3.5">Seen the movie - 3.5 stars (Good)</option>
-                <option value="Seen - 4">Seen the movie - 4 stars (Good)</option>
-                <option value="Seen - 4.5">Seen the movie - 4.5 stars (Must Watch)</option>
-                <option value="Seen - 5">Seen the movie - 5 stars (Must Watch)</option>
-            </select>
+    <button type="submit" class="submit-button" tabindex="3">Submit</button>
 
-            <!-- Hidden input fields -->
-            <input type="hidden" name="familiarity" id="familiarity-input">
-            <input type="hidden" name="seen_status" id="seen-status-input">
-            <input type="hidden" name="rating" id="rating-input">
-
-        </div>
-
-        <br>
-
-        <div class="form-group" id="watch-fields">
-            <label>How interested are you in watching this movie via a streaming service?</label>
-            <select id="watch-select" name="will_to_watch" class="dropdown-select" tabindex="1">
-                <option value="">Choose an option</option>
-                <option value="Not interested">Not interested</option>
-                <option value="Somewhat interested">Somewhat interested</option>
-                <option value="Interested">Interested</option>
-                <option value="Very interested">Very interested</option>
-                <option value="Extremely interested">Extremely interested</option>
-            </select>
-        </div>
-
-        <br>
-
-        <div class="form-group" id="rating-fields">
-            <label><strong>For unseen movies only:</strong> If you were to watch this movie, what would you predict your rating of it to be?</label>
-            <select id="unseen-rating-select" name="unseen_rating_select" class="dropdown-select" tabindex="2">
-                <option value="">Choose an option</option>
-                <option value="0.5">0.5 stars (Awful)</option>
-                <option value="1">1 star (Awful)</option>
-                <option value="1.5">1.5 stars (Poor)</option>
-                <option value="2">2 stars (Poor)</option>
-                <option value="2.5">2.5 stars (OK)</option>
-                <option value="3">3 stars (OK)</option>
-                <option value="3.5">3.5 stars (Good)</option>
-                <option value="4">4 stars (Good)</option>
-                <option value="4.5">4.5 stars (Must Watch)</option>
-                <option value="5">5 stars (Must Watch)</option>
-            </select>
-        </div>
-
-        <br>
-
-        <button type="submit" class="submit-button" tabindex="3">Submit</button>
-
-    </form>
-
-
-    
-
-
-    <script>
-
-        const familiarSelect = document.getElementById('familiar-select');
-        const watchSelect = document.getElementById('watch-select');
-        const familiarityInput = document.getElementById('familiarity-input');
-        const seenStatusInput = document.getElementById('seen-status-input');
-        const ratingInput = document.getElementById('rating-input');
-        const unseenRatingInput = document.getElementById('unseen-rating-select');
-        const form = document.getElementById('input-form');
-        const editPrevButton = document.getElementById('editPreviousButton');
-
-
-        familiarSelect.addEventListener('change', function () {
-            const selectedValue = this.value;
-
-            if (selectedValue.startsWith('Seen')) {
-                const [_, ratingValue] = selectedValue.split(' - ');
-
-                familiarityInput.value = 'Seen';
-                seenStatusInput.value = true;
-                ratingInput.value = parseFloat(ratingValue);
-            } else {
-                familiarityInput.value = selectedValue;
-                seenStatusInput.value = false;
-            }
-        });
-
-        familiarSelect.addEventListener('change', (event) => {
-            if (seenStatusInput.value === 'true') {
-                unseenRatingInput.disabled = true; // Enable the unseen rating input
-            } else {
-                unseenRatingInput.disabled = false; // Disable the unseen rating input
-            }
-        });
-
-        unseenRatingInput.addEventListener('change', function () {
-            ratingInput.value = parseFloat(this.value);
-        });
-
-
-        
-        form.addEventListener('submit', function (event) {
-            if (!familiarSelect.value) {
-                alert('Please select an option for question 1.');
-                event.preventDefault();
-            } else if (!watchSelect.value) {
-                alert('Please select an option for question 2.');
-                event.preventDefault();
-            } else if (!unseenRatingInput.disabled && !unseenRatingInput.value) {
-                alert('Please select an option for question 3.');
-                event.preventDefault();
-            }
-        });
+</form>
 
 
 
-        if (editPrevButton) {
-            editPrevButton.addEventListener('click', () => {
-                document.getElementById('previousFeedback').style.display = 'none';
-                document.getElementById('input-form').style.display = 'block';
-            });
+
+
+<script>
+
+    const familiarSelect = document.getElementById('familiar-select');
+    const watchSelect = document.getElementById('watch-select');
+    const familiarityInput = document.getElementById('familiarity-input');
+    const seenStatusInput = document.getElementById('seen-status-input');
+    const ratingInput = document.getElementById('rating-input');
+    const unseenRatingInput = document.getElementById('unseen-rating-select');
+    const form = document.getElementById('input-form');
+    const editPrevButton = document.getElementById('editPreviousButton');
+
+
+    familiarSelect.addEventListener('change', function () {
+        const selectedValue = this.value;
+
+        if (selectedValue.startsWith('Seen')) {
+            const [_, ratingValue] = selectedValue.split(' - ');
+
+            familiarityInput.value = 'Seen';
+            seenStatusInput.value = true;
+            ratingInput.value = parseFloat(ratingValue);
+        } else {
+            familiarityInput.value = selectedValue;
+            seenStatusInput.value = false;
         }
+    });
+
+    familiarSelect.addEventListener('change', (event) => {
+        if (seenStatusInput.value === 'true') {
+            unseenRatingInput.disabled = true; // Enable the unseen rating input
+        } else {
+            unseenRatingInput.disabled = false; // Disable the unseen rating input
+        }
+    });
+
+    unseenRatingInput.addEventListener('change', function () {
+        ratingInput.value = parseFloat(this.value);
+    });
 
 
-        // keyboard navigation part
-        const dropdowns = document.querySelectorAll('.dropdown-select');
-        const submitButton = document.querySelector('.submit-button');
 
-        dropdowns.forEach((dropdown, index) => {
-            dropdown.addEventListener('keydown', (event) => {
+    form.addEventListener('submit', function (event) {
+        if (!familiarSelect.value) {
+            alert('Please select an option for question 1.');
+            event.preventDefault();
+        } else if (!watchSelect.value) {
+            alert('Please select an option for question 2.');
+            event.preventDefault();
+        } else if (!unseenRatingInput.disabled && !unseenRatingInput.value) {
+            alert('Please select an option for question 3.');
+            event.preventDefault();
+        }
+    });
+
+
+
+    if (editPrevButton) {
+        editPrevButton.addEventListener('click', () => {
+            document.getElementById('previousFeedback').style.display = 'none';
+            document.getElementById('input-form').style.display = 'block';
+        });
+    }
+
+
+    // keyboard navigation part
+    const dropdowns = document.querySelectorAll('.dropdown-select');
+    const submitButton = document.querySelector('.submit-button');
+
+    dropdowns.forEach((dropdown, index) => {
+        dropdown.addEventListener('keydown', (event) => {
             const key = event.key;
 
             if (key === 'ArrowDown' || key === 'Down') {
                 if (index + 1 < dropdowns.length) {
-                dropdowns[index + 1].focus();
+                    dropdowns[index + 1].focus();
                 }
             } else if (key === 'ArrowUp' || key === 'Up') {
                 if (index - 1 >= 0) {
-                dropdowns[index - 1].focus();
+                    dropdowns[index - 1].focus();
                 }
             } else if (key === 'Tab') {
                 return;
             } else if (key === 'Enter') {
                 dropdown.focus();
             }
-            });
         });
+    });
 
-        dropdowns[dropdowns.length - 1].addEventListener('keydown', (event) => {
-            if (event.key === 'Tab') {
+    dropdowns[dropdowns.length - 1].addEventListener('keydown', (event) => {
+        if (event.key === 'Tab') {
             event.preventDefault();
             submitButton.focus();
-            }
-        });
+        }
+    });
 
 
-    </script>
+</script>
 
 {% endblock %}
