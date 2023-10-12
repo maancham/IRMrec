@@ -10,19 +10,20 @@ import logging
 
 
 ## global flag to set the stage (1 or 2)
-STUDY_STAGE = 1
+STUDY_STAGE = 2
 
 
 """
 TODO:
 ------------------------------
-http://127.0.0.1:8000/accounts/login/?next=/home/
-results in error when not logged in!
 
 sudo service postgresql start
 
+docker exec -t irmrec-db-1 pg_dump -U chapman -d irmrecuserstudy -f /backups/backup1.sql
+docker cp irmrec-db-1:/backups/backup1.sql /home/maanch/backup/
+local (to load dump into psql): psql -U houmch -d houmch -f backup1.sql
+SELECT db_to_csv('/mnt/c/Users/hoomo/OneDrive/Documents/GitHub/IRMrec backups/output');
 
-activate SessionTimeoutMiddleware in settings
 """
 
 

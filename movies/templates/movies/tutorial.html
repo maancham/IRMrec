@@ -169,6 +169,17 @@
                             <input type="radio" name="q11" value="c"> Choose any three movies and rank them.<br>
                             <br>
 
+                            <p><strong>Question 12: </strong>When judging movies, how fast should you work?
+                            </p>
+                            <input type="radio" name="q12" value="a"> I should be very deliberative and take as much
+                            time as needed to produce the most accurate judgments.<br>
+                            <input type="radio" name="q12" value="b"> I should judge at a pace of about 2-3 movies per
+                            minute. As such, I can only use the information provided to make a decision. I need to
+                            balance accuracy with speed.<br>
+                            <input type="radio" name="q12" value="c"> The faster I work the better regardless of my
+                            accuracy.<br>
+                            <br>
+
                             <br>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
@@ -193,6 +204,7 @@
         const q9Answer = document.querySelector('input[name="q9"]:checked');
         const q10Answer = document.querySelector('input[name="q10"]:checked');
         const q11Answer = document.querySelector('input[name="q11"]:checked');
+        const q12Answer = document.querySelector('input[name="q12"]:checked');
 
 
         let incorrectAnswers = [];
@@ -239,6 +251,10 @@
 
         if (!q11Answer || q11Answer.value !== "b") {
             incorrectAnswers.push("Question 11");
+        }
+
+        if (!q12Answer || q12Answer.value !== "b") {
+            incorrectAnswers.push("Question 12");
         }
 
         if (incorrectAnswers.length > 0) {
