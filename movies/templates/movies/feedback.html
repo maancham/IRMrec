@@ -21,8 +21,8 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="form-group">
-                    <textarea class="form-control" id="feedback" name="feedback" rows="4" maxlength="300"></textarea>
-                    <small class="text-muted" id="char-count">Characters left: 300</small>
+                    <textarea class="form-control" id="feedback" name="feedback" rows="4" maxlength="600"></textarea>
+                    <small class="text-muted" id="char-count">Characters left: 600</small>
                 </div>
                 <br>
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -39,13 +39,13 @@
     const charCount = document.getElementById("char-count");
   
     feedbackTextarea.addEventListener("input", function () {
-      const remainingChars = 300 - feedbackTextarea.value.length;
+      const remainingChars = 600 - feedbackTextarea.value.length;
       charCount.textContent = `Characters left: ${remainingChars}`;
     });
   
     feedbackTextarea.addEventListener("keyup", function () {
-      if (feedbackTextarea.value.length > 300) {
-        feedbackTextarea.value = feedbackTextarea.value.substring(0, 300);
+      if (feedbackTextarea.value.length > 600) {
+        feedbackTextarea.value = feedbackTextarea.value.substring(0, 600);
         charCount.textContent = "You have reached the character limit!";
       }
     });

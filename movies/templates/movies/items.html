@@ -51,8 +51,8 @@
           <label for="sort_by">Sort Movies By:</label>
           <select name="sort_by" id="sort_by">
             <option value=""> </option>
-            <option value="willingness" {% if sort_by == 'willingness' %}{% endif %}>Willingness</option> 
-            <option value="rating" {% if sort_by == 'rating' %}{% endif %}>Rating</option>     
+            <option value="willingness" {% if sort_by == 'willingness' %}selected{% endif %}>Willingness</option> 
+            <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Rating</option>     
           </select>
         </form>
     </div>
@@ -121,7 +121,8 @@
             <ul class="pagination">
             {% if movies.has_previous %}
                 <li class="page-item">
-                <a class="page-link" href="?page={{ movies.previous_page_number }}">Previous</a>
+                <!-- <a class="page-link" href="?page={{ movies.previous_page_number }}">Previous</a> -->
+                <a class="page-link" href="?page={{ movies.previous_page_number }}&sort_by={{ sort_by }}">Previous</a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
@@ -139,14 +140,14 @@
                 </li>
                 {% else %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                    <a class="page-link" href="?page={{ page_num }}&sort_by={{ sort_by }}">{{ page_num }}</a>
                 </li>
                 {% endif %}
             {% endfor %}
 
             {% if movies.has_next %}
                 <li class="page-item">
-                <a class="page-link" href="?page={{ movies.next_page_number }}">Next</a>
+                <a class="page-link" href="?page={{ movies.next_page_number }}&sort_by={{ sort_by }}">Next</a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
