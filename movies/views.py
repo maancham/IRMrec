@@ -139,9 +139,9 @@ def home(request):
         return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
     else:
         remaining_judge_actions = (
-            participant.remaining_p1_judge_actions
+            participant.phaseone_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phaseone_movies.all()).count()
             if STUDY_STAGE == 1
-            else participant.remaining_p2_judge_actions
+            else participant.phasetwo_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phasetwo_movies.all()).count()
         )
         return render(
             request,
@@ -207,7 +207,7 @@ def movie_list(request):
             reverse=True,
         )
 
-    paginator = Paginator(judged_movies, 10)
+    paginator = Paginator(judged_movies, 50)
     page = request.GET.get("page")
     try:
         logger.info(
@@ -220,9 +220,9 @@ def movie_list(request):
         movies = paginator.page(paginator.num_pages)
 
     remaining_judge_actions = (
-        participant.remaining_p1_judge_actions
+        participant.phaseone_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phaseone_movies.all()).count()
         if STUDY_STAGE == 1
-        else participant.remaining_p2_judge_actions
+        else participant.phasetwo_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phasetwo_movies.all()).count()
     )
     return render(
         request,
@@ -231,6 +231,7 @@ def movie_list(request):
             "movies": movies,
             "interactions": interactions,
             "remaining_judge_actions": remaining_judge_actions,
+            "sort_by": sort_by,
         },
     )
 
@@ -328,9 +329,12 @@ def judge(request):
         ).first()
 
     remaining_judge_actions = (
-        participant.remaining_p1_judge_actions
+        participant.phaseone_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phaseone_movies.all()).count()
         if STUDY_STAGE == 1
-        else participant.remaining_p2_judge_actions
+        else participant.phasetwo_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phasetwo_movies.all()).count()
+    #     participant.remaining_p1_judge_actions
+    #     if STUDY_STAGE == 1
+    #     else participant.remaining_p2_judge_actions
     )
 
     if unjudged_movie is None and remaining_judge_actions == 0:
@@ -349,9 +353,9 @@ def final_ranking(request):
         return redirect("home")
 
     remaining_judge_actions = (
-        participant.remaining_p1_judge_actions
+        participant.phaseone_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phaseone_movies.all()).count()
         if STUDY_STAGE == 1
-        else participant.remaining_p2_judge_actions
+        else participant.phasetwo_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phasetwo_movies.all()).count()
     )
     if remaining_judge_actions != 0:
         logger.info(
