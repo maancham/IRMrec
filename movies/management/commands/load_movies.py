@@ -29,9 +29,9 @@ class Command(BaseCommand):
             directors = row["directors"]
             languages = row["languages"]
 
-            if not movieId.isdigit():
-                print(row)
-                continue
+            # if not movieId.isdigit():
+            #     print(row)
+            #     continue
 
             if isnan(runtime):
                 runtime = 0

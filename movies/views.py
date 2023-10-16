@@ -10,7 +10,7 @@ import logging
 
 
 ## global flag to set the stage (1 or 2)
-STUDY_STAGE = 2
+STUDY_STAGE = 1
 
 
 """
@@ -434,6 +434,18 @@ def final_ranking(request):
                 "Very interested",
                 "Interested",
                 "Somewhat interested",
+            ],
+        )
+    
+    if len(top_interactions) < 3:
+        top_interactions = Interaction.objects.filter(
+            participant=participant,
+            will_to_watch__in=[
+                "Extremely interested",
+                "Very interested",
+                "Interested",
+                "Somewhat interested",
+                "Not interested"
             ],
         )
 

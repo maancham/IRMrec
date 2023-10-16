@@ -16,7 +16,7 @@
     }
 
     .movie-img img {
-        max-width: 40%;
+        max-width: 60%;
         max-height: 25%;
         width: auto;
         margin-right: 5px;
@@ -27,7 +27,7 @@
         max-width: 85ch;
         overflow-wrap: break-word;
         /* text-align: justify; */
-        margin-left: -10%;
+        margin-left: -5%;
     }
 
     .movie-info {
@@ -73,7 +73,7 @@
         <img src="{{ movie.img_path }}" alt="{{ movie.title }}" class="img-thumbnail">
         {% else %}
         <img src="https://raw.githubusercontent.com/maancham/IRMrec/main/movies/static/movies/default.jpg" alt="default"
-            class="img-thumbnail">
+            class="img-thumbnail" style="max-width: 40%;">
         {% endif %}
     </div>
     <div class="movie-details">
