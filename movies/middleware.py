@@ -11,7 +11,13 @@ class SessionTimeoutMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
+
     def __call__(self, request):
+        allowed_seconds = 180
+        if 'tutorial' in request.path or 'feedback' in request.path:
+            allowed_seconds = 600
+        if 'ranking' in request.path:
+            allowed_seconds = 300
         if request.user.is_authenticated:
             current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             last_activity = request.session.get("last_activity", None)
@@ -20,7 +26,7 @@ class SessionTimeoutMiddleware:
                     last_activity, "%Y-%m-%d %H:%M:%S"
                 )
                 time_difference = datetime.datetime.now() - last_activity
-                if time_difference.seconds > 180:
+                if time_difference.seconds > allowed_seconds:
                     die_time = last_activity + datetime.timedelta(minutes=3)
                     logger.info(
                         f"forced_logout_action: User {request.user.username} logged out, dead since {die_time}."
@@ -32,5 +38,6 @@ class SessionTimeoutMiddleware:
                     )
                     return redirect("login")
             request.session["last_activity"] = current_time
+
         response = self.get_response(request)
         return response
