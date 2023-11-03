@@ -9,8 +9,6 @@ from .forms import ParticipantInfoForm
 import logging
 
 
-## global flag to set the stage (1 or 2)
-STUDY_STAGE = 1
 
 
 """
@@ -132,15 +130,17 @@ def home(request):
     if not participant.taken_initial_quiz:
         return redirect("tutorial")
 
+    study_stage = participant.study_stage
+
     fully_done = (
-        participant.fully_p1_done if STUDY_STAGE == 1 else participant.fully_p2_done
+        participant.fully_p1_done if study_stage == 1 else participant.fully_p2_done
     )
     if fully_done:
-        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
+        return render(request, "movies/rankingDone.html", {"study_stage": study_stage})
     else:
         remaining_judge_actions = (
             participant.phaseone_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phaseone_movies.all()).count()
-            if STUDY_STAGE == 1
+            if study_stage == 1
             else participant.phasetwo_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phasetwo_movies.all()).count()
         )
         return render(
@@ -167,10 +167,12 @@ def movie_list(request):
     )
     judged_movies = [interaction.movie for interaction in user_interactions]
 
-    if (STUDY_STAGE == 1 and participant.fully_p1_done) or (
-        STUDY_STAGE == 2 and participant.fully_p2_done
+    study_stage = participant.study_stage
+
+    if (study_stage == 1 and participant.fully_p1_done) or (
+        study_stage == 2 and participant.fully_p2_done
     ):
-        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
+        return render(request, "movies/rankingDone.html", {"study_stage": study_stage})
 
     interactions = {
         interaction.movie.movieId: interaction for interaction in user_interactions
@@ -221,7 +223,7 @@ def movie_list(request):
 
     remaining_judge_actions = (
         participant.phaseone_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phaseone_movies.all()).count()
-        if STUDY_STAGE == 1
+        if study_stage == 1
         else participant.phasetwo_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phasetwo_movies.all()).count()
     )
     return render(
@@ -244,10 +246,12 @@ def movie_detail(request, movie_id):
     if not participant.taken_initial_quiz:
         return redirect("home")
 
-    if (STUDY_STAGE == 1 and participant.fully_p1_done) or (
-        STUDY_STAGE == 2 and participant.fully_p2_done
+    study_stage = participant.study_stage
+
+    if (study_stage == 1 and participant.fully_p1_done) or (
+        study_stage == 2 and participant.fully_p2_done
     ):
-        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
+        return render(request, "movies/rankingDone.html", {"study_stage": study_stage})
 
     logger.info(
         f"view_movie: User {participant.user.username} shown movie/{movie.movieId} page."
@@ -287,7 +291,7 @@ def movie_detail(request, movie_id):
                 rating=rating,
                 will_to_watch=will_to_watch,
             )
-            if STUDY_STAGE == 1:
+            if study_stage == 1:
                 participant.remaining_p1_judge_actions -= 1
             else:
                 participant.remaining_p2_judge_actions -= 1
@@ -319,7 +323,9 @@ def judge(request):
     if not participant.taken_initial_quiz:
         return redirect("home")
 
-    if STUDY_STAGE == 1:
+    study_stage = participant.study_stage
+
+    if study_stage == 1:
         unjudged_movie = participant.phaseone_movies.exclude(
             interaction__participant=participant
         ).first()
@@ -330,11 +336,8 @@ def judge(request):
 
     remaining_judge_actions = (
         participant.phaseone_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phaseone_movies.all()).count()
-        if STUDY_STAGE == 1
+        if study_stage == 1
         else participant.phasetwo_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phasetwo_movies.all()).count()
-    #     participant.remaining_p1_judge_actions
-    #     if STUDY_STAGE == 1
-    #     else participant.remaining_p2_judge_actions
     )
 
     if unjudged_movie is None and remaining_judge_actions == 0:
@@ -352,9 +355,11 @@ def final_ranking(request):
     if not participant.taken_initial_quiz:
         return redirect("home")
 
+    study_stage = participant.study_stage
+
     remaining_judge_actions = (
         participant.phaseone_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phaseone_movies.all()).count()
-        if STUDY_STAGE == 1
+        if study_stage == 1
         else participant.phasetwo_movies.count() - Interaction.objects.filter(participant=participant, movie__in=participant.phasetwo_movies.all()).count()
     )
     if remaining_judge_actions != 0:
@@ -364,7 +369,7 @@ def final_ranking(request):
         return render(request, "movies/rankingLocked.html")
 
     fully_done = (
-        participant.fully_p1_done if STUDY_STAGE == 1 else participant.fully_p2_done
+        participant.fully_p1_done if study_stage == 1 else participant.fully_p2_done
     )
 
     if fully_done:
@@ -385,7 +390,7 @@ def final_ranking(request):
                 interaction = Interaction.objects.get(
                     participant=participant, movie=movie
                 )
-                if STUDY_STAGE == 1:
+                if study_stage == 1:
                     interaction.rank_p1 = idx + 1
                 else:
                     interaction.rank_p2 = idx + 1
@@ -393,7 +398,7 @@ def final_ranking(request):
             except:
                 print("ranking save not successful!")
 
-        if STUDY_STAGE == 1:
+        if study_stage == 1:
             participant.fully_p1_done = True
         else:
             participant.fully_p2_done = True
@@ -462,23 +467,25 @@ def final_ranking(request):
 def feedback(request):
     participant = Participant.objects.get(user=request.user)
 
-    if (participant.gave_p1_feedback and STUDY_STAGE == 1) or (
-        participant.gave_p2_feedback and STUDY_STAGE == 2
+    study_stage = participant.study_stage
+
+    if (participant.gave_p1_feedback and study_stage == 1) or (
+        participant.gave_p2_feedback and study_stage == 2
     ):
-        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
+        return render(request, "movies/rankingDone.html", {"study_stage": study_stage})
 
     if request.method == "POST":
         feedback_text = request.POST.get("feedback")
-        if STUDY_STAGE == 1:
+        if study_stage == 1:
             participant.p1_feedback = feedback_text
             participant.gave_p1_feedback = True
         else:
             participant.p2_feedback = feedback_text
             participant.gave_p2_feedback = True
         participant.save()
-        return render(request, "movies/rankingDone.html", {"study_stage": STUDY_STAGE})
+        return render(request, "movies/rankingDone.html", {"study_stage": study_stage})
 
-    return render(request, "movies/feedback.html", {"study_stage": STUDY_STAGE})
+    return render(request, "movies/feedback.html", {"study_stage": study_stage})
 
 
 def handle_404(request, exception):

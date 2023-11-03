@@ -75,6 +75,8 @@ class Participant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     participant_info = models.OneToOneField(ParticipantInfo, on_delete=models.CASCADE)
 
+    study_stage = models.IntegerField(null=False, default=1) ## set to 1 or 2 based on which stage the user is at
+
     taken_initial_quiz = models.BooleanField(default=False)
     given_demographics = models.BooleanField(default=False)
 
