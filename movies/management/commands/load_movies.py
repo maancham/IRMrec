@@ -32,6 +32,9 @@ class Command(BaseCommand):
             # if not movieId.isdigit():
             #     print(row)
             #     continue
+            if not isinstance(movieId, int):
+                print(row)
+                continue
 
             if isnan(runtime):
                 runtime = 0
