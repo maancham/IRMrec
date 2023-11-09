@@ -51,7 +51,7 @@ class Command(BaseCommand):
             new_participant.phaseone_movies.add(*p1_recs)
             new_participant.phasetwo_movies.add(*p2_recs)
 
-            print(f"User: {username} saved...")
+            print(f"User: {username} with Pass: {user_data['pass']} saved...")
             print("P1 items", len(user_data["p1_recs"]), len(p1_recs))
             print("P2 items", len(user_data["p2_recs"]), len(p2_recs))
 

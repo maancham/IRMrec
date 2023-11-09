@@ -1,0 +1,105 @@
+<title>{% block title %}IRMrec{% endblock %}</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
+  type="text/css">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-top: 1px; padding-bottom: 1px;">
+  <div class="container-fluid">
+    <!-- Brand -->
+    <a class="navbar-brand" href="{% url 'home' %}">IRMrec</a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+
+<style>
+  /* Feel free to adjust styles as needed */
+  .card {
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+
+  .form-check {
+    margin-bottom: 10px;
+  }
+
+  .btn-primary {
+    margin-top: 10px;
+  }
+</style>
+
+
+<div class="container">
+  <ol class="breadcrumb my-4">
+    {% block breadcrumb %}
+    {% endblock %}
+  </ol>
+  {% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Welcome to the Evaluation of Recommendation Systems Research Study</h3>
+            <p class="card-text" style="text-align: justify;">
+                Before proceeding with the user study, we want to update you on a minor change in the first phase 
+                settings. The number of judgments, previously around 100, has been increased to approximately 150. 
+                Consequently, we've adjusted the remuneration to <strong>$40</strong> (for residents of Canada) or <strong>$30</strong> (for residents of the USA). 
+                Per our university's research policy, we're obligated to inform you of this change.
+            </p>
+            
+            <br>
+
+            <p class="card-text" style="text-align: justify;">
+                If you agree to the updated settings, please check <strong>boxes</strong> below before continuing. Additionally, 
+                if you wish, you can review the full content of the consent form with these amendments by clicking [here](link).
+            </p>
+
+            <hr>
+
+
+            <form method="post">
+                {% csrf_token %}
+                <label>
+                    <input type="checkbox" name="read_and_consent" required>
+                    I confirm that I have fully read these amendments and I consent to all items above.
+                </label>
+        
+                <br>
+        
+                <label>
+                    <input type="checkbox" name="secondary_use_consent" required>
+                    I consent to the secondary use of my data (without having a link to personal information) for research purposes.
+                </label>
+        
+                <br>
+
+                <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Submit and Continue</button>
+            </form>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+
+</div>
+
+
+<script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const submitBtn = document.getElementById('submitBtn');
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            submitBtn.disabled = !checkboxes[0].checked || !checkboxes[1].checked;
+        });
+    });
+</script>

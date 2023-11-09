@@ -87,6 +87,18 @@ def login_view(request):
 
 
 @login_required
+def newconsent(request):
+    participant = Participant.objects.get(user=request.user)
+
+    if request.method == "POST":
+        participant.participant_info.consent = True
+        participant.participant_info.save()
+        return redirect("home")
+
+    return render(request, "movies/newconsent.html")
+
+
+@login_required
 def demographic(request):
     participant = Participant.objects.get(user=request.user)
     participant_info = participant.participant_info
@@ -124,6 +136,10 @@ def tutorial(request):
 @login_required
 def home(request):
     participant = Participant.objects.get(user=request.user)
+
+    if not participant.participant_info.consent:
+        return redirect("newconsent")
+
     if participant.given_demographics != True:
         return redirect("demographic")
 

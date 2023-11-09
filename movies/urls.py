@@ -15,4 +15,5 @@ urlpatterns = [
     path("ranking/", views.final_ranking, name="final_ranking"),
     path("feedback/", views.feedback, name="feedback"),
     path("overview/", views.overview, name="overview"),
+    path("consent/", views.newconsent, name="newconsent"),
 ]
