@@ -16,6 +16,10 @@ TODO:
 ------------------------------
 
 sudo service postgresql start
+drop schema public cascade;
+create schema public;
+
+docker exec -it irmrec_db_1 bash | mkdir /backups | exit
 
 docker exec -t irmrec_db_1 pg_dump -U chapman -d irmrecuserstudy -f /backups/backup1.sql
 docker cp irmrec_db_1:/backups/backup1.sql /home/maanch/backup/
