@@ -21,8 +21,9 @@ create schema public;
 
 docker exec -it irmrec_db_1 bash | mkdir /backups | exit
 
-docker exec -t irmrec_db_1 pg_dump -U chapman -d irmrecuserstudy -f /backups/backup1.sql
-docker cp irmrec_db_1:/backups/backup1.sql /home/maanch/backup/
+docker exec -t irmrec_db_1 pg_dump -U chapman -d irmrecuserstudy -f /backups/backup-Dec27.sql
+docker cp irmrec_db_1:/backups/backup-Dec27.sql /home/maanch/backup/
+
 local (to load dump into psql): psql -U houmch -d houmch -f backup1.sql
 SELECT db_to_csv('/mnt/c/Users/hoomo/OneDrive/Documents/GitHub/IRMrec backups/output');
 

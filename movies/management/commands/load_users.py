@@ -12,8 +12,6 @@ class Command(BaseCommand):
         parser.add_argument("--path", type=str)
 
     def handle(self, *args, **kwargs):
-        User.objects.filter(is_superuser=False).delete()
-        Participant.objects.all().delete()
         path = kwargs["path"]
 
         with open(path, encoding="utf-8") as json_file:
